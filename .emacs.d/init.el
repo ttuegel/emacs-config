@@ -11,6 +11,8 @@
 ;; Turn off that damn bell!
 (setq visible-bell t)
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;;; Config
 
 ;; Because emacs stops processing when it encounters an error, the sections of
