@@ -27,10 +27,15 @@
  ;; If there is more than one, they won't work right.
  '(auto-save-default nil)
  '(blink-cursor-mode nil)
- '(completion-ignored-extensions (quote (".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".hi" ".elc")))
+ '(completion-ignored-extensions
+   (quote
+    (".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".hi" ".elc")))
  '(custom-safe-themes t)
  '(el-get-user-package-directory "~/.emacs.d/el-get-user/init")
- '(font-latex-math-environments (quote ("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align" "alignat" "xalignat" "dmath" "math")))
+ '(evil-shift-width 2)
+ '(font-latex-math-environments
+   (quote
+    ("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align" "alignat" "xalignat" "dmath" "math")))
  '(haskell-literate-default (quote tex))
  '(haskell-process-auto-import-loaded-modules nil)
  '(haskell-process-log t)
@@ -45,7 +50,9 @@
  '(make-backup-files nil)
  '(menu-bar-mode nil)
  '(org-hide-leading-stars t)
- '(org-modules (quote (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m)))
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m)))
  '(tab-always-indent t)
  '(tab-stop-list (number-sequence 2 120 2))
  '(tab-width 2)
@@ -61,14 +68,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Source Code Pro"))))
- '(org-level-1 ((t (:inherit nil :foreground "#FD971F" :height 1.0))) t)
- '(org-level-2 ((t (:inherit nil :foreground "#A6E22E" :height 1.0))) t)
- '(org-level-3 ((t (:inherit nil :foreground "#66D9EF" :height 1.0))) t)
- '(org-level-4 ((t (:inherit nil :foreground "#E6DB74" :height 1.0))) t)
- '(org-level-5 ((t (:inherit nil :foreground "#A1EFE4"))) t)
- '(org-level-6 ((t (:inherit nil :foreground "#A6E22E"))) t)
- '(org-level-7 ((t (:inherit nil :foreground "#F92672"))) t)
- '(org-level-8 ((t (:inherit nil :foreground "#66D9EF"))) t))
+ '(org-level-1 ((t (:inherit nil :foreground "#FD971F" :height 1.0))))
+ '(org-level-2 ((t (:inherit nil :foreground "#A6E22E" :height 1.0))))
+ '(org-level-3 ((t (:inherit nil :foreground "#66D9EF" :height 1.0))))
+ '(org-level-4 ((t (:inherit nil :foreground "#E6DB74" :height 1.0))))
+ '(org-level-5 ((t (:inherit nil :foreground "#A1EFE4"))))
+ '(org-level-6 ((t (:inherit nil :foreground "#A6E22E"))))
+ '(org-level-7 ((t (:inherit nil :foreground "#F92672"))))
+ '(org-level-8 ((t (:inherit nil :foreground "#66D9EF")))))
 
 ;; Turn on built-in modes
 (global-whitespace-mode t)
