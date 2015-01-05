@@ -84,6 +84,8 @@
 
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 
+(add-to-list 'load-path "~/.emacs.d/el-get/helm")
+
 ;; Basic packages to make Emacs usable
 (el-get 'sync
         '(el-get
