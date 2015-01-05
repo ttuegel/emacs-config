@@ -36,6 +36,8 @@
  '(font-latex-math-environments
    (quote
     ("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align" "alignat" "xalignat" "dmath" "math")))
+ '(haskell-indentation-cycle-warn nil)
+ '(haskell-indentation-starter-offset 2)
  '(haskell-literate-default (quote tex))
  '(haskell-process-auto-import-loaded-modules nil)
  '(haskell-process-log t)
