@@ -91,11 +91,10 @@
           evil-indent-textobject
           evil-leader
           evil-surround
+          helm
           monokai-theme
           undo-tree
           ))
-
-(ido-mode 1)
 
 (require 'evil-leader)
 (global-evil-leader-mode)
@@ -219,6 +218,9 @@ even when the line is blank."
 (evil-leader/set-key
   "en" 'next-error
   "ep" 'previous-error)
+
+(require 'helm-config)
+(helm-mode 1)
 
 ;; Other packages to load lazily
 (el-get 'sync
