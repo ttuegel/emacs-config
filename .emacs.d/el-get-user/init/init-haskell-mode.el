@@ -2,7 +2,6 @@
   '(progn
      (require 'hi2)
      (setq haskell-mode-hook nil)  ; Fuck you, el-get!
-     (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
      (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
      (add-hook 'haskell-mode-hook (lambda () (rainbow-delimiters-mode 1)))
      (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)

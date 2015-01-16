@@ -240,7 +240,6 @@ even when the line is blank."
           company-ghc
           diminish
           flycheck
-          ghc-mod
           hi2
           haskell-mode
           ledger-mode
