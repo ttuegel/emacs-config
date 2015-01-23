@@ -255,6 +255,9 @@ even when the line is blank."
           rainbow-delimiters
           yasnippet))
 
+(evil-leader/set-key
+  "gs" 'magit-status)
+
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
 (defadvice newline (after indent-clean-after-newline activate)
@@ -272,6 +275,7 @@ only whitespace."
 
 (require 'diminish)
 (diminish 'global-whitespace-mode)
+(diminish 'helm-mode)
 
 (require 'undo-tree)
 (global-undo-tree-mode 1)
