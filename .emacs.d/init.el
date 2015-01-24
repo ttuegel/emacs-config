@@ -245,6 +245,7 @@ even when the line is blank."
           company-ghc
           diminish
           flycheck
+          git-timemachine
           hi2
           haskell-mode
           ledger-mode
@@ -256,7 +257,8 @@ even when the line is blank."
           yasnippet))
 
 (evil-leader/set-key
-  "gs" 'magit-status)
+  "gs" 'magit-status
+  "gt" 'git-timemachine)
 
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
