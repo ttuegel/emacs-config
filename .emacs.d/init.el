@@ -51,6 +51,15 @@
  '(inhibit-startup-screen t)
  '(make-backup-files nil)
  '(menu-bar-mode nil)
+ '(org-capture-templates
+   (quote
+    (("n" "Notes" entry
+      (file+datetree "~/org/notes.org")
+      "* %?\\n  %U\\n  %i\\n  %a")
+     ("t" "Todo" entry
+      (file "~/org/todo.org")
+      ""))))
+ '(org-default-notes-file "~/org/notes.org")
  '(org-hide-leading-stars t)
  '(org-modules
    (quote
@@ -259,6 +268,9 @@ even when the line is blank."
 (evil-leader/set-key
   "gs" 'magit-status
   "gt" 'git-timemachine)
+
+(evil-leader/set-key
+  "oc" 'org-capture)
 
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
