@@ -58,7 +58,7 @@
       "* %?\\n  %U\\n  %i\\n  %a")
      ("t" "Todo" entry
       (file "~/org/todo.org")
-      ""))))
+      "* TODO %?\\n  %i\\n  %a"))))
  '(org-default-notes-file "~/org/notes.org")
  '(org-hide-leading-stars t)
  '(org-modules
