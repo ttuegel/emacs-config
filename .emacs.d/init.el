@@ -56,10 +56,15 @@
    (quote
     (("n" "Notes" entry
       (file+datetree "~/org/notes.org")
-      "* %?\\n  %U\\n  %i\\n  %a")
+      "* %?
+  %U
+  %i
+  %a")
      ("t" "Todo" entry
       (file "~/org/todo.org")
-      "* TODO %?\\n  %i\\n  %a"))))
+      "* TODO %?
+  %i
+  %a"))))
  '(org-default-notes-file "~/org/notes.org")
  '(org-hide-leading-stars t)
  '(org-modules
