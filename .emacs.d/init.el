@@ -75,8 +75,7 @@
  '(tab-width 2)
  '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
- '(whitespace-line-column 80)
- '(whitespace-style (quote (face trailing tabs lines-tail)))
+ '(whitespace-style (quote (face trailing tabs)))
  '(x-select-enable-clipboard nil))
 
 (custom-set-faces
@@ -259,6 +258,7 @@ even when the line is blank."
           company-mode
           company-ghc
           diminish
+          fill-column-indicator
           flycheck
           git-timemachine
           hi2
@@ -277,6 +277,8 @@ even when the line is blank."
 
 (evil-leader/set-key
   "oc" 'org-capture)
+
+(add-hook 'lisp-mode-hook 'turn-on-fci-mode)
 
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
