@@ -118,6 +118,7 @@
           evil-surround
           helm
           monokai-theme
+          org-mode
           undo-tree
           ))
 
@@ -267,7 +268,7 @@ even when the line is blank."
           magit
           markdown-mode
           nix-mode
-          org-mode
+          ;org-mode
           rainbow-delimiters
           yasnippet))
 
