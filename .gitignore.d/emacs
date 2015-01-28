@@ -1,0 +1,15 @@
+*
+!/.emacs.d
+!/.emacs.d/el-get-user
+!/.emacs.d/el-get-user/init
+!/.emacs.d/el-get-user/init/init-auctex.el
+!/.emacs.d/el-get-user/init/init-evil.el
+!/.emacs.d/el-get-user/init/init-evil-leader.el
+!/.emacs.d/el-get-user/init/init-flycheck.el
+!/.emacs.d/el-get-user/init/init-ghc-mod.el
+!/.emacs.d/el-get-user/init/init-haskell-mode.el
+!/.emacs.d/el-get-user/init/init-monokai-theme.el
+!/.emacs.d/el-get-user/init/init-org-mode.el
+!/.emacs.d/el-get-user/init/init-rainbow-delimiters.el
+!/.emacs.d/el-get-user/init/init-yasnippet.el
+!/.emacs.d/init.el
