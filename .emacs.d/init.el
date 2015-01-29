@@ -280,7 +280,6 @@ even when the line is blank."
           magit
           markdown-mode
           nix-mode
-          ;org-mode
           rainbow-delimiters
           yasnippet))
 
@@ -289,6 +288,7 @@ even when the line is blank."
   "gt" 'git-timemachine)
 
 (evil-leader/set-key
+  "oa" 'org-agenda
   "oc" 'org-capture)
 
 (add-hook 'lisp-mode-hook 'turn-on-fci-mode)
