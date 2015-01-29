@@ -60,6 +60,18 @@
   %U
   %i
   %a")
+     ("o" "Open Source Software" entry
+      (file+datetree "~/org/oss.org")
+      "* %?
+  %U
+  %i
+  %a")
+     ("p" "Physics" entry
+      (file+datetree "~/org/physics.org")
+      "* %?
+  %U
+  %i
+  %a")
      ("t" "Todo" entry
       (file "~/org/todo.org")
       "* TODO %?
@@ -268,7 +280,6 @@ even when the line is blank."
           magit
           markdown-mode
           nix-mode
-          ;org-mode
           rainbow-delimiters
           yasnippet))
 
@@ -277,6 +288,7 @@ even when the line is blank."
   "gt" 'git-timemachine)
 
 (evil-leader/set-key
+  "oa" 'org-agenda
   "oc" 'org-capture)
 
 (add-hook 'lisp-mode-hook 'turn-on-fci-mode)
