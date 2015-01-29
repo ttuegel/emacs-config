@@ -56,7 +56,11 @@
    (quote
     (("n" "Notes" entry
       (file+datetree "~/org/notes.org")
-    (("o" "Open Source Software" entry
+      "* %?
+  %U
+  %i
+  %a")
+     ("o" "Open Source Software" entry
       (file+datetree "~/org/oss.org")
       "* %?
   %U
