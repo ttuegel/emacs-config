@@ -50,6 +50,7 @@
  '(ido-ignore-extensions nil)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(ispell-list-command "--list")
  '(make-backup-files nil)
  '(menu-bar-mode nil)
  '(org-capture-templates
@@ -273,6 +274,7 @@ even when the line is blank."
           diminish
           fill-column-indicator
           flycheck
+          flyspell
           git-timemachine
           hi2
           haskell-mode
