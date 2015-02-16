@@ -6,6 +6,7 @@
      (add-hook 'haskell-mode-hook (lambda () (rainbow-delimiters-mode 1)))
      (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
      (add-hook 'haskell-mode-hook 'turn-on-fci-mode)
+     (add-hook 'haskell-mode-hook (lambda () (setq fill-column 80)))
 
      (add-hook 'electric-indent-functions
                (lambda (c) (when (or (eq 'haskell-mode major-mode)
