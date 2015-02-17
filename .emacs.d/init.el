@@ -37,6 +37,8 @@
  '(font-latex-math-environments
    (quote
     ("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align" "alignat" "xalignat" "dmath" "math")))
+ '(font-latex-fontify-sectioning 'color)
+ '(font-latex-fontify-script nil)
  '(haskell-indentation-cycle-warn nil)
  '(haskell-indentation-starter-offset 2)
  '(haskell-literate-default (quote tex))
