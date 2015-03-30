@@ -274,7 +274,6 @@ even when the line is blank."
           company-mode
           company-ghc
           diminish
-          fill-column-indicator
           flycheck
           flyspell
           git-timemachine
@@ -294,8 +293,6 @@ even when the line is blank."
 (evil-leader/set-key
   "oa" 'org-agenda
   "oc" 'org-capture)
-
-(add-hook 'lisp-mode-hook 'turn-on-fci-mode)
 
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
