@@ -276,6 +276,7 @@ even when the line is blank."
           diminish
           flycheck
           flyspell
+          git-auto-commit-mode
           git-timemachine
           hi2
           haskell-mode
