@@ -2,6 +2,21 @@
 ;;; Commentary:
 ;;; Code:
 
+(require 'package)
+
+;; make unpure packages archives unavailable
+(setq package-archives nil)
+
+(add-to-list 'package-directory-list "/run/current-system/sw/share/emacs/site-lisp/elpa")
+
+(add-to-list 'package-directory-list "~/.nix-profile/share/emacs/site-lisp/elpa")
+
+(package-initialize)
+
+(require 'use-package)
+
+(require 'diminish)
+
 ;; Use UTF-8 everywhere
 (mapc (lambda (fn) (funcall fn 'utf-8))
       '(set-terminal-coding-system
@@ -32,7 +47,6 @@
     (".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".hi" ".elc")))
  '(custom-safe-themes t)
  '(default-frame-alist (quote ((cursor-color . "white"))))
- '(el-get-user-package-directory "~/.emacs.d/el-get-user/init")
  '(evil-shift-width 2)
  '(font-latex-math-environments
    (quote
@@ -110,38 +124,17 @@
 
 ;; Turn on built-in modes
 (global-whitespace-mode t)
+(diminish 'global-whitespace-mode)
 (show-paren-mode t)
 (electric-indent-mode t)
 
-;; Load or install el-get
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-
-;; Basic packages to make Emacs usable
-(el-get 'sync
-        '(el-get
-          evil
-          evil-indent-textobject
-          evil-leader
-          evil-surround
-          helm
-          monokai-theme
-          org-mode
-          undo-tree
-          ))
-
 (require 'evil-leader)
 (global-evil-leader-mode)
+(evil-leader/set-leader "<SPC>")
 
 ;; Be evil
 (require 'evil)
+(require 'uniquify)
 (evil-mode t)
 
 (require 'evil-surround)
@@ -204,8 +197,11 @@ even when the line is blank."
 (evil-map "k" 'evil-delete)
 
 ;;; Undo Tree
-(evil-map "u" 'undo-tree-undo
-          "U" 'undo-tree-redo)
+(use-package undo-tree
+  :commands (undo-tree-undo undo-tree-redo)
+  :init
+  (evil-map "u" 'undo-tree-undo
+            "U" 'undo-tree-redo))
 
 ;;; Ace Jump
 (evil-map "M-f" 'evil-ace-jump-word-mode)
@@ -267,33 +263,37 @@ even when the line is blank."
 
 (require 'helm-config)
 (helm-mode 1)
+(diminish 'helm-mode)
 
-;; Other packages to load lazily
-(el-get 'sync
-        '(auctex
-          company-mode
-          company-ghc
-          diminish
-          flycheck
-          flyspell
-          git-auto-commit-mode
-          git-timemachine
-          hi2
-          haskell-mode
-          ledger-mode
-          magit
-          markdown-mode
-          nix-mode
-          rainbow-delimiters
-          yasnippet))
+(require 'monokai-theme)
+;; Set color scheme
+(add-hook 'after-init-hook (lambda () (load-theme 'monokai)))
 
-(evil-leader/set-key
-  "gs" 'magit-status
-  "gt" 'git-timemachine)
+(use-package magit
+  :commands (magit-status)
+  :init (evil-leader/set-key "gs" 'magit-status))
 
-(evil-leader/set-key
-  "oa" 'org-agenda
-  "oc" 'org-capture)
+(use-package git-timemachine
+  :commands (git-timemachine)
+  :init (evil-leader/set-key "gt" 'git-timemachine))
+
+(use-package org
+  :mode ("\\.org\\'" . org-mode)
+  :commands (org-agenda org-capture)
+  :init
+  (evil-leader/set-key
+    "oa" 'org-agenda
+    "oc" 'org-capture)
+  :config
+  (setq org-agenda-files '("~/org"))
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+  (setq org-log-done t)
+  (add-hook 'org-mode-hook 'auto-fill-mode)
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (evil-leader/set-key
+    "os" 'org-save-all-org-buffers))
 
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
@@ -310,19 +310,92 @@ only whitespace."
     (forward-line 1)
     (back-to-indentation)))
 
-(require 'diminish)
-(diminish 'global-whitespace-mode)
-(diminish 'helm-mode)
-
-(require 'undo-tree)
+(use-package undo-tree
+  :commands (global-undo-tree-mode)
+  :diminish undo-tree-mode)
 (global-undo-tree-mode 1)
-(diminish 'undo-tree-mode)
 
-(require 'company)
-(diminish 'company-mode)
-(define-key company-active-map (kbd "M-h") 'company-select-next)
-(define-key company-active-map (kbd "M-t") 'company-select-previous)
+(use-package company
+  :commands (global-company-mode)
+  :diminish company-mode
+  :config
+  (define-key company-active-map (kbd "M-h") 'company-select-next)
+  (define-key company-active-map (kbd "M-t") 'company-select-previous))
 (global-company-mode)
+
+(use-package rainbow-delimiters
+  :commands (rainbow-delimiters-mode))
+
+(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+
+;;; AucTeX configuration
+
+(defvar ttuegel/LaTeX-no-autofill-environments
+  '("align" "align*" "equation" "equation*")
+  "A list of LaTeX environment names in which `auto-fill-mode' should be inhibited.")
+
+(defun ttuegel/LaTeX-auto-fill-function ()
+  "This function checks whether point is currently inside one of
+the LaTeX environments listed in
+`ttuegel/LaTeX-no-autofill-environments'. If so, it inhibits automatic
+filling of the current paragraph."
+  (let ((do-auto-fill t)
+        (current-environment "")
+        (level 0))
+    (while (and do-auto-fill (not (string= current-environment "document")))
+      (setq level (1+ level)
+            current-environment (LaTeX-current-environment level)
+            do-auto-fill (not (member current-environment ttuegel/LaTeX-no-autofill-environments))))
+    (when do-auto-fill
+      (do-auto-fill))))
+
+(defun ttuegel/LaTeX-setup-auto-fill ()
+  "This function turns on auto-fill-mode and sets the function
+used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
+  (auto-fill-mode)
+  (setq auto-fill-function 'my-LaTeX-auto-fill-function))
+
+(use-package auctex
+  :mode ("\\.tex\\'" . latex-mode)
+  :commands (latex-mode LaTeX-mode plain-tex-mode)
+  :config
+  (setq reftex-label-alist '(("dmath" ?e nil nil t)))
+  (TeX-add-style-hook
+   "dmath"
+   (lambda () (LaTeX-add-environments '("dmath" LaTeX-env-label))))
+  (add-hook 'LaTeX-mode-hook 'ttuegel/LaTeX-setup-auto-fill)
+  (flyspell-mode 1))
+
+;;; flycheck configuration
+
+(use-package flycheck
+  :commands (flycheck-mode)
+  :config
+  (setq flycheck-checkers (delq 'haskell-hlint flycheck-checkers)))
+
+;;; ghc-mod configuration
+
+(use-package ghc
+  :commands (ghc-init ghc-debug)
+  :config
+  (setq ghc-sort-key nil)
+  (add-to-list 'company-backends 'company-ghc))
+
+;;; haskell-mode configuration
+
+(use-package haskell-mode
+  :mode (("\\.hs\\'" . haskell-mode)
+         ("\\.lhs\\'" . haskell-mode)
+         ("\\.cabal\'" . haskell-cabal-mode))
+  :commands (haskell-mode)
+  :config
+  (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
+  (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  (add-hook 'electric-indent-functions
+            (lambda (c) (when (or (eq 'haskell-mode major-mode)
+                                  (eq 'haskell-cabal-mode major-mode))
+                          'no-indent))))
 
 (provide 'init)
 ;;; init.el ends here
