@@ -397,5 +397,11 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
                                   (eq 'haskell-cabal-mode major-mode))
                           'no-indent))))
 
+;;; nix-mode configuration
+
+(use-package nix-mode
+  :mode ("\\.nix\\'" . nix-mode)
+  :commands (nix-mode))
+
 (provide 'init)
 ;;; init.el ends here
