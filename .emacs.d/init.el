@@ -137,11 +137,6 @@
 (require 'uniquify)
 (evil-mode t)
 
-(require 'evil-surround)
-(global-evil-surround-mode 1)
-
-(require 'evil-indent-textobject)
-
 (evil-define-command ttuegel/evil-shift-line (count &optional left)
   "Shift the current line right COUNT times (left if LEFT is non-nil).
 The line is shifted to the nearest tab stop. Unlike `evil-shift-right-line', the
@@ -402,6 +397,11 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (use-package nix-mode
   :mode ("\\.nix\\'" . nix-mode)
   :commands (nix-mode))
+
+;(require 'evil-surround)
+;(global-evil-surround-mode 1)
+
+;(require 'evil-indent-textobject)
 
 (provide 'init)
 ;;; init.el ends here
