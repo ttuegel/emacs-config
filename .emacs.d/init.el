@@ -2,9 +2,13 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
+(require 'package)
 
+(package-initialize)
+
+(eval-when-compile (require 'use-package))
 (require 'diminish)
+(require 'bind-key)
 
 ;; Use UTF-8 everywhere
 (mapc (lambda (fn) (funcall fn 'utf-8))
@@ -117,37 +121,43 @@
 (show-paren-mode t)
 (electric-indent-mode t)
 
-(require 'evil-leader)
+(use-package evil-leader
+  :commands (global-evil-leader-mode)
+  :config
+  (evil-leader/set-leader "<SPC>"))
 (global-evil-leader-mode)
-(evil-leader/set-leader "<SPC>")
 
 ;; Be evil
-(require 'evil)
-(require 'uniquify)
-(evil-mode t)
+(use-package evil
+  :demand t
+  :config
+  (evil-mode t)
 
-(evil-define-command ttuegel/evil-shift-line (count &optional left)
-  "Shift the current line right COUNT times (left if LEFT is non-nil).
-The line is shifted to the nearest tab stop. Unlike `evil-shift-right-line', the
-value of `evil-shift-width' is ignored for better emacs interoperability. Works
-even when the line is blank."
-  (interactive "<c>")
-  (let* ((initial-column (current-column))
-         (initial-indent (current-indentation))
-         (final-indent (indent-next-tab-stop initial-indent left))
-         (delta-indent (- final-indent initial-indent))
-         (final-column (+ initial-column delta-indent)))
-    (progn
-      (indent-line-to final-indent)
-      (forward-char (- final-column (current-column))))))
+  (evil-define-command ttuegel/evil-shift-line (count &optional left)
+    "Shift the current line right COUNT times (left if LEFT is non-nil).
+  The line is shifted to the nearest tab stop. Unlike `evil-shift-right-line', the
+  value of `evil-shift-width' is ignored for better emacs interoperability. Works
+  even when the line is blank."
+    (interactive "<c>")
+    (let* ((initial-column (current-column))
+           (initial-indent (current-indentation))
+           (final-indent (indent-next-tab-stop initial-indent left))
+           (delta-indent (- final-indent initial-indent))
+           (final-column (+ initial-column delta-indent)))
+      (progn
+        (indent-line-to final-indent)
+        (forward-char (- final-column (current-column))))))
 
-(evil-define-command evil-shift-right-line (count)
-  (interactive "<c>")
-  (ttuegel/evil-shift-line count))
+  (evil-define-command evil-shift-right-line (count)
+    (interactive "<c>")
+    (ttuegel/evil-shift-line count))
 
-(evil-define-command evil-shift-left-line (count)
-  (interactive "<c>")
-  (ttuegel/evil-shift-line count 1))
+  (evil-define-command evil-shift-left-line (count)
+    (interactive "<c>")
+    (ttuegel/evil-shift-line count 1)))
+
+(use-package uniquify
+  :demand t)
 
 (defun evil-map (key def &rest bindings)
   (evil-leader--def-keys evil-normal-state-map key def bindings)
@@ -245,13 +255,16 @@ even when the line is blank."
   "en" 'next-error
   "ep" 'previous-error)
 
-(require 'helm-config)
 (use-package helm-config
-  :commands (helm-mode)
-  :diminish helm-mode)
-(helm-mode 1)
+  :demand t
+  :config
+  (progn
+    (use-package helm-mode
+      :init (helm-mode 1)
+      :diminish helm-mode)))
 
-(require 'monokai-theme)
+(use-package monokai-theme
+  :defines (monokai))
 ;; Set color scheme
 (add-hook 'after-init-hook (lambda () (load-theme 'monokai)))
 
@@ -318,35 +331,37 @@ only whitespace."
   '("align" "align*" "equation" "equation*")
   "A list of LaTeX environment names in which `auto-fill-mode' should be inhibited.")
 
-(defun ttuegel/LaTeX-auto-fill-function ()
-  "This function checks whether point is currently inside one of
-the LaTeX environments listed in
-`ttuegel/LaTeX-no-autofill-environments'. If so, it inhibits automatic
-filling of the current paragraph."
-  (let ((do-auto-fill t)
-        (current-environment "")
-        (level 0))
-    (while (and do-auto-fill (not (string= current-environment "document")))
-      (setq level (1+ level)
-            current-environment (LaTeX-current-environment level)
-            do-auto-fill (not (member current-environment ttuegel/LaTeX-no-autofill-environments))))
-    (when do-auto-fill
-      (do-auto-fill))))
-
-(defun ttuegel/LaTeX-setup-auto-fill ()
-  "This function turns on auto-fill-mode and sets the function
-used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
-  (auto-fill-mode)
-  (setq auto-fill-function 'my-LaTeX-auto-fill-function))
-
 (use-package tex-site ; auctex
   :mode ("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode)
   :commands (latex-mode LaTeX-mode plain-tex-mode)
   :config
+
+  (defun ttuegel/LaTeX-auto-fill-function ()
+    "This function checks whether point is currently inside one of
+  the LaTeX environments listed in
+  `ttuegel/LaTeX-no-autofill-environments'. If so, it inhibits automatic
+  filling of the current paragraph."
+    (let ((do-auto-fill t)
+          (current-environment "")
+          (level 0))
+      (while (and do-auto-fill (not (string= current-environment "document")))
+        (setq level (1+ level)
+              current-environment (LaTeX-current-environment level)
+              do-auto-fill (not (member current-environment ttuegel/LaTeX-no-autofill-environments))))
+      (when do-auto-fill
+        (do-auto-fill))))
+
+  (defun ttuegel/LaTeX-setup-auto-fill ()
+    "This function turns on auto-fill-mode and sets the function
+  used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
+    (auto-fill-mode)
+    (setq auto-fill-function 'my-LaTeX-auto-fill-function))
+
   (add-hook 'LaTeX-mode-hook
             (lambda ()
               (ttuegel/LaTeX-setup-auto-fill)
-              (flyspell-mode 1))))
+              (flyspell-mode 1)))
+)
 
 ;;; flycheck configuration
 
@@ -389,6 +404,15 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 ;(global-evil-surround-mode 1)
 
 ;(require 'evil-indent-textobject)
+
+(defun byte-compile-current-buffer ()
+  "`byte-compile' current buffer if it's emacs-lisp-mode and compiled file exists."
+  (interactive)
+  (when (and (eq major-mode 'emacs-lisp-mode)
+             (file-exists-p (byte-compile-dest-file buffer-file-name)))
+    (byte-compile-file buffer-file-name)))
+
+(add-hook 'after-save-hook 'byte-compile-current-buffer)
 
 (provide 'init)
 ;;; init.el ends here
