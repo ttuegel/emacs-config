@@ -2,17 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'package)
-
-;; make unpure packages archives unavailable
-(setq package-archives nil)
-
-(add-to-list 'package-directory-list "/run/current-system/sw/share/emacs/site-lisp/elpa")
-
-(add-to-list 'package-directory-list "~/.nix-profile/share/emacs/site-lisp/elpa")
-
-(package-initialize)
-
 (require 'use-package)
 
 (require 'diminish)
@@ -257,8 +246,10 @@ even when the line is blank."
   "ep" 'previous-error)
 
 (require 'helm-config)
+(use-package helm-config
+  :commands (helm-mode)
+  :diminish helm-mode)
 (helm-mode 1)
-(diminish 'helm-mode)
 
 (require 'monokai-theme)
 ;; Set color scheme
@@ -289,8 +280,6 @@ even when the line is blank."
   (global-set-key (kbd "C-c a") 'org-agenda)
   (evil-leader/set-key
     "os" 'org-save-all-org-buffers))
-
-(add-to-list 'load-path "~/.emacs.d/elisp")
 
 (defadvice newline (after indent-clean-after-newline activate)
   "Stop ill-behaved major-modes from leaving indentation on blank lines.
@@ -350,16 +339,14 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   (auto-fill-mode)
   (setq auto-fill-function 'my-LaTeX-auto-fill-function))
 
-(use-package auctex
-  :mode ("\\.tex\\'" . latex-mode)
+(use-package tex-site ; auctex
+  :mode ("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode)
   :commands (latex-mode LaTeX-mode plain-tex-mode)
   :config
-  (setq reftex-label-alist '(("dmath" ?e nil nil t)))
-  (TeX-add-style-hook
-   "dmath"
-   (lambda () (LaTeX-add-environments '("dmath" LaTeX-env-label))))
-  (add-hook 'LaTeX-mode-hook 'ttuegel/LaTeX-setup-auto-fill)
-  (flyspell-mode 1))
+  (add-hook 'LaTeX-mode-hook
+            (lambda ()
+              (ttuegel/LaTeX-setup-auto-fill)
+              (flyspell-mode 1))))
 
 ;;; flycheck configuration
 
@@ -382,7 +369,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   :mode (("\\.hs\\'" . haskell-mode)
          ("\\.lhs\\'" . haskell-mode)
          ("\\.cabal\'" . haskell-cabal-mode))
-  :commands (haskell-mode)
+  :commands (haskell-mode haskell-cabal-mode)
   :config
   (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
