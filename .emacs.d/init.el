@@ -40,21 +40,64 @@
     (".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".hi" ".elc")))
  '(custom-safe-themes t)
  '(default-frame-alist (quote ((cursor-color . "white"))))
+ '(evil-shift-width 2)
  '(font-latex-math-environments
    (quote
     ("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align" "alignat" "xalignat" "dmath" "math")))
  '(font-latex-fontify-sectioning 'color)
  '(font-latex-fontify-script nil)
+ '(haskell-indentation-cycle-warn nil)
+ '(haskell-indentation-starter-offset 2)
+ '(haskell-literate-default (quote tex))
+ '(haskell-process-auto-import-loaded-modules nil)
+ '(haskell-process-log t)
+ '(haskell-process-suggest-remove-import-lines nil)
+ '(haskell-process-type (quote cabal-repl))
+ '(hi2-layout-offset 4)
+ '(hi2-left-offset 4)
+ '(ido-auto-merge-work-directories-length -1)
+ '(ido-ignore-extensions nil)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(ispell-list-command "--list")
  '(make-backup-files nil)
  '(menu-bar-mode nil)
+ '(org-capture-templates
+   (quote
+    (("n" "Notes" entry
+      (file+datetree "~/org/notes.org")
+      "* %?
+  %U
+  %i
+  %a")
+     ("o" "Open Source Software" entry
+      (file+datetree "~/org/oss.org")
+      "* %?
+  %U
+  %i
+  %a")
+     ("p" "Physics" entry
+      (file+datetree "~/org/physics.org")
+      "* %?
+  %U
+  %i
+  %a")
+     ("t" "Todo" entry
+      (file "~/org/todo.org")
+      "* TODO %?
+  %i
+  %a"))))
+ '(org-default-notes-file "~/org/notes.org")
+ '(org-hide-leading-stars t)
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m)))
  '(tab-always-indent t)
  '(tab-stop-list (number-sequence 2 120 2))
  '(tab-width 2)
  '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
+ '(whitespace-style (quote (face trailing tabs)))
  '(x-select-enable-clipboard nil))
 
 (custom-set-faces
@@ -72,57 +115,23 @@
  '(org-level-7 ((t (:inherit nil :foreground "#F92672"))))
  '(org-level-8 ((t (:inherit nil :foreground "#66D9EF")))))
 
-;;; whitespace-mode
-(setq whitespace-style '(face trailing tabs))
+;; Turn on built-in modes
 (global-whitespace-mode t)
 (diminish 'global-whitespace-mode)
-
 (show-paren-mode t)
 (electric-indent-mode t)
 
 (use-package evil-leader
   :commands (global-evil-leader-mode)
-  :init (global-evil-leader-mode)
   :config
-  (evil-leader/set-leader "<SPC>")
-
-  (evil-leader/set-key
-    "s" ctl-x-map
-    "M-s" 'execute-extended-command)
-
-  (evil-leader/set-key "TAB"
-    (lambda ()
-      (interactive)
-      (switch-to-buffer (other-buffer (current-buffer) t))))
-
-  (evil-leader/set-key
-    "bk" 'kill-buffer
-    "bK" 'kill-other-buffers
-    "bn" 'switch-to-next-buffer
-    "bp" 'switch-to-prev-buffer
-    "bR" (lambda () (interactive) (revert-buffer nil t))
-    "br" 'rename-current-buffer-file
-    "bs" 'switch-to-buffer)
-
-  (evil-leader/set-key
-    "ff" 'find-file
-    "fi" 'find-user-init-file
-    "fS" 'evil-write-all
-    "fs" 'evil-write)
-
-  (evil-leader/set-key "jk" 'evil-join)
-
-  (evil-leader/set-key
-    "en" 'next-error
-    "ep" 'previous-error)
-)
+  (evil-leader/set-leader "<SPC>"))
+(global-evil-leader-mode)
 
 ;; Be evil
 (use-package evil
-  :commands (evil-mode evil-map)
-  :init (evil-mode t)
+  :demand t
   :config
-  (setq evil-shift-width 2)
+  (evil-mode t)
 
   (evil-define-command ttuegel/evil-shift-line (count &optional left)
     "Shift the current line right COUNT times (left if LEFT is non-nil).
@@ -145,52 +154,41 @@
 
   (evil-define-command evil-shift-left-line (count)
     (interactive "<c>")
-    (ttuegel/evil-shift-line count 1))
-
-  (defun evil-map (key def &rest bindings)
-    (evil-leader--def-keys evil-normal-state-map key def bindings)
-    (evil-leader--def-keys evil-visual-state-map key def bindings)
-    (evil-leader--def-keys evil-motion-state-map key def bindings)
-    (evil-leader--def-keys evil-operator-state-map key def bindings))
-
-  ;;; Up/down/left/right
-  (evil-map "t" 'evil-previous-visual-line
-            "h" 'evil-next-visual-line
-            "d" 'evil-backward-char
-            "n" 'evil-forward-char)
-
-  ;;; Beginning/end of line (home/end)
-  ;; Use back-to-indentation instead of evil-beginning-of-line so that
-  ;; cursor ends up at the first non-whitespace character of a line. 0
-  ;; can be used to go to real beginning of line
-  (evil-map "_" 'back-to-indentation
-            "-" 'evil-end-of-line)
-
-  ;; Scrolling
-  (evil-map "\M-t" 'evil-scroll-page-up
-            "\M-h" 'evil-scroll-page-down
-            "T" 'evil-scroll-up
-            "H" 'evil-scroll-down)
-
-  ;; Execute command: map : to ;
-  (evil-map "s" 'evil-ex)
-
-  ;;; Cut/copy/paste
-  (evil-map "k" 'evil-delete)
-
-  ;;; Ace Jump
-  (evil-map "M-f" 'evil-ace-jump-word-mode)
-  (evil-map "M-F" 'evil-ace-jump-line-mode)
-
-  ;;; Search
-  (evil-map "/" 'isearch-forward
-            "?" 'isearch-backward
-            "l" 'isearch-repeat-forward
-            "L" 'isearch-repeat-backward)
-)
+    (ttuegel/evil-shift-line count 1)))
 
 (use-package uniquify
   :demand t)
+
+(defun evil-map (key def &rest bindings)
+  (evil-leader--def-keys evil-normal-state-map key def bindings)
+  (evil-leader--def-keys evil-visual-state-map key def bindings)
+  (evil-leader--def-keys evil-motion-state-map key def bindings)
+  (evil-leader--def-keys evil-operator-state-map key def bindings))
+
+;;; Up/down/left/right
+(evil-map "t" 'evil-previous-visual-line
+          "h" 'evil-next-visual-line
+          "d" 'evil-backward-char
+          "n" 'evil-forward-char)
+
+;;; Beginning/end of line (home/end)
+;; Use back-to-indentation instead of evil-beginning-of-line so that
+;; cursor ends up at the first non-whitespace character of a line. 0
+;; can be used to go to real beginning of line
+(evil-map "_" 'back-to-indentation
+          "-" 'evil-end-of-line)
+
+;; Scrolling
+(evil-map "\M-t" 'evil-scroll-page-up
+          "\M-h" 'evil-scroll-page-down
+          "T" 'evil-scroll-up
+          "H" 'evil-scroll-down)
+
+;; Execute command: map : to ;
+(evil-map "s" 'evil-ex)
+
+;;; Cut/copy/paste
+(evil-map "k" 'evil-delete)
 
 ;;; Undo Tree
 (use-package undo-tree
@@ -198,6 +196,16 @@
   :init
   (evil-map "u" 'undo-tree-undo
             "U" 'undo-tree-redo))
+
+;;; Ace Jump
+(evil-map "M-f" 'evil-ace-jump-word-mode)
+(evil-map "M-F" 'evil-ace-jump-line-mode)
+
+;;; Search
+(evil-map "/" 'isearch-forward
+          "?" 'isearch-backward
+          "l" 'isearch-repeat-forward
+          "L" 'isearch-repeat-backward)
 
 (global-set-key (kbd "C-c /") 'isearch-forward)
 (global-set-key (kbd "C-c ?") 'isearch-backward)
@@ -216,6 +224,36 @@
 (define-key evil-window-map "N" 'evil-window-move-far-right)
 (define-key evil-window-map "w" 'evil-window-new)
 (define-key evil-window-map "k" 'evil-window-delete)
+
+(evil-leader/set-key
+  "s" ctl-x-map
+  "M-s" 'execute-extended-command)
+
+(evil-leader/set-key "TAB"
+  (lambda ()
+    (interactive)
+    (switch-to-buffer (other-buffer (current-buffer) t))))
+
+(evil-leader/set-key
+  "bk" 'kill-buffer
+  "bK" 'kill-other-buffers
+  "bn" 'switch-to-next-buffer
+  "bp" 'switch-to-prev-buffer
+  "bR" (lambda () (interactive) (revert-buffer nil t))
+  "br" 'rename-current-buffer-file
+  "bs" 'switch-to-buffer)
+
+(evil-leader/set-key
+  "ff" 'find-file
+  "fi" 'find-user-init-file
+  "fS" 'evil-write-all
+  "fs" 'evil-write)
+
+(evil-leader/set-key "jk" 'evil-join)
+
+(evil-leader/set-key
+  "en" 'next-error
+  "ep" 'previous-error)
 
 (use-package helm-config
   :demand t
@@ -246,36 +284,6 @@
     "oa" 'org-agenda
     "oc" 'org-capture)
   :config
-  (setq
-   org-capture-templates
-   '(("n" "Notes" entry
-      (file+datetree "~/org/notes.org")
-      "* %?
-  %U
-  %i
-  %a")
-     ("o" "Open Source Software" entry
-      (file+datetree "~/org/oss.org")
-      "* %?
-  %U
-  %i
-  %a")
-     ("p" "Physics" entry
-      (file+datetree "~/org/physics.org")
-      "* %?
-  %U
-  %i
-  %a")
-     ("t" "Todo" entry
-      (file "~/org/todo.org")
-      "* TODO %?
-  %i
-  %a")))
-  (setq org-default-notes-file "~/org/notes.org")
-  (setq org-hide-leading-stars t)
-  (setq org-modules
-        '(org-bbdb org-bibtex org-docview org-gnus org-info
-          org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m))
   (setq org-agenda-files '("~/org"))
   (setq org-clock-persist 'history)
   (org-clock-persistence-insinuate)
@@ -283,7 +291,8 @@
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
-  (evil-leader/set-key "os" 'org-save-all-org-buffers))
+  (evil-leader/set-key
+    "os" 'org-save-all-org-buffers))
 
 (defadvice newline (after indent-clean-after-newline activate)
   "Stop ill-behaved major-modes from leaving indentation on blank lines.
@@ -312,10 +321,9 @@ only whitespace."
 (global-company-mode)
 
 (use-package rainbow-delimiters
-  :commands (rainbow-delimiters-mode)
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode))
+  :commands (rainbow-delimiters-mode))
 
+(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 
 ;;; AucTeX configuration
 
@@ -378,13 +386,6 @@ only whitespace."
          ("\\.cabal\'" . haskell-cabal-mode))
   :commands (haskell-mode haskell-cabal-mode)
   :config
-  (setq haskell-indentation-cycle-warn nil)
-  (setq haskell-indentation-starter-offset 2)
-  (setq haskell-literate-default 'tex)
-  (setq haskell-process-auto-import-loaded-modules nil)
-  (setq haskell-process-log t)
-  (setq haskell-process-suggest-remove-import-lines nil)
-  (setq haskell-process-type 'cabal-repl)
   (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
