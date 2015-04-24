@@ -264,7 +264,7 @@
       :diminish helm-mode)))
 
 (use-package monokai-theme
-  :defines (monokai))
+  :demand t)
 ;; Set color scheme
 (add-hook 'after-init-hook (lambda () (load-theme 'monokai)))
 
