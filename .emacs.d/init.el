@@ -359,7 +359,7 @@ only whitespace."
     "This function turns on auto-fill-mode and sets the function
   used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
     (auto-fill-mode)
-    (setq auto-fill-function 'my-LaTeX-auto-fill-function))
+    (setq auto-fill-function 'ttuegel/LaTeX-auto-fill-function))
 
   (add-hook 'LaTeX-mode-hook
             (lambda ()
