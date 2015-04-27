@@ -255,6 +255,10 @@
   "en" 'next-error
   "ep" 'previous-error)
 
+;; Use my development helm version, if present
+(when (file-exists-p "~/.emacs.d/helm")
+  (add-to-list 'load-path "~/.emacs.d/helm"))
+
 (use-package helm-config
   :demand t
   :config
