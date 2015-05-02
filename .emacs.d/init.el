@@ -54,50 +54,7 @@
  ;; If there is more than one, they won't work right.
  '(completion-ignored-extensions
    (quote
-    (".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".hi" ".elc")))
- '(evil-shift-width 2)
- '(font-latex-fontify-script nil)
- '(font-latex-fontify-sectioning (quote color))
- '(font-latex-math-environments
-   (quote
-    ("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align" "alignat" "xalignat" "dmath" "math")))
- '(ido-auto-merge-work-directories-length -1)
- '(ido-ignore-extensions nil)
- '(indent-tabs-mode nil)
- '(ispell-list-command "--list")
- '(org-capture-templates
-   (quote
-    (("n" "Notes" entry
-      (file+datetree "~/org/notes.org")
-      "* %?
-  %U
-  %i
-  %a")
-     ("o" "Open Source Software" entry
-      (file+datetree "~/org/oss.org")
-      "* %?
-  %U
-  %i
-  %a")
-     ("p" "Physics" entry
-      (file+datetree "~/org/physics.org")
-      "* %?
-  %U
-  %i
-  %a")
-     ("t" "Todo" entry
-      (file "~/org/todo.org")
-      "* TODO %?
-  %i
-  %a"))))
- '(org-default-notes-file "~/org/notes.org")
- '(org-hide-leading-stars t)
- '(org-modules
-   (quote
-    (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m)))
- '(tab-always-indent t)
- '(tab-stop-list (number-sequence 2 120 2))
- '(tab-width 2))
+    (".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".hi" ".elc"))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -113,6 +70,12 @@
  '(org-level-6 ((t (:inherit nil :foreground "#A6E22E"))))
  '(org-level-7 ((t (:inherit nil :foreground "#F92672"))))
  '(org-level-8 ((t (:inherit nil :foreground "#66D9EF")))))
+
+;; tab stop settings
+(setq tab-always-indent t)
+(setq tab-stop-list (number-sequence 2 120 2))
+(setq tab-width 2)
+(setq indent-tabs-mode nil)
 
 ;; whitespace-mode
 
@@ -139,6 +102,8 @@
 (use-package evil
   :demand t
   :config
+  (setq-default evil-shift-width 2)
+
   (evil-mode t)
 
   (evil-define-command ttuegel/evil-shift-line (count &optional left)
@@ -283,11 +248,41 @@
 (use-package org
   :mode ("\\.org\\'" . org-mode)
   :commands (org-agenda org-capture)
+  :defines (org-capture-templates)
   :init
+  (setq org-modules
+    '(org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit
+	       org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m))
   (evil-leader/set-key
     "oa" 'org-agenda
     "oc" 'org-capture)
   :config
+  (setq org-capture-templates
+    '(("n" "Notes" entry
+       (file+datetree "~/org/notes.org")
+       "* %?
+  %U
+  %i
+  %a")
+      ("o" "Open Source Software" entry
+       (file+datetree "~/org/oss.org")
+       "* %?
+  %U
+  %i
+  %a")
+      ("p" "Physics" entry
+       (file+datetree "~/org/physics.org")
+       "* %?
+  %U
+  %i
+  %a")
+      ("t" "Todo" entry
+       (file "~/org/todo.org")
+       "* TODO %?
+  %i
+  %a")))
+  (setq org-default-notes-file "~/org/notes.org")
+  (setq org-hide-leading-stars t)
   (setq org-agenda-files '("~/org"))
   (setq org-clock-persist 'history)
   (org-clock-persistence-insinuate)
@@ -341,6 +336,11 @@ only whitespace."
   :mode ("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode)
   :commands (latex-mode LaTeX-mode plain-tex-mode)
   :config
+  (setq font-latex-fontify-script nil)
+  (setq font-latex-fontify-sectioning 'color)
+  (setq font-latex-math-environments
+    '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
+      "alignat" "xalignat" "dmath" "math"))
 
   (defun ttuegel/LaTeX-auto-fill-function ()
     "This function checks whether point is currently inside one of
