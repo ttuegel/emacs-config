@@ -380,6 +380,7 @@ only whitespace."
 
 (use-package ghc
   :commands (ghc-init ghc-debug)
+  :defines (ghc-sort-key)
   :config
   (setq ghc-sort-key nil)
   (add-to-list 'company-backends 'company-ghc))
