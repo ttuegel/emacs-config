@@ -24,15 +24,17 @@
 (setq make-backup-files nil)
 
 ;; End GUI silliness
-(setq inhibit-startup-screen t)
 (blink-cursor-mode -1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(setq x-select-enable-clipboard nil)
-(setq default-frame-alist '((cursor-color . "white")))
+(custom-theme-set-variables
+ 'user
+ '(inhibit-startup-screen t)
+ '(x-select-enable-clipboard nil)
+ '(default-frame-alist '((cursor-color . "white"))))
 
 ;; Set color scheme
-(setq custom-safe-themes t)
+(custom-theme-set-variables 'user '(custom-safe-themes t))
 (use-package monokai-theme
   :demand t
   :config
@@ -72,14 +74,16 @@
  '(org-level-8 ((t (:inherit nil :foreground "#66D9EF")))))
 
 ;; tab stop settings
-(setq tab-always-indent t)
-(setq tab-stop-list (number-sequence 2 120 2))
-(setq tab-width 2)
-(setq indent-tabs-mode nil)
+(custom-theme-set-variables
+ 'user
+ '(tab-always-indent t)
+ '(tab-stop-list (number-sequence 2 120 2))
+ '(tab-width 2)
+ '(indent-tabs-mode nil))
 
 ;; whitespace-mode
 
-(setq whitespace-style '(face trailing tabs))
+(custom-theme-set-variables 'user '(whitespace-style '(face trailing tabs)))
 (global-whitespace-mode t)
 (diminish 'global-whitespace-mode)
 
@@ -90,7 +94,7 @@
 (use-package uniquify
   :demand t
   :config
-  (setq uniquify-buffer-name-style 'forward))
+  (custom-theme-set-variables 'user '(uniquify-buffer-name-style 'forward)))
 
 (use-package evil-leader
   :commands (global-evil-leader-mode)
@@ -102,7 +106,7 @@
 (use-package evil
   :demand t
   :config
-  (setq-default evil-shift-width 2)
+  (custom-theme-set-variables 'user '(evil-shift-width 2))
 
   (evil-mode t)
 
@@ -246,47 +250,50 @@
   :init (evil-leader/set-key "gt" 'git-timemachine-toggle))
 
 (use-package org
-  :mode ("\\.org\\'" . org-mode)
   :commands (org-agenda org-capture)
   :defines (org-capture-templates)
   :init
-  (setq org-modules
-    '(org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit
-	       org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m))
+  (custom-theme-set-variables
+   'user
+   '(org-modules
+     '(org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit
+                org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m)))
   (evil-leader/set-key
     "oa" 'org-agenda
     "oc" 'org-capture)
   :config
-  (setq org-capture-templates
-    '(("n" "Notes" entry
-       (file+datetree "~/org/notes.org")
-       "* %?
+  (custom-theme-set-variables
+   'user
+   '(org-capture-templates
+     '(("n" "Notes" entry
+        (file+datetree "~/org/notes.org")
+        "* %?
   %U
   %i
   %a")
-      ("o" "Open Source Software" entry
-       (file+datetree "~/org/oss.org")
-       "* %?
+       ("o" "Open Source Software" entry
+        (file+datetree "~/org/oss.org")
+        "* %?
   %U
   %i
   %a")
-      ("p" "Physics" entry
-       (file+datetree "~/org/physics.org")
-       "* %?
+       ("p" "Physics" entry
+        (file+datetree "~/org/physics.org")
+        "* %?
   %U
   %i
   %a")
-      ("t" "Todo" entry
-       (file "~/org/todo.org")
-       "* TODO %?
+       ("t" "Todo" entry
+        (file "~/org/todo.org")
+        "* TODO %?
   %i
   %a")))
-  (setq org-default-notes-file "~/org/notes.org")
-  (setq org-hide-leading-stars t)
-  (setq org-agenda-files '("~/org"))
-  (setq org-clock-persist 'history)
+   '(org-default-notes-file "~/org/notes.org")
+   '(org-hide-leading-stars t)
+   '(org-agenda-files '("~/org"))
+   '(org-clock-persist 'history)
+   '(org-log-done t))
   (org-clock-persistence-insinuate)
-  (setq org-log-done t)
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
@@ -336,11 +343,13 @@ only whitespace."
   :mode ("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode)
   :commands (latex-mode LaTeX-mode plain-tex-mode)
   :config
-  (setq font-latex-fontify-script nil)
-  (setq font-latex-fontify-sectioning 'color)
-  (setq font-latex-math-environments
-    '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
-      "alignat" "xalignat" "dmath" "math"))
+  (custom-theme-set-variables
+   'user
+   '(font-latex-fontify-script nil)
+   '(font-latex-fontify-sectioning 'color)
+   '(font-latex-math-environments
+     '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
+       "alignat" "xalignat" "dmath" "math")))
 
   (defun ttuegel/LaTeX-auto-fill-function ()
     "This function checks whether point is currently inside one of
@@ -382,23 +391,22 @@ only whitespace."
   :commands (ghc-init ghc-debug)
   :defines (ghc-sort-key)
   :config
-  (setq ghc-sort-key nil)
+  (custom-theme-set-variables 'user '(ghc-sort-key nil))
   (add-to-list 'company-backends 'company-ghc))
 
 ;;; haskell-mode
 
 (use-package haskell-mode
-  :mode (("\\.hs\\'" . haskell-mode)
-         ("\\.lhs\\'" . haskell-mode)
-         ("\\.cabal\'" . haskell-cabal-mode))
   :commands (haskell-mode haskell-cabal-mode)
   :defines (haskell-indentation-cycle-warn haskell-indentation-starter-offset)
   :config
-  (setq haskell-literate-default 'tex)
-  (setq haskell-process-auto-import-loaded-modules nil)
-  (setq haskell-process-log t)
-  (setq haskell-process-suggest-remove-import-lines nil)
-  (setq haskell-process-type 'cabal-repl)
+  (custom-theme-set-variables
+   'user
+   '(haskell-literate-default 'tex)
+   '(haskell-process-auto-import-loaded-modules nil)
+   '(haskell-process-log t)
+   '(haskell-process-suggest-remove-import-lines nil)
+   '(haskell-process-type 'cabal-repl))
   (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook
