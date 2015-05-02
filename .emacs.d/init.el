@@ -61,15 +61,6 @@
  '(font-latex-math-environments
    (quote
     ("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align" "alignat" "xalignat" "dmath" "math")))
- '(haskell-indentation-cycle-warn nil)
- '(haskell-indentation-starter-offset 2)
- '(haskell-literate-default (quote tex))
- '(haskell-process-auto-import-loaded-modules nil)
- '(haskell-process-log t)
- '(haskell-process-suggest-remove-import-lines nil)
- '(haskell-process-type (quote cabal-repl))
- '(hi2-layout-offset 4)
- '(hi2-left-offset 4)
  '(ido-auto-merge-work-directories-length -1)
  '(ido-ignore-extensions nil)
  '(indent-tabs-mode nil)
@@ -399,9 +390,18 @@ only whitespace."
          ("\\.cabal\'" . haskell-cabal-mode))
   :commands (haskell-mode haskell-cabal-mode)
   :config
+  (setq haskell-literate-default 'tex)
+  (setq haskell-process-auto-import-loaded-modules nil)
+  (setq haskell-process-log t)
+  (setq haskell-process-suggest-remove-import-lines nil)
+  (setq haskell-process-type 'cabal-repl)
   (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  (add-hook 'haskell-mode-hook
+            (lambda ()
+              ('turn-on-haskell-indentation)
+              (setq haskell-indentation-cycle-warn nil)
+              (setq haskell-indentation-starter-offset 2)))
   (add-hook 'electric-indent-functions
             (lambda (c) (when (or (eq 'haskell-mode major-mode)
                                   (eq 'haskell-cabal-mode major-mode))
