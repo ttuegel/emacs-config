@@ -58,20 +58,7 @@
    (quote
     (".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".hi" ".elc"))))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Source Code Pro"))))
- '(org-level-1 ((t (:inherit nil :foreground "#FD971F" :height 1.0))))
- '(org-level-2 ((t (:inherit nil :foreground "#A6E22E" :height 1.0))))
- '(org-level-3 ((t (:inherit nil :foreground "#66D9EF" :height 1.0))))
- '(org-level-4 ((t (:inherit nil :foreground "#E6DB74" :height 1.0))))
- '(org-level-5 ((t (:inherit nil :foreground "#A1EFE4"))))
- '(org-level-6 ((t (:inherit nil :foreground "#A6E22E"))))
- '(org-level-7 ((t (:inherit nil :foreground "#F92672"))))
- '(org-level-8 ((t (:inherit nil :foreground "#66D9EF")))))
+(custom-theme-set-faces 'user '(default ((t (:family "Source Code Pro")))))
 
 ;; tab stop settings
 (custom-theme-set-variables
@@ -293,6 +280,15 @@
    '(org-agenda-files '("~/org"))
    '(org-clock-persist 'history)
    '(org-log-done t))
+  (custom-theme-set-faces 'user
+   '(org-level-1 ((t (:inherit nil :foreground "#FD971F" :height 1.0))))
+   '(org-level-2 ((t (:inherit nil :foreground "#A6E22E" :height 1.0))))
+   '(org-level-3 ((t (:inherit nil :foreground "#66D9EF" :height 1.0))))
+   '(org-level-4 ((t (:inherit nil :foreground "#E6DB74" :height 1.0))))
+   '(org-level-5 ((t (:inherit nil :foreground "#A1EFE4"))))
+   '(org-level-6 ((t (:inherit nil :foreground "#A6E22E"))))
+   '(org-level-7 ((t (:inherit nil :foreground "#F92672"))))
+   '(org-level-8 ((t (:inherit nil :foreground "#66D9EF")))))
   (org-clock-persistence-insinuate)
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (global-set-key (kbd "C-c l") 'org-store-link)
