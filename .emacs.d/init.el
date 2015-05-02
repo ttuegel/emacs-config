@@ -19,6 +19,18 @@
 ;; Turn off that damn bell!
 (setq visible-bell t)
 
+;; Don't litter annoying backups everywhere
+(setq auto-save-default nil)
+(setq make-backup-files nil)
+
+;; End GUI silliness
+(setq inhibit-startup-screen t)
+(blink-cursor-mode -1)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(setq x-select-enable-clipboard nil)
+(setq default-frame-alist '((cursor-color . "white")))
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;; Config
@@ -33,13 +45,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(auto-save-default nil)
- '(blink-cursor-mode nil)
  '(completion-ignored-extensions
    (quote
     (".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".hi" ".elc")))
  '(custom-safe-themes t)
- '(default-frame-alist (quote ((cursor-color . "white"))))
  '(evil-shift-width 2)
  '(font-latex-math-environments
    (quote
@@ -58,10 +67,7 @@
  '(ido-auto-merge-work-directories-length -1)
  '(ido-ignore-extensions nil)
  '(indent-tabs-mode nil)
- '(inhibit-startup-screen t)
  '(ispell-list-command "--list")
- '(make-backup-files nil)
- '(menu-bar-mode nil)
  '(org-capture-templates
    (quote
     (("n" "Notes" entry
@@ -95,10 +101,8 @@
  '(tab-always-indent t)
  '(tab-stop-list (number-sequence 2 120 2))
  '(tab-width 2)
- '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
- '(whitespace-style (quote (face trailing tabs)))
- '(x-select-enable-clipboard nil))
+ '(whitespace-style (quote (face trailing tabs))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
