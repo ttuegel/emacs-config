@@ -285,7 +285,7 @@
 
 (use-package git-timemachine
   :commands (git-timemachine)
-  :init (evil-leader/set-key "gt" 'git-timemachine))
+  :init (evil-leader/set-key "gt" 'git-timemachine-toggle))
 
 (use-package org
   :mode ("\\.org\\'" . org-mode)
