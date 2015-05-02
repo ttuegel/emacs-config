@@ -331,12 +331,14 @@ only whitespace."
   (define-key company-active-map (kbd "M-t") 'company-select-previous))
 (global-company-mode)
 
+;;; rainbow-delimiters
+
 (use-package rainbow-delimiters
   :commands (rainbow-delimiters-mode))
 
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 
-;;; AucTeX configuration
+;;; AucTeX
 
 (defvar ttuegel/LaTeX-no-autofill-environments
   '("align" "align*" "equation" "equation*")
@@ -374,14 +376,14 @@ only whitespace."
               (flyspell-mode 1)))
 )
 
-;;; flycheck configuration
+;;; flycheck
 
 (use-package flycheck
   :commands (flycheck-mode)
   :config
   (setq flycheck-checkers (delq 'haskell-hlint flycheck-checkers)))
 
-;;; ghc-mod configuration
+;;; ghc-mod
 
 (use-package ghc
   :commands (ghc-init ghc-debug)
@@ -389,7 +391,7 @@ only whitespace."
   (setq ghc-sort-key nil)
   (add-to-list 'company-backends 'company-ghc))
 
-;;; haskell-mode configuration
+;;; haskell-mode
 
 (use-package haskell-mode
   :mode (("\\.hs\\'" . haskell-mode)
@@ -405,7 +407,7 @@ only whitespace."
                                   (eq 'haskell-cabal-mode major-mode))
                           'no-indent))))
 
-;;; nix-mode configuration
+;;; nix-mode
 
 (use-package nix-mode
   :mode ("\\.nix\\'" . nix-mode)
