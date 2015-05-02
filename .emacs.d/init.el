@@ -392,6 +392,7 @@ only whitespace."
          ("\\.lhs\\'" . haskell-mode)
          ("\\.cabal\'" . haskell-cabal-mode))
   :commands (haskell-mode haskell-cabal-mode)
+  :defines (haskell-indentation-cycle-warn haskell-indentation-starter-offset)
   :config
   (setq haskell-literate-default 'tex)
   (setq haskell-process-auto-import-loaded-modules nil)
@@ -402,7 +403,7 @@ only whitespace."
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook
             (lambda ()
-              ('turn-on-haskell-indentation)
+              (turn-on-haskell-indentation)
               (setq haskell-indentation-cycle-warn nil)
               (setq haskell-indentation-starter-offset 2)))
   (add-hook 'electric-indent-functions
