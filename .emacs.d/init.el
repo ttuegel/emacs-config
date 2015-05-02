@@ -97,8 +97,7 @@
     (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m)))
  '(tab-always-indent t)
  '(tab-stop-list (number-sequence 2 120 2))
- '(tab-width 2)
- '(whitespace-style (quote (face trailing tabs))))
+ '(tab-width 2))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -115,9 +114,12 @@
  '(org-level-7 ((t (:inherit nil :foreground "#F92672"))))
  '(org-level-8 ((t (:inherit nil :foreground "#66D9EF")))))
 
-;; Turn on built-in modes
+;; whitespace-mode
+
+(setq whitespace-style '(face trailing tabs))
 (global-whitespace-mode t)
 (diminish 'global-whitespace-mode)
+
 (show-paren-mode t)
 (electric-indent-mode t)
 
