@@ -31,6 +31,13 @@
 (setq x-select-enable-clipboard nil)
 (setq default-frame-alist '((cursor-color . "white")))
 
+;; Set color scheme
+(setq custom-safe-themes t)
+(use-package monokai-theme
+  :demand t
+  :config
+  (load-theme 'monokai))
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;; Config
@@ -270,11 +277,6 @@
     (use-package helm-mode
       :init (helm-mode 1)
       :diminish helm-mode)))
-
-(use-package monokai-theme
-  :demand t)
-;; Set color scheme
-(add-hook 'after-init-hook (lambda () (load-theme 'monokai)))
 
 (use-package magit
   :commands (magit-status)
