@@ -347,6 +347,8 @@ only whitespace."
      '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
        "alignat" "xalignat" "dmath" "math")))
 
+  (TeX-global-PDF-mode t)
+
   (defun ttuegel/LaTeX-auto-fill-function ()
     "This function checks whether point is currently inside one of
   the LaTeX environments listed in
