@@ -338,6 +338,27 @@ only whitespace."
   '("align" "align*" "equation" "equation*")
   "A list of LaTeX environment names in which `auto-fill-mode' should be inhibited.")
 
+(defun ttuegel/LaTeX-auto-fill-function ()
+  "This function checks whether point is currently inside one of
+the LaTeX environments listed in
+`ttuegel/LaTeX-no-autofill-environments'. If so, it inhibits automatic
+filling of the current paragraph."
+  (let ((do-auto-fill t)
+        (current-environment "")
+        (level 0))
+    (while (and do-auto-fill (not (string= current-environment "document")))
+      (setq level (1+ level)
+            current-environment (LaTeX-current-environment level)
+            do-auto-fill (not (member current-environment ttuegel/LaTeX-no-autofill-environments))))
+    (when do-auto-fill
+      (do-auto-fill))))
+
+(defun ttuegel/LaTeX-setup-auto-fill ()
+  "This function turns on auto-fill-mode and sets the function
+used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
+  (auto-fill-mode)
+  (setq auto-fill-function 'ttuegel/LaTeX-auto-fill-function))
+
 (use-package tex-site ; auctex
   :mode ("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode)
   :commands (latex-mode LaTeX-mode plain-tex-mode)
@@ -352,32 +373,10 @@ only whitespace."
 
   (TeX-global-PDF-mode t)
 
-  (defun ttuegel/LaTeX-auto-fill-function ()
-    "This function checks whether point is currently inside one of
-  the LaTeX environments listed in
-  `ttuegel/LaTeX-no-autofill-environments'. If so, it inhibits automatic
-  filling of the current paragraph."
-    (let ((do-auto-fill t)
-          (current-environment "")
-          (level 0))
-      (while (and do-auto-fill (not (string= current-environment "document")))
-        (setq level (1+ level)
-              current-environment (LaTeX-current-environment level)
-              do-auto-fill (not (member current-environment ttuegel/LaTeX-no-autofill-environments))))
-      (when do-auto-fill
-        (do-auto-fill))))
-
-  (defun ttuegel/LaTeX-setup-auto-fill ()
-    "This function turns on auto-fill-mode and sets the function
-  used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
-    (auto-fill-mode)
-    (setq auto-fill-function 'ttuegel/LaTeX-auto-fill-function))
-
   (add-hook 'LaTeX-mode-hook
             (lambda ()
               (ttuegel/LaTeX-setup-auto-fill)
-              (flyspell-mode 1)))
-)
+              (flyspell-mode 1))))
 
 ;;; flycheck
 
