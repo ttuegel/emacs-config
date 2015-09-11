@@ -440,5 +440,8 @@ only whitespace."
 
 (add-hook 'after-save-hook 'byte-compile-current-buffer)
 
+(use-package ledger-mode
+  :mode ("\\.ledger\\'" . ledger-mode))
+
 (provide 'init)
 ;;; init.el ends here
