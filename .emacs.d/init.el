@@ -6,7 +6,7 @@
 
 (package-initialize)
 
-(eval-when-compile (require 'use-package))
+(require 'use-package)
 (require 'diminish)
 (require 'bind-key)
 
@@ -134,6 +134,10 @@
           "h" 'evil-next-visual-line
           "d" 'evil-backward-char
           "n" 'evil-forward-char)
+(global-set-key (kbd "C-t") 'previous-line)
+(global-set-key (kbd "C-h") 'next-line)
+(global-set-key (kbd "C-d") 'backward-char)
+(global-set-key (kbd "C-n") 'forward-char)
 
 ;;; Beginning/end of line (home/end)
 ;; Use back-to-indentation instead of evil-beginning-of-line so that
@@ -161,6 +165,24 @@
   (evil-map "u" 'undo-tree-undo
             "U" 'undo-tree-redo))
 
+;;; Helm
+(use-package helm-config)
+
+(use-package helm
+  :config
+  (define-key helm-map (kbd "C-h") nil)
+  (define-key helm-map (kbd "C-h") 'helm-next-line)
+  (define-key helm-map (kbd "C-t") 'helm-previous-line)
+  (define-key helm-map (kbd "C-n") 'helm-execute-persistent-action))
+
+(use-package helm-files
+  :config
+  (define-key helm-read-file-map (kbd "C-d") 'helm-find-files-up-one-level)
+  (define-key helm-find-files-map (kbd "C-d") 'helm-find-files-up-one-level)
+  (define-key helm-command-map "b" 'helm-buffers-list))
+
+(helm-mode 1)
+
 ;;; Ace Jump
 (evil-map "M-f" 'evil-ace-jump-word-mode)
 (evil-map "M-F" 'evil-ace-jump-line-mode)
@@ -186,12 +208,21 @@
 (define-key evil-window-map "T" 'evil-window-move-very-top)
 (define-key evil-window-map "n" 'evil-window-right)
 (define-key evil-window-map "N" 'evil-window-move-far-right)
-(define-key evil-window-map "w" 'evil-window-new)
+(define-key evil-window-map "w" 'evil-window-vnew)
+(define-key evil-window-map "W" 'evil-window-new)
 (define-key evil-window-map "k" 'evil-window-delete)
 
-(evil-leader/set-key
-  "s" ctl-x-map
-  "M-s" 'execute-extended-command)
+(evil-leader/set-key "C-." 'helm-M-x)
+(global-set-key (kbd "C-.") 'helm-M-x)
+
+(evil-leader/set-key "z" ctl-x-map)
+(define-key ctl-x-map (kbd "C-z") 'helm-find-files)
+(define-key ctl-x-map (kbd "C-h") help-map)
+
+(evil-leader/set-key "h" helm-command-map)
+
+(evil-map "C-," 'evil-emacs-state)
+(global-set-key (kbd "C-,") 'evil-exit-emacs-state)
 
 (evil-leader/set-key "TAB"
   (lambda ()
@@ -199,6 +230,7 @@
     (switch-to-buffer (other-buffer (current-buffer) t))))
 
 (evil-leader/set-key
+  "bb" 'helm-buffers-list
   "bk" 'kill-buffer
   "bK" 'kill-other-buffers
   "bn" 'switch-to-next-buffer
@@ -206,12 +238,6 @@
   "bR" (lambda () (interactive) (revert-buffer nil t))
   "br" 'rename-current-buffer-file
   "bs" 'switch-to-buffer)
-
-(evil-leader/set-key
-  "ff" 'find-file
-  "fi" 'find-user-init-file
-  "fS" 'evil-write-all
-  "fs" 'evil-write)
 
 (evil-leader/set-key "jk" 'evil-join)
 
@@ -222,14 +248,6 @@
 ;; Use my development helm version, if present
 (when (file-exists-p "~/.emacs.d/helm")
   (add-to-list 'load-path "~/.emacs.d/helm"))
-
-(use-package helm-config
-  :demand t
-  :config
-  (progn
-    (use-package helm-mode
-      :init (helm-mode 1)
-      :diminish helm-mode)))
 
 (use-package magit
   :commands (magit-status)
@@ -321,8 +339,9 @@ only whitespace."
   :commands (global-company-mode)
   :diminish company-mode
   :config
-  (define-key company-active-map (kbd "M-h") 'company-select-next)
-  (define-key company-active-map (kbd "M-t") 'company-select-previous))
+  (progn
+    (define-key company-active-map (kbd "C-h") 'company-select-next)
+    (define-key company-active-map (kbd "C-t") 'company-select-previous)))
 (global-company-mode)
 
 ;;; rainbow-delimiters
@@ -363,20 +382,19 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   :mode ("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode)
   :commands (latex-mode LaTeX-mode plain-tex-mode)
   :config
-  (custom-theme-set-variables
-   'user
-   '(font-latex-fontify-script nil)
-   '(font-latex-fontify-sectioning 'color)
-   '(font-latex-math-environments
-     '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
-       "alignat" "xalignat" "dmath" "math")))
+  (progn
+    (custom-theme-set-variables
+     'user
+     '(font-latex-fontify-script nil)
+     '(font-latex-fontify-sectioning 'color)
+     '(font-latex-math-environments
+       '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
+         "alignat" "xalignat" "dmath" "math")))
 
-  (TeX-global-PDF-mode t)
-
-  (add-hook 'LaTeX-mode-hook
-            (lambda ()
-              (ttuegel/LaTeX-setup-auto-fill)
-              (flyspell-mode 1))))
+    (add-hook 'LaTeX-mode-hook
+              (lambda ()
+                (ttuegel/LaTeX-setup-auto-fill)
+                (flyspell-mode 1)))))
 
 ;;; flycheck
 
@@ -391,8 +409,9 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   :commands (ghc-init ghc-debug)
   :defines (ghc-sort-key)
   :config
-  (custom-theme-set-variables 'user '(ghc-sort-key nil))
-  (add-to-list 'company-backends 'company-ghc))
+  (progn
+    (custom-theme-set-variables 'user '(ghc-sort-key nil))
+    (add-to-list 'company-backends 'company-ghc)))
 
 ;;; haskell-mode
 
@@ -400,24 +419,25 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   :commands (haskell-mode haskell-cabal-mode)
   :defines (haskell-indentation-cycle-warn haskell-indentation-starter-offset)
   :config
-  (custom-theme-set-variables
-   'user
-   '(haskell-literate-default 'tex)
-   '(haskell-process-auto-import-loaded-modules nil)
-   '(haskell-process-log t)
-   '(haskell-process-suggest-remove-import-lines nil)
-   '(haskell-process-type 'cabal-repl))
-  (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
-  (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'haskell-mode-hook
-            (lambda ()
-              (turn-on-haskell-indentation)
-              (setq haskell-indentation-cycle-warn nil)
-              (setq haskell-indentation-starter-offset 2)))
-  (add-hook 'electric-indent-functions
-            (lambda (c) (when (or (eq 'haskell-mode major-mode)
-                                  (eq 'haskell-cabal-mode major-mode))
-                          'no-indent))))
+  (progn
+    (custom-theme-set-variables
+     'user
+     '(haskell-literate-default 'tex)
+     '(haskell-process-auto-import-loaded-modules nil)
+     '(haskell-process-log t)
+     '(haskell-process-suggest-remove-import-lines nil)
+     '(haskell-process-type 'cabal-repl))
+    (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
+    (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+    (add-hook 'haskell-mode-hook
+              (lambda ()
+                (turn-on-haskell-indentation)
+                (setq haskell-indentation-cycle-warn nil)
+                (setq haskell-indentation-starter-offset 2)))
+    (add-hook 'electric-indent-functions
+              (lambda (c) (when (or (eq 'haskell-mode major-mode)
+                                    (eq 'haskell-cabal-mode major-mode))
+                            'no-indent)))))
 
 ;;; nix-mode
 
