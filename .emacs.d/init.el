@@ -10,6 +10,8 @@
 (require 'diminish)
 (require 'bind-key)
 
+(add-to-list 'load-path "~/.emacs.d/")
+
 ;; Use UTF-8 everywhere
 (mapc (lambda (fn) (funcall fn 'utf-8))
       '(set-terminal-coding-system
@@ -463,7 +465,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   :mode ("\\.ledger\\'" . ledger-mode))
 
 (use-package julia-mode
-  :mode ("\\.jl\\" . julia-mode))
+  :mode ("\\.jl\\'" . julia-mode))
 
 (provide 'init)
 ;;; init.el ends here
