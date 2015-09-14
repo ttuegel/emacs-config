@@ -462,5 +462,8 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (use-package ledger-mode
   :mode ("\\.ledger\\'" . ledger-mode))
 
+(use-package julia-mode
+  :mode ("\\.jl\\" . julia-mode))
+
 (provide 'init)
 ;;; init.el ends here
