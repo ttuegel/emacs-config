@@ -183,8 +183,8 @@
   (define-key helm-find-files-map (kbd "C-d") 'helm-find-files-up-one-level)
   (define-key helm-command-map "b" 'helm-buffers-list))
 
-(diminish 'helm-mode)
 (helm-mode 1)
+(diminish 'helm-mode)
 
 ;;; Ace Jump
 (evil-map "M-f" 'evil-ace-jump-word-mode)
