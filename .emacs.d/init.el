@@ -315,6 +315,14 @@
    '(org-level-8 ((t (:inherit nil :foreground "#66D9EF")))))
   (org-clock-persistence-insinuate)
   (add-hook 'org-mode-hook 'auto-fill-mode)
+
+  ; Custom org-agenda keymap
+  (define-key org-agenda-mode-map (kbd "h") 'org-agenda-next-item)
+  (define-key org-agenda-mode-map (kbd "t") 'org-agenda-previous-item)
+  (define-key org-agenda-mode-map (kbd "C-h") 'org-agenda-next-date-line)
+  (define-key org-agenda-mode-map (kbd "C-t") 'org-agenda-previous-date-line)
+  (define-key org-agenda-mode-map (kbd "d") 'org-agenda-todo)
+
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (evil-leader/set-key
