@@ -10,7 +10,7 @@
 (require 'diminish)
 (require 'bind-key)
 
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/lisp")
 
 ;; Use UTF-8 everywhere
 (mapc (lambda (fn) (funcall fn 'utf-8))
