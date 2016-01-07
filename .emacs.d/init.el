@@ -6,9 +6,7 @@
 
 (package-initialize)
 
-(require 'use-package)
 (require 'diminish)
-(require 'bind-key)
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
@@ -37,10 +35,8 @@
 
 ;; Set color scheme
 (custom-theme-set-variables 'user '(custom-safe-themes t))
-(use-package monokai-theme
-  :demand t
-  :config
-  (load-theme 'monokai))
+(require 'monokai-theme)
+(load-theme 'monokai)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -51,11 +47,8 @@
 ;; possible if any errors occur.
 
 ;; Customization
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+(custom-theme-set-variables
+ 'user
  '(completion-ignored-extensions
    (quote
     (".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".hi" ".elc"))))
@@ -74,7 +67,6 @@
  '(indent-tabs-mode nil))
 
 ;; whitespace-mode
-
 (custom-theme-set-variables 'user '(whitespace-style '(face trailing tabs)))
 (global-whitespace-mode t)
 (diminish 'global-whitespace-mode)
@@ -83,59 +75,52 @@
 (electric-indent-mode t)
 
 ;; Make buffer names more unique
-(use-package uniquify
-  :demand t
-  :config
-  (custom-theme-set-variables 'user '(uniquify-buffer-name-style 'forward)))
-
-(use-package evil-leader
-  :commands (global-evil-leader-mode)
-  :config
-  (evil-leader/set-leader "<SPC>"))
-(global-evil-leader-mode)
+(require 'uniquify)
+(custom-theme-set-variables 'user '(uniquify-buffer-name-style 'forward))
 
 ;; Be evil
-(use-package evil
-  :demand t
-  :config
-  (custom-theme-set-variables 'user '(evil-shift-width 2))
+(require 'evil-leader)
+(evil-leader/set-leader "<SPC>")
+(global-evil-leader-mode)
 
-  (evil-mode t)
+(require 'evil)
+(custom-theme-set-variables 'user '(evil-shift-width 2))
+(evil-mode t)
 
-  (evil-define-command ttuegel/evil-shift-line (count &optional left)
-    "Shift the current line right COUNT times (left if LEFT is non-nil).
-  The line is shifted to the nearest tab stop. Unlike `evil-shift-right-line', the
-  value of `evil-shift-width' is ignored for better emacs interoperability. Works
-  even when the line is blank."
-    (interactive "<c>")
-    (let* ((initial-column (current-column))
-           (initial-indent (current-indentation))
-           (final-indent (indent-next-tab-stop initial-indent left))
-           (delta-indent (- final-indent initial-indent))
-           (final-column (+ initial-column delta-indent)))
-      (progn
-        (indent-line-to final-indent)
-        (forward-char (- final-column (current-column))))))
+(evil-define-command ttuegel/evil-shift-line (count &optional left)
+  "Shift the current line right COUNT times (left if LEFT is non-nil).
+The line is shifted to the nearest tab stop. Unlike `evil-shift-right-line', the
+value of `evil-shift-width' is ignored for better emacs interoperability. Works
+even when the line is blank."
+  (interactive "<c>")
+  (let* ((initial-column (current-column))
+          (initial-indent (current-indentation))
+          (final-indent (indent-next-tab-stop initial-indent left))
+          (delta-indent (- final-indent initial-indent))
+          (final-column (+ initial-column delta-indent)))
+    (progn
+      (indent-line-to final-indent)
+      (forward-char (- final-column (current-column))))))
 
-  (evil-define-command evil-shift-right-line (count)
-    (interactive "<c>")
-    (ttuegel/evil-shift-line count))
+(evil-define-command evil-shift-right-line (count)
+  (interactive "<c>")
+  (ttuegel/evil-shift-line count))
 
-  (evil-define-command evil-shift-left-line (count)
-    (interactive "<c>")
-    (ttuegel/evil-shift-line count 1)))
+(evil-define-command evil-shift-left-line (count)
+  (interactive "<c>")
+  (ttuegel/evil-shift-line count 1))
 
-(defun evil-map (key def &rest bindings)
+(defun ttuegel/evil-map (key def &rest bindings)
   (evil-leader--def-keys evil-normal-state-map key def bindings)
   (evil-leader--def-keys evil-visual-state-map key def bindings)
   (evil-leader--def-keys evil-motion-state-map key def bindings)
   (evil-leader--def-keys evil-operator-state-map key def bindings))
 
 ;;; Up/down/left/right
-(evil-map "t" 'evil-previous-visual-line
-          "h" 'evil-next-visual-line
-          "d" 'evil-backward-char
-          "n" 'evil-forward-char)
+(ttuegel/evil-map "t" 'evil-previous-visual-line
+                  "h" 'evil-next-visual-line
+                  "d" 'evil-backward-char
+                  "n" 'evil-forward-char)
 (global-set-key (kbd "C-t") 'previous-line)
 (global-set-key (kbd "C-h") 'next-line)
 (global-set-key (kbd "C-d") 'backward-char)
@@ -145,56 +130,53 @@
 ;; Use back-to-indentation instead of evil-beginning-of-line so that
 ;; cursor ends up at the first non-whitespace character of a line. 0
 ;; can be used to go to real beginning of line
-(evil-map "_" 'back-to-indentation
-          "-" 'evil-end-of-line)
+(ttuegel/evil-map "_" 'back-to-indentation
+                  "-" 'evil-end-of-line)
 
 ;; Scrolling
-(evil-map "\M-t" 'evil-scroll-page-up
-          "\M-h" 'evil-scroll-page-down
-          "T" 'evil-scroll-up
-          "H" 'evil-scroll-down)
+(ttuegel/evil-map "\M-t" 'evil-scroll-page-up
+                  "\M-h" 'evil-scroll-page-down
+                  "T" 'evil-scroll-up
+                  "H" 'evil-scroll-down)
 
 ;; Execute command: map : to ;
-(evil-map "s" 'evil-ex)
+(ttuegel/evil-map "s" 'evil-ex)
 
 ;;; Cut/copy/paste
-(evil-map "k" 'evil-delete)
+(ttuegel/evil-map "k" 'evil-delete)
 
 ;;; Undo Tree
-(use-package undo-tree
-  :commands (undo-tree-undo undo-tree-redo)
-  :init
-  (evil-map "u" 'undo-tree-undo
-            "U" 'undo-tree-redo))
+(require 'undo-tree)
+(diminish 'undo-tree-mode)
+(global-undo-tree-mode 1)
+(ttuegel/evil-map "u" 'undo-tree-undo
+                  "U" 'undo-tree-redo)
 
 ;;; Helm
-(use-package helm-config)
+(require 'helm-config)
+(require 'helm)
+(define-key helm-map (kbd "C-h") nil)
+(define-key helm-map (kbd "C-h") 'helm-next-line)
+(define-key helm-map (kbd "C-t") 'helm-previous-line)
+(define-key helm-map (kbd "C-n") 'helm-execute-persistent-action)
 
-(use-package helm
-  :config
-  (define-key helm-map (kbd "C-h") nil)
-  (define-key helm-map (kbd "C-h") 'helm-next-line)
-  (define-key helm-map (kbd "C-t") 'helm-previous-line)
-  (define-key helm-map (kbd "C-n") 'helm-execute-persistent-action))
-
-(use-package helm-files
-  :config
-  (define-key helm-read-file-map (kbd "C-d") 'helm-find-files-up-one-level)
-  (define-key helm-find-files-map (kbd "C-d") 'helm-find-files-up-one-level)
-  (define-key helm-command-map "b" 'helm-buffers-list))
+(require 'helm-files)
+(define-key helm-read-file-map (kbd "C-d") 'helm-find-files-up-one-level)
+(define-key helm-find-files-map (kbd "C-d") 'helm-find-files-up-one-level)
+(define-key helm-command-map "b" 'helm-buffers-list)
 
 (helm-mode 1)
 (diminish 'helm-mode)
 
 ;;; Ace Jump
-(evil-map "M-f" 'evil-ace-jump-word-mode)
-(evil-map "M-F" 'evil-ace-jump-line-mode)
+(ttuegel/evil-map "M-f" 'evil-ace-jump-word-mode
+                  "M-F" 'evil-ace-jump-line-mode)
 
 ;;; Search
-(evil-map "/" 'isearch-forward
-          "?" 'isearch-backward
-          "l" 'isearch-repeat-forward
-          "L" 'isearch-repeat-backward)
+(ttuegel/evil-map "/" 'isearch-forward
+                  "?" 'isearch-backward
+                  "l" 'isearch-repeat-forward
+                  "L" 'isearch-repeat-backward)
 
 (global-set-key (kbd "C-c /") 'isearch-forward)
 (global-set-key (kbd "C-c ?") 'isearch-backward)
@@ -224,7 +206,7 @@
 
 (evil-leader/set-key "h" helm-command-map)
 
-(evil-map "C-," 'evil-emacs-state)
+(ttuegel/evil-map "C-," 'evil-emacs-state)
 (global-set-key (kbd "C-,") 'evil-exit-emacs-state)
 
 (evil-leader/set-key "TAB"
@@ -252,81 +234,52 @@
 (when (file-exists-p "~/.emacs.d/helm")
   (add-to-list 'load-path "~/.emacs.d/helm"))
 
-(use-package magit
-  :commands (magit-status)
-  :init (evil-leader/set-key "gs" 'magit-status))
+(require 'magit)
+(evil-leader/set-key "gs" 'magit-status)
 
-(use-package git-timemachine
-  :commands (git-timemachine)
-  :init (evil-leader/set-key "gt" 'git-timemachine-toggle))
+(require 'git-timemachine)
+(evil-leader/set-key "gt" 'git-timemachine-toggle)
 
-(use-package org
-  :commands (org-agenda org-capture)
-  :defines (org-capture-templates)
-  :init
-  (custom-theme-set-variables
-   'user
-   '(org-modules
-     '(org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit
-                org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m)))
-  (evil-leader/set-key
-    "oa" 'org-agenda
-    "oc" 'org-capture)
-  :config
-  (custom-theme-set-variables
-   'user
-   '(org-capture-templates
-     '(("n" "Notes" entry
-        (file+datetree "~/org/notes.org")
-        "* %?
-  %U
-  %i
-  %a")
-       ("o" "Open Source Software" entry
-        (file+datetree "~/org/oss.org")
-        "* %?
-  %U
-  %i
-  %a")
-       ("p" "Physics" entry
-        (file+datetree "~/org/physics.org")
-        "* %?
-  %U
-  %i
-  %a")
-       ("t" "Todo" entry
-        (file "~/org/todo.org")
-        "* TODO %?
-  %i
-  %a")))
-   '(org-default-notes-file "~/org/notes.org")
-   '(org-hide-leading-stars t)
-   '(org-agenda-files '("~/org"))
-   '(org-clock-persist 'history)
-   '(org-log-done t))
-  (custom-theme-set-faces 'user
-   '(org-level-1 ((t (:inherit nil :foreground "#FD971F" :height 1.0))))
-   '(org-level-2 ((t (:inherit nil :foreground "#A6E22E" :height 1.0))))
-   '(org-level-3 ((t (:inherit nil :foreground "#66D9EF" :height 1.0))))
-   '(org-level-4 ((t (:inherit nil :foreground "#E6DB74" :height 1.0))))
-   '(org-level-5 ((t (:inherit nil :foreground "#A1EFE4"))))
-   '(org-level-6 ((t (:inherit nil :foreground "#A6E22E"))))
-   '(org-level-7 ((t (:inherit nil :foreground "#F92672"))))
-   '(org-level-8 ((t (:inherit nil :foreground "#66D9EF")))))
-  (org-clock-persistence-insinuate)
-  (add-hook 'org-mode-hook 'auto-fill-mode)
+(require 'org)
+(custom-theme-set-variables
+  'user
+  '(org-modules
+    '(org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-habit
+              org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m)))
+(evil-leader/set-key
+  "oa" 'org-agenda
+  "oc" 'org-capture)
+:config
+(custom-theme-set-variables
+  'user
+  '(org-default-notes-file "~/org/notes.org")
+  '(org-hide-leading-stars t)
+  '(org-agenda-files '("~/org"))
+  '(org-clock-persist 'history)
+  '(org-log-done t))
+(custom-theme-set-faces 'user
+  '(org-level-1 ((t (:inherit nil :foreground "#FD971F" :height 1.0))))
+  '(org-level-2 ((t (:inherit nil :foreground "#A6E22E" :height 1.0))))
+  '(org-level-3 ((t (:inherit nil :foreground "#66D9EF" :height 1.0))))
+  '(org-level-4 ((t (:inherit nil :foreground "#E6DB74" :height 1.0))))
+  '(org-level-5 ((t (:inherit nil :foreground "#A1EFE4"))))
+  '(org-level-6 ((t (:inherit nil :foreground "#A6E22E"))))
+  '(org-level-7 ((t (:inherit nil :foreground "#F92672"))))
+  '(org-level-8 ((t (:inherit nil :foreground "#66D9EF")))))
+(org-clock-persistence-insinuate)
+(add-hook 'org-mode-hook 'auto-fill-mode)
 
-  ; Custom org-agenda keymap
-  (define-key org-agenda-mode-map (kbd "h") 'org-agenda-next-item)
-  (define-key org-agenda-mode-map (kbd "t") 'org-agenda-previous-item)
-  (define-key org-agenda-mode-map (kbd "C-h") 'org-agenda-next-date-line)
-  (define-key org-agenda-mode-map (kbd "C-t") 'org-agenda-previous-date-line)
-  (define-key org-agenda-mode-map (kbd "d") 'org-agenda-todo)
+; Custom org-agenda keymap
+(define-key org-agenda-mode-map (kbd "h") 'org-agenda-next-item)
+(define-key org-agenda-mode-map (kbd "t") 'org-agenda-previous-item)
+(define-key org-agenda-mode-map (kbd "C-h") 'org-agenda-next-date-line)
+(define-key org-agenda-mode-map (kbd "C-t") 'org-agenda-previous-date-line)
+(define-key org-agenda-mode-map (kbd "d") 'org-agenda-todo)
 
-  (global-set-key (kbd "C-c l") 'org-store-link)
-  (global-set-key (kbd "C-c a") 'org-agenda)
-  (evil-leader/set-key
-    "os" 'org-save-all-org-buffers))
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(evil-leader/set-key
+  "os" 'org-save-all-org-buffers)
 
 (defadvice newline (after indent-clean-after-newline activate)
   "Stop ill-behaved major-modes from leaving indentation on blank lines.
@@ -341,25 +294,15 @@ only whitespace."
     (forward-line 1)
     (back-to-indentation)))
 
-(use-package undo-tree
-  :commands (global-undo-tree-mode)
-  :diminish undo-tree-mode)
-(global-undo-tree-mode 1)
-
-(use-package company
-  :commands (global-company-mode)
-  :diminish company-mode
-  :config
-  (progn
-    (define-key company-active-map (kbd "C-h") 'company-select-next)
-    (define-key company-active-map (kbd "C-t") 'company-select-previous)))
+(require 'company)
+(diminish 'company-mode)
+(define-key company-active-map (kbd "C-h") 'company-select-next)
+(define-key company-active-map (kbd "C-t") 'company-select-previous)
 (global-company-mode)
 
 ;;; rainbow-delimiters
 
-(use-package rainbow-delimiters
-  :commands (rainbow-delimiters-mode))
-
+(require 'rainbow-delimiters)
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 
 ;;; AucTeX
@@ -389,72 +332,64 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   (auto-fill-mode)
   (setq auto-fill-function 'ttuegel/LaTeX-auto-fill-function))
 
-(use-package tex-site ; auctex
-  :mode ("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode)
-  :commands (latex-mode LaTeX-mode plain-tex-mode)
-  :config
-  (progn
-    (custom-theme-set-variables
-     'user
-     '(font-latex-fontify-script nil)
-     '(font-latex-fontify-sectioning 'color)
-     '(font-latex-math-environments
-       '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
-         "alignat" "xalignat" "dmath" "math")))
+(require 'tex-site)
+(add-to-list 'auto-mode-alist '("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode))
+(custom-theme-set-variables
+  'user
+  '(font-latex-fontify-script nil)
+  '(font-latex-fontify-sectioning 'color)
+  '(font-latex-math-environments
+    '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
+      "alignat" "xalignat" "dmath" "math")))
 
-    (add-hook 'LaTeX-mode-hook
-              (lambda ()
-                (ttuegel/LaTeX-setup-auto-fill)
-                (flyspell-mode 1)))))
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (ttuegel/LaTeX-setup-auto-fill)
+            (flyspell-mode 1)))
 
 ;;; flycheck
 
-(use-package flycheck
-  :commands (flycheck-mode)
-  :config
-  (setq flycheck-checkers (delq 'haskell-hlint flycheck-checkers)))
+(require 'flycheck)
+(setq flycheck-checkers (delq 'haskell-hlint flycheck-checkers))
 
 ;;; ghc-mod
 
-(use-package ghc
-  :commands (ghc-init ghc-debug)
-  :defines (ghc-sort-key)
-  :config
-  (progn
-    (custom-theme-set-variables 'user '(ghc-sort-key nil))
-    (add-to-list 'company-backends 'company-ghc)))
+(require 'ghc)
+(require 'company-ghc)
+(custom-theme-set-variables 'user '(ghc-sort-key nil))
+(add-to-list 'company-backends 'company-ghc)
 
 ;;; haskell-mode
 
-(use-package haskell-mode
-  :commands (haskell-mode haskell-cabal-mode)
-  :defines (haskell-indentation-cycle-warn haskell-indentation-starter-offset)
-  :config
-  (progn
-    (custom-theme-set-variables
-     'user
-     '(haskell-literate-default 'tex)
-     '(haskell-process-auto-import-loaded-modules nil)
-     '(haskell-process-log t)
-     '(haskell-process-suggest-remove-import-lines nil)
-     '(haskell-process-type 'cabal-repl))
-    (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
-    (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
-    (add-hook 'haskell-mode-hook
-              (lambda ()
-                (turn-on-haskell-indentation)
-                (setq haskell-indentation-cycle-warn nil)
-                (setq haskell-indentation-starter-offset 2)))
-    (add-hook 'electric-indent-functions
-              (lambda (c) (when (or (eq 'haskell-mode major-mode)
-                                    (eq 'haskell-cabal-mode major-mode))
-                            'no-indent)))))
+(require 'haskell-mode)
+
+(custom-theme-set-variables
+  'user
+  '(haskell-literate-default 'tex)
+  '(haskell-process-auto-import-loaded-modules nil)
+  '(haskell-process-log t)
+  '(haskell-process-suggest-remove-import-lines nil)
+  '(haskell-process-type 'cabal-repl))
+
+(add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
+
+(add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+
+(add-hook 'haskell-mode-hook
+          (lambda ()
+            (turn-on-haskell-indentation)
+            (setq haskell-indentation-cycle-warn nil)
+            (setq haskell-indentation-starter-offset 2)))
+
+(add-hook 'electric-indent-functions
+          (lambda (c) (when (or (eq 'haskell-mode major-mode)
+                                (eq 'haskell-cabal-mode major-mode))
+                        'no-indent)))
 
 ;;; nix-mode
 
-(use-package nix-mode
-  :mode ("\\.nix\\'" . nix-mode)
-  :commands (nix-mode))
+(require 'nix-mode)
+(add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
 
 ;(require 'evil-surround)
 ;(global-evil-surround-mode 1)
@@ -470,8 +405,8 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 
 (add-hook 'after-save-hook 'byte-compile-current-buffer)
 
-(use-package ledger-mode
-  :mode ("\\.ledger\\'" . ledger-mode))
+(require 'ledger-mode)
+(add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
 
 (provide 'init)
 ;;; init.el ends here
