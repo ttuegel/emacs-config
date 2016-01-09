@@ -62,7 +62,7 @@
 (custom-theme-set-variables
  'user
  '(tab-always-indent t)
- '(tab-stop-list (number-sequence 2 120 2))
+ '(tab-stop-list nil)
  '(tab-width 2)
  '(indent-tabs-mode nil))
 
