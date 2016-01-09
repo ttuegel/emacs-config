@@ -357,7 +357,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (require 'ghc)
 (require 'company-ghc)
 (custom-theme-set-variables 'user '(ghc-sort-key nil))
-(add-to-list 'company-backends 'company-ghc)
+;(add-to-list 'company-backends 'company-ghc)
 
 ;;; haskell-mode
 
