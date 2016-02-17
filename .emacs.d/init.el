@@ -342,6 +342,8 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
     '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
       "alignat" "xalignat" "dmath" "math")))
 
+(add-hook 'LaTeX-mode-hook #'yas-minor-mode)
+
 (add-hook 'LaTeX-mode-hook
           (lambda ()
             (ttuegel/LaTeX-setup-auto-fill)
@@ -374,6 +376,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
 
 (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'haskell-mode-hook #'yas-minor-mode)
 
 (add-hook 'haskell-mode-hook
           (lambda ()
@@ -391,10 +394,10 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (require 'nix-mode)
 (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
 
-;(require 'evil-surround)
-;(global-evil-surround-mode 1)
+(require 'evil-surround)
+(global-evil-surround-mode 1)
 
-;(require 'evil-indent-textobject)
+(require 'evil-indent-textobject)
 
 (defun byte-compile-current-buffer ()
   "`byte-compile' current buffer if it's emacs-lisp-mode and compiled file exists."
@@ -407,6 +410,10 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 
 (require 'ledger-mode)
 (add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
+
+(require 'yasnippet)
+(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+(yas-reload-all)
 
 (provide 'init)
 ;;; init.el ends here
