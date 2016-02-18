@@ -110,6 +110,14 @@ even when the line is blank."
   (interactive "<c>")
   (ttuegel/evil-shift-line count 1))
 
+;;; Use C-<return> instead of ESC
+(define-key evil-insert-state-map (kbd "C-<return>") 'evil-normal-state)
+(define-key evil-emacs-state-map (kbd "C-<return>") 'evil-normal-state)
+(define-key evil-motion-state-map (kbd "C-<return>") 'evil-normal-state)
+(define-key evil-operator-state-map (kbd "C-<return>") 'evil-normal-state)
+(define-key evil-replace-state-map (kbd "C-<return>") 'evil-normal-state)
+(define-key evil-visual-state-map (kbd "C-<return>") 'evil-normal-state)
+
 (defun ttuegel/evil-map (key def &rest bindings)
   (evil-leader--def-keys evil-normal-state-map key def bindings)
   (evil-leader--def-keys evil-visual-state-map key def bindings)
