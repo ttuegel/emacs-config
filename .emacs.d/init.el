@@ -94,10 +94,10 @@ value of `evil-shift-width' is ignored for better emacs interoperability. Works
 even when the line is blank."
   (interactive "<c>")
   (let* ((initial-column (current-column))
-          (initial-indent (current-indentation))
-          (final-indent (indent-next-tab-stop initial-indent left))
-          (delta-indent (- final-indent initial-indent))
-          (final-column (+ initial-column delta-indent)))
+         (initial-indent (current-indentation))
+         (final-indent (indent-next-tab-stop initial-indent left))
+         (delta-indent (- final-indent initial-indent))
+         (final-column (+ initial-column delta-indent)))
     (progn
       (indent-line-to final-indent)
       (forward-char (- final-column (current-column))))))
