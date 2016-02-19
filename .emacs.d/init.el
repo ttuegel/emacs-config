@@ -419,6 +419,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (require 'yasnippet)
 (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
 (yas-reload-all)
+(diminish 'yas-minor-mode)
 
 (provide 'init)
 ;;; init.el ends here
