@@ -147,9 +147,6 @@ even when the line is blank."
                   "T" 'evil-scroll-up
                   "H" 'evil-scroll-down)
 
-;; Execute command: map : to ;
-(ttuegel/evil-map "s" 'evil-ex)
-
 ;;; Cut/copy/paste
 (ttuegel/evil-map "k" 'evil-delete)
 
