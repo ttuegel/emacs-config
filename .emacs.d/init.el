@@ -87,11 +87,30 @@
 (custom-theme-set-variables 'user '(evil-shift-width 2))
 (evil-mode t)
 
+(defun ttuegel/evil-tag-props (props)
+  (plist-put
+   (plist-put props :weight 'bold)
+   :foreground "#272822"))
+
+(defmacro ttuegel/set-evil-tag (var tag props)
+  (list 'setq var
+        (list 'propertize tag
+              ''face
+              (list 'quote (ttuegel/evil-tag-props props)))))
+
+(ttuegel/set-evil-tag evil-normal-state-tag " N " (:background "#A6E22E"))
+(ttuegel/set-evil-tag evil-emacs-state-tag " E " (:background "#FD971F"))
+(ttuegel/set-evil-tag evil-insert-state-tag " I " (:background "#F92672"))
+(ttuegel/set-evil-tag evil-motion-state-tag " M " (:background "#66D9EF"))
+(ttuegel/set-evil-tag evil-visual-state-tag " V " (:background "#6b6b6b"))
+(ttuegel/set-evil-tag evil-operator-state-tag " O " (:background "#AE81FF"))
+
 (evil-define-command ttuegel/evil-shift-line (count &optional left)
   "Shift the current line right COUNT times (left if LEFT is non-nil).
-The line is shifted to the nearest tab stop. Unlike `evil-shift-right-line', the
-value of `evil-shift-width' is ignored for better emacs interoperability. Works
-even when the line is blank."
+The line is shifted to the nearest tab stop. Unlike
+`evil-shift-right-line', the value of `evil-shift-width' is
+ignored for better emacs interoperability. Works even when the
+line is blank."
   (interactive "<c>")
   (let* ((initial-column (current-column))
          (initial-indent (current-indentation))
@@ -462,22 +481,24 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   (format " (%5s, %3s) "
           (format-mode-line "%l") (format-mode-line "%c")))
 
-(setq mode-line-format
-      '("%e"
-       mode-line-front-space
-       mode-line-remote
-       mode-line-frame-identification
-       mode-line-buffer-identification
-       "   "
-       (:eval (ttuegel/mode-line-buffer-modified))
-       (:eval (ttuegel/mode-line-position))
-       mode-line-modes
-       (vc-mode vc-mode)
-       "  "
-       mode-line-misc-info
-       mode-line-end-spaces))
 
-(setq evil-mode-line-format '(before . mode-line-front-space))
+(custom-theme-set-variables
+ 'user
+ '(mode-line-format
+   '("%e"
+     mode-line-front-space
+     mode-line-remote
+     mode-line-frame-identification
+     mode-line-buffer-identification
+     "   "
+     (:eval (ttuegel/mode-line-buffer-modified))
+     (:eval (ttuegel/mode-line-position))
+     mode-line-modes
+     (vc-mode vc-mode)
+     "  "
+     mode-line-misc-info
+     mode-line-end-spaces))
+ '(evil-mode-line-format '(before . mode-line-front-space)))
 
 (provide 'init)
 ;;; init.el ends here
