@@ -417,6 +417,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 
 (require 'nix-mode)
 (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
+(add-hook 'nix-mode-hook #'fci-mode)
 
 (require 'evil-surround)
 (global-evil-surround-mode 1)
