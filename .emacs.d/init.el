@@ -308,7 +308,6 @@ only whitespace."
 ;;; rainbow-delimiters
 
 (require 'rainbow-delimiters)
-(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 
 ;;; AucTeX
 
@@ -381,6 +380,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
 
 (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'haskell-mode-hook #'fci-mode)
 (add-hook 'haskell-mode-hook #'yas-minor-mode)
 
 (add-hook 'haskell-mode-hook
@@ -404,6 +404,44 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 
 (require 'evil-indent-textobject)
 
+(require 'ledger-mode)
+(add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
+
+(require 'yasnippet)
+(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+(yas-reload-all)
+(diminish 'yas-minor-mode)
+
+;;; fci-mode
+
+(require 'fill-column-indicator)
+
+;; suppress fci-mode when popups are active
+
+(defun ttuegel/fci-enabled-p () (symbol-value 'fci-mode))
+
+(defvar ttuegel/fci-mode-suppressed nil)
+(make-variable-buffer-local 'ttuegel/fci-mode-suppressed)
+
+(defadvice popup-create (before suppress-fci-mode activate)
+  "Suspend fci-mode while popups are visible"
+  (let ((fci-enabled (ttuegel/fci-enabled-p)))
+    (when fci-enabled
+      (setq ttuegel/fci-mode-suppressed fci-enabled)
+      (turn-off-fci-mode))))
+
+(defadvice popup-delete (after restore-fci-mode activate)
+  "Restore fci-mode when all popups have closed"
+  (when (and ttuegel/fci-mode-suppressed
+             (null popup-instances))
+    (setq ttuegel/fci-mode-suppressed nil)
+    (turn-on-fci-mode)))
+
+;;; emacs-lisp-mode
+
+(add-hook 'emacs-lisp-mode-hook #'fci-mode)
+(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+
 (defun byte-compile-current-buffer ()
   "`byte-compile' current buffer if it's emacs-lisp-mode and compiled file exists."
   (interactive)
@@ -412,14 +450,6 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
     (byte-compile-file buffer-file-name)))
 
 (add-hook 'after-save-hook 'byte-compile-current-buffer)
-
-(require 'ledger-mode)
-(add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
-
-(require 'yasnippet)
-(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-(yas-reload-all)
-(diminish 'yas-minor-mode)
 
 (provide 'init)
 ;;; init.el ends here
