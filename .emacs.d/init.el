@@ -169,6 +169,34 @@ line is blank."
 ;;; Cut/copy/paste
 (ttuegel/evil-map "k" 'evil-delete)
 
+;; mode-line-format
+
+(defun ttuegel/mode-line-buffer-modified ()
+  "Mode line indicator that the buffer is modified"
+  (if (buffer-modified-p) "[*]" "  "))
+
+(defun ttuegel/mode-line-position ()
+  "Mode line position indicator"
+  (format " (%5s, %3s) "
+          (format-mode-line "%l") (format-mode-line "%c")))
+
+(setq-default mode-line-format
+              '("%e"
+                mode-line-front-space
+                mode-line-remote
+                mode-line-frame-identification
+                mode-line-buffer-identification
+                "   "
+                (:eval (ttuegel/mode-line-buffer-modified))
+                (:eval (ttuegel/mode-line-position))
+                mode-line-modes
+                (vc-mode vc-mode)
+                "  "
+                mode-line-misc-info
+                mode-line-end-spaces))
+
+(setq-default evil-mode-line-format '(before . mode-line-front-space))
+
 ;;; Undo Tree
 (require 'undo-tree)
 (diminish 'undo-tree-mode)
@@ -488,36 +516,6 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
     (byte-compile-file buffer-file-name)))
 
 (add-hook 'after-save-hook 'byte-compile-current-buffer)
-
-;;; mode-line-format
-
-(defun ttuegel/mode-line-buffer-modified ()
-  "Mode line indicator that the buffer is modified"
-  (if (buffer-modified-p) "[*]" "  "))
-
-(defun ttuegel/mode-line-position ()
-  "Mode line position indicator"
-  (format " (%5s, %3s) "
-          (format-mode-line "%l") (format-mode-line "%c")))
-
-
-(custom-theme-set-variables
- 'user
- '(mode-line-format
-   '("%e"
-     mode-line-front-space
-     mode-line-remote
-     mode-line-frame-identification
-     mode-line-buffer-identification
-     "   "
-     (:eval (ttuegel/mode-line-buffer-modified))
-     (:eval (ttuegel/mode-line-position))
-     mode-line-modes
-     (vc-mode vc-mode)
-     "  "
-     mode-line-misc-info
-     mode-line-end-spaces))
- '(evil-mode-line-format '(before . mode-line-front-space)))
 
 (provide 'init)
 ;;; init.el ends here
