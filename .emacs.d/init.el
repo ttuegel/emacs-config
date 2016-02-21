@@ -462,21 +462,20 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 
 (defun ttuegel/fci-enabled-p () (symbol-value 'fci-mode))
 
-(defvar ttuegel/fci-mode-suppressed nil)
-(make-variable-buffer-local 'ttuegel/fci-mode-suppressed)
+(defvar-local ttuegel/popup-suppress-fci-mode nil)
 
 (defadvice popup-create (before suppress-fci-mode activate)
   "Suspend fci-mode while popups are visible"
   (let ((fci-enabled (ttuegel/fci-enabled-p)))
     (when fci-enabled
-      (setq ttuegel/fci-mode-suppressed fci-enabled)
+      (setq ttuegel/popup-suppress-fci-mode fci-enabled)
       (turn-off-fci-mode))))
 
 (defadvice popup-delete (after restore-fci-mode activate)
   "Restore fci-mode when all popups have closed"
-  (when (and ttuegel/fci-mode-suppressed
+  (when (and ttuegel/popup-suppress-fci-mode
              (null popup-instances))
-    (setq ttuegel/fci-mode-suppressed nil)
+    (setq ttuegel/popup-suppress-fci-mode nil)
     (turn-on-fci-mode)))
 
 ;;; company-mode
@@ -489,15 +488,18 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 
 ;; work around issues with fill-column-indicator
 
-(defvar-local company-fci-mode-on-p nil)
+(defvar-local ttuegel/company-suppress-fci-mode nil)
 
-(defun company-turn-off-fci (&rest ignore)
-  (when (boundp 'fci-mode)
-    (setq company-fci-mode-on-p fci-mode)
-    (when fci-mode (fci-mode -1))))
+(defun ttuegel/company-turn-off-fci-mode (&rest ignore)
+  (let ((fci-enabled (ttuegel/fci-enabled-p)))
+    (when fci-enabled
+      (setq ttuegel/company-suppress-fci-mode fci-enabled)
+      (turn-off-fci-mode))))
 
-(defun company-maybe-turn-on-fci (&rest ignore)
-  (when company-fci-mode-on-p (fci-mode 1)))
+(defun ttuegel/company-maybe-turn-on-fci-mode (&rest ignore)
+  (when ttuegel/company-suppress-fci-mode
+    (setq ttuegel/company-suppress-fci-mode nil)
+    (turn-on-fci-mode)))
 
 (add-hook 'company-completion-started-hook 'company-turn-off-fci)
 (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
