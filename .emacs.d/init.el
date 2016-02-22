@@ -173,7 +173,7 @@ line is blank."
 
 (defun ttuegel/mode-line-buffer-modified ()
   "Mode line indicator that the buffer is modified"
-  (if (buffer-modified-p) "[*]" "  "))
+  (if (buffer-modified-p) "[*]" "   "))
 
 (defun ttuegel/mode-line-position ()
   "Mode line position indicator"
