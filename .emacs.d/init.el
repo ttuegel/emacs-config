@@ -177,8 +177,10 @@ line is blank."
 
 (defun ttuegel/mode-line-position ()
   "Mode line position indicator"
-  (format " (%5s, %3s) "
-          (format-mode-line "%l") (format-mode-line "%c")))
+  (let ((unpadded (format " (%4s, %2s) "
+                          (format-mode-line "%l")
+                          (format-mode-line "%c"))))
+    (format "%15s" unpadded)))
 
 (setq-default mode-line-format
               '("%e"
