@@ -66,6 +66,9 @@
  '(tab-width 2)
  '(indent-tabs-mode nil))
 
+;; fill-column
+(custom-theme-set-variables 'user '(fill-column 80))
+
 ;; whitespace-mode
 (custom-theme-set-variables 'user '(whitespace-style '(face trailing tabs)))
 (global-whitespace-mode t)
