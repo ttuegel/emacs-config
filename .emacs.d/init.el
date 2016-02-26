@@ -426,7 +426,6 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
 
 (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'haskell-mode-hook #'fci-mode)
 (add-hook 'haskell-mode-hook #'yas-minor-mode)
 
 (add-hook 'haskell-mode-hook
@@ -444,7 +443,6 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 
 (require 'nix-mode)
 (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
-(add-hook 'nix-mode-hook #'fci-mode)
 
 (require 'evil-surround)
 (global-evil-surround-mode 1)
@@ -459,29 +457,6 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (yas-reload-all)
 (diminish 'yas-minor-mode)
 
-;;; fci-mode
-
-(require 'fill-column-indicator)
-
-;; suppress fci-mode when popups are active
-
-(defun ttuegel/fci-enabled-p () (symbol-value 'fci-mode))
-
-(defvar-local ttuegel/popup-suppress-fci-mode nil)
-
-(defadvice popup-create (before suppress-fci-mode activate)
-  "Suspend fci-mode while popups are visible"
-  (let ((fci-enabled (ttuegel/fci-enabled-p)))
-    (when fci-enabled
-      (setq ttuegel/popup-suppress-fci-mode fci-enabled)
-      (turn-off-fci-mode))))
-
-(defadvice popup-delete (after restore-fci-mode activate)
-  "Restore fci-mode when all popups have closed"
-  (when (and ttuegel/popup-suppress-fci-mode
-             (null popup-instances))
-    (setq ttuegel/popup-suppress-fci-mode nil)
-    (turn-on-fci-mode)))
 
 ;;; company-mode
 
@@ -491,28 +466,8 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (define-key company-active-map (kbd "C-t") 'company-select-previous)
 (global-company-mode)
 
-;; work around issues with fill-column-indicator
-
-(defvar-local ttuegel/company-suppress-fci-mode nil)
-
-(defun ttuegel/company-turn-off-fci-mode (&rest ignore)
-  (let ((fci-enabled (ttuegel/fci-enabled-p)))
-    (when fci-enabled
-      (setq ttuegel/company-suppress-fci-mode fci-enabled)
-      (turn-off-fci-mode))))
-
-(defun ttuegel/company-maybe-turn-on-fci-mode (&rest ignore)
-  (when ttuegel/company-suppress-fci-mode
-    (setq ttuegel/company-suppress-fci-mode nil)
-    (turn-on-fci-mode)))
-
-(add-hook 'company-completion-started-hook 'company-turn-off-fci)
-(add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
-(add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci)
-
 ;;; emacs-lisp-mode
 
-(add-hook 'emacs-lisp-mode-hook #'fci-mode)
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 
 (defun byte-compile-current-buffer ()
