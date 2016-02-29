@@ -225,9 +225,10 @@ line is blank."
 (helm-mode 1)
 (diminish 'helm-mode)
 
-;;; Ace Jump
-(ttuegel/evil-map "M-f" 'evil-ace-jump-word-mode
-                  "M-F" 'evil-ace-jump-line-mode)
+;;; Avy
+(require 'avy)
+(ttuegel/evil-map "f" 'avy-goto-char
+                  "F" 'avy-goto-line)
 
 ;;; Search
 (ttuegel/evil-map "/" 'isearch-forward
