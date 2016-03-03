@@ -83,7 +83,7 @@
 
 ;; Be evil
 (require 'evil-leader)
-(evil-leader/set-leader "<SPC>")
+(evil-leader/set-leader "C-<SPC>")
 (global-evil-leader-mode)
 
 (require 'evil)
@@ -255,10 +255,10 @@ line is blank."
 (define-key evil-window-map "W" 'evil-window-new)
 (define-key evil-window-map "k" 'evil-window-delete)
 
-(evil-leader/set-key "C-." 'helm-M-x)
-(global-set-key (kbd "C-.") 'helm-M-x)
+(evil-leader/set-key "M-<SPC>" 'helm-M-x)
+(global-set-key (kbd "M-<SPC>") 'helm-M-x)
 
-(evil-leader/set-key "z" ctl-x-map)
+(evil-leader/set-key "C-<SPC>" ctl-x-map)
 (define-key ctl-x-map (kbd "C-z") 'helm-find-files)
 (define-key ctl-x-map (kbd "C-h") help-map)
 
