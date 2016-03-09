@@ -400,6 +400,13 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
             (ttuegel/LaTeX-setup-auto-fill)
             (flyspell-mode 1)))
 
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (add-to-list 'TeX-command-list
+                         '("Rubber"
+                           "rubber --pdf %t" TeX-run-compile nil
+                           (latex-mode)))))
+
 ;;; flycheck
 
 (require 'flycheck)
