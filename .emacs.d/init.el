@@ -404,7 +404,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
           (lambda ()
             (add-to-list 'TeX-command-list
                          '("Rubber"
-                           "rubber --pdf %t" TeX-run-compile nil
+                           "rubber --pdf %t" TeX-run-command nil
                            (latex-mode)))))
 
 ;;; flycheck
