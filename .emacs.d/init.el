@@ -259,6 +259,7 @@ line is blank."
 (global-set-key (kbd "M-<SPC>") 'helm-M-x)
 
 (evil-leader/set-key "C-<SPC>" ctl-x-map)
+(global-set-key (kbd "C-<SPC>") ctl-x-map)
 (define-key ctl-x-map (kbd "C-z") 'helm-find-files)
 (define-key ctl-x-map (kbd "C-h") help-map)
 
