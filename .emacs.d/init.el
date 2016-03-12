@@ -62,8 +62,8 @@
 (custom-theme-set-variables
  'user
  '(tab-always-indent t)
- '(tab-stop-list (number-sequence 2 120 2))
- '(tab-width 2)
+ '(tab-stop-list (number-sequence 4 120 4))
+ '(tab-width 4)
  '(indent-tabs-mode nil))
 
 ;; fill-column
@@ -429,7 +429,10 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   '(haskell-process-auto-import-loaded-modules nil)
   '(haskell-process-log t)
   '(haskell-process-suggest-remove-import-lines nil)
-  '(haskell-process-type 'cabal-repl))
+  '(haskell-process-type 'cabal-repl)
+  '(haskell-indentation-ifte-offset 4)
+  '(haskell-indentation-layout-offset 4)
+  '(haskell-indentation-left-offset 4))
 
 (add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
 
