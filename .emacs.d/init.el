@@ -210,6 +210,11 @@ line is blank."
                   "U" 'undo-tree-redo)
 
 ;;; Helm
+
+;; Use my development helm version, if present
+(when (file-exists-p "~/.emacs.d/helm")
+  (add-to-list 'load-path "~/.emacs.d/helm"))
+
 (require 'helm-config)
 (require 'helm)
 (define-key helm-map (kbd "C-h") nil)
@@ -288,10 +293,6 @@ line is blank."
 (evil-leader/set-key
   "en" 'next-error
   "ep" 'previous-error)
-
-;; Use my development helm version, if present
-(when (file-exists-p "~/.emacs.d/helm")
-  (add-to-list 'load-path "~/.emacs.d/helm"))
 
 (require 'magit)
 (evil-leader/set-key "gs" 'magit-status)
