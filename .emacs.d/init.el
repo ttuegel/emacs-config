@@ -434,21 +434,9 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   '(haskell-indentation-layout-offset 4)
   '(haskell-indentation-left-offset 4))
 
-(add-hook 'haskell-mode-hook (lambda () (linum-mode 1)))
-
 (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'haskell-mode-hook #'yas-minor-mode)
-
-(add-hook 'haskell-mode-hook
-          (lambda ()
-            (turn-on-haskell-indentation)
-            (setq haskell-indentation-cycle-warn nil)
-            (setq haskell-indentation-starter-offset 2)))
-
-(add-hook 'electric-indent-functions
-          (lambda (c) (when (or (eq 'haskell-mode major-mode)
-                                (eq 'haskell-cabal-mode major-mode))
-                        'no-indent)))
+(add-hook 'haskell-mode-hook #'turn-on-haskell-indentation)
 
 ;;; nix-mode
 
