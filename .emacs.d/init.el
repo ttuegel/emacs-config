@@ -417,9 +417,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 ;;; ghc-mod
 
 (require 'ghc)
-(require 'company-ghc)
 (custom-theme-set-variables 'user '(ghc-sort-key nil))
-;(add-to-list 'company-backends 'company-ghc)
 
 ;;; haskell-mode
 
@@ -478,6 +476,9 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (define-key company-active-map (kbd "C-h") 'company-select-next)
 (define-key company-active-map (kbd "C-t") 'company-select-previous)
 (global-company-mode)
+
+(require 'company-ghc)
+;(add-to-list 'company-backends 'company-ghc)
 
 ;;; emacs-lisp-mode
 
