@@ -83,7 +83,7 @@
 
 ;; Be evil
 (require 'evil-leader)
-(evil-leader/set-leader "C-<SPC>")
+(evil-leader/set-leader "C-SPC")
 (global-evil-leader-mode)
 
 (require 'evil)
@@ -202,16 +202,16 @@ line is blank."
 
 (setq-default evil-mode-line-format '(before . mode-line-front-space))
 
-;;; Undo Tree
+;; Undo Tree
 (require 'undo-tree)
 (diminish 'undo-tree-mode)
 (global-undo-tree-mode 1)
 (ttuegel/evil-map "u" 'undo-tree-undo
                   "U" 'undo-tree-redo)
 
-;;; Helm
+;; Helm
 
-;; Use my development helm version, if present
+;;; Use my development helm version, if present
 (when (file-exists-p "~/.emacs.d/helm")
   (add-to-list 'load-path "~/.emacs.d/helm"))
 
@@ -227,15 +227,21 @@ line is blank."
 (define-key helm-find-files-map (kbd "C-d") 'helm-find-files-up-one-level)
 (define-key helm-command-map "b" 'helm-buffers-list)
 
+(evil-leader/set-key "M-SPC" 'helm-M-x)
+(global-set-key (kbd "M-SPC") 'helm-M-x)
+
+(define-key ctl-x-map (kbd "C-z") 'helm-find-files)
+(evil-leader/set-key "h" helm-command-map)
+
 (helm-mode 1)
 (diminish 'helm-mode)
 
-;;; Avy
+;; Avy
 (require 'avy)
 (ttuegel/evil-map "f" 'avy-goto-char
                   "F" 'avy-goto-line)
 
-;;; Search
+;; Search
 (ttuegel/evil-map "/" 'isearch-forward
                   "?" 'isearch-backward
                   "l" 'isearch-repeat-forward
@@ -245,6 +251,8 @@ line is blank."
 (global-set-key (kbd "C-c ?") 'isearch-backward)
 (global-set-key (kbd "C-c l") 'isearch-repeat-forward)
 (global-set-key (kbd "C-c L") 'isearch-repeat-backward)
+
+;; Windows
 
 (define-key ctl-x-map "w" 'evil-window-map)
 (evil-leader/set-key "w" 'evil-window-map)
@@ -260,23 +268,17 @@ line is blank."
 (define-key evil-window-map "W" 'evil-window-new)
 (define-key evil-window-map "k" 'evil-window-delete)
 
-(evil-leader/set-key "M-<SPC>" 'helm-M-x)
-(global-set-key (kbd "M-<SPC>") 'helm-M-x)
-
-(evil-leader/set-key "C-<SPC>" ctl-x-map)
-(global-set-key (kbd "C-<SPC>") ctl-x-map)
-(define-key ctl-x-map (kbd "C-z") 'helm-find-files)
-(define-key ctl-x-map (kbd "C-h") help-map)
-
-(evil-leader/set-key "h" helm-command-map)
-
-(ttuegel/evil-map "C-," 'evil-emacs-state)
-(global-set-key (kbd "C-,") 'evil-exit-emacs-state)
-
 (evil-leader/set-key "TAB"
   (lambda ()
     (interactive)
     (switch-to-buffer (other-buffer (current-buffer) t))))
+
+(evil-leader/set-key "C-SPC" ctl-x-map)
+(global-set-key (kbd "C-SPC") ctl-x-map)
+(define-key ctl-x-map (kbd "C-h") help-map)
+
+(ttuegel/evil-map "C-," 'evil-emacs-state)
+(global-set-key (kbd "C-,") 'evil-exit-emacs-state)
 
 (evil-leader/set-key
   "bb" 'helm-buffers-list
@@ -329,7 +331,7 @@ line is blank."
 (org-clock-persistence-insinuate)
 (add-hook 'org-mode-hook 'auto-fill-mode)
 
-; Custom org-agenda keymap
+;;; Custom org-agenda keymap
 (define-key org-agenda-mode-map (kbd "h") 'org-agenda-next-item)
 (define-key org-agenda-mode-map (kbd "t") 'org-agenda-previous-item)
 (define-key org-agenda-mode-map (kbd "C-h") 'org-agenda-next-date-line)
@@ -340,6 +342,8 @@ line is blank."
 (global-set-key (kbd "C-c a") 'org-agenda)
 (evil-leader/set-key
   "os" 'org-save-all-org-buffers)
+
+;; Fix trailing whitespace.
 
 (defadvice newline (after indent-clean-after-newline activate)
   "Stop ill-behaved major-modes from leaving indentation on blank lines.
@@ -354,11 +358,11 @@ only whitespace."
     (forward-line 1)
     (back-to-indentation)))
 
-;;; rainbow-delimiters
+;; rainbow-delimiters
 
 (require 'rainbow-delimiters)
 
-;;; AucTeX
+;; AucTeX
 
 (defvar ttuegel/LaTeX-no-autofill-environments
   '("align" "align*" "equation" "equation*")
@@ -409,17 +413,17 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
                            "rubber --pdf %t" TeX-run-command nil
                            (latex-mode)))))
 
-;;; flycheck
+;; flycheck
 
 (require 'flycheck)
 (setq flycheck-checkers (delq 'haskell-hlint flycheck-checkers))
 
-;;; ghc-mod
+;; ghc-mod
 
 (require 'ghc)
 (custom-theme-set-variables 'user '(ghc-sort-key nil))
 
-;;; haskell-mode
+;; haskell-mode
 
 (require 'haskell-mode)
 
@@ -438,7 +442,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (add-hook 'haskell-mode-hook #'yas-minor-mode)
 (add-hook 'haskell-mode-hook #'turn-on-haskell-indentation)
 
-;;; nix-mode
+;; nix-mode
 
 (require 'nix-mode)
 (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
@@ -461,8 +465,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (yas-reload-all)
 (diminish 'yas-minor-mode)
 
-
-;;; company-mode
+;; company-mode
 
 (require 'company)
 (diminish 'company-mode)
@@ -473,7 +476,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (require 'company-ghc)
 ;(add-to-list 'company-backends 'company-ghc)
 
-;;; emacs-lisp-mode
+;; emacs-lisp-mode
 
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 
