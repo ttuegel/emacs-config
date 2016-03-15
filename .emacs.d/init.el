@@ -446,6 +446,10 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (add-hook 'haskell-mode-hook #'yas-minor-mode)
 (add-hook 'haskell-mode-hook #'turn-on-haskell-indentation)
 
+(require 'hindent)
+(custom-theme-set-variables 'user '(hindent-style "johan-tibell"))
+(add-hook 'haskell-mode-hook #'hindent-mode)
+
 ;; nix-mode
 
 (require 'nix-mode)
