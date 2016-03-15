@@ -233,6 +233,10 @@ line is blank."
 (define-key ctl-x-map (kbd "C-z") 'helm-find-files)
 (evil-leader/set-key "h" helm-command-map)
 
+(custom-theme-set-variables
+ 'user
+ '(helm-ff-skip-boring-files t))
+
 (helm-mode 1)
 (diminish 'helm-mode)
 
