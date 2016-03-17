@@ -107,6 +107,7 @@
 (ttuegel/set-evil-tag evil-motion-state-tag " M " (:background "#66D9EF"))
 (ttuegel/set-evil-tag evil-visual-state-tag " V " (:background "#6b6b6b"))
 (ttuegel/set-evil-tag evil-operator-state-tag " O " (:background "#AE81FF"))
+(ttuegel/set-evil-tag evil-replace-state-tag " R " (:background "#FD5FF0"))
 
 (evil-define-command ttuegel/evil-shift-line (count &optional left)
   "Shift the current line right COUNT times (left if LEFT is non-nil).
