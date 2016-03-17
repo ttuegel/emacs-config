@@ -234,9 +234,7 @@ line is blank."
 (define-key ctl-x-map (kbd "C-z") 'helm-find-files)
 (evil-leader/set-key "h" helm-command-map)
 
-(custom-theme-set-variables
- 'user
- '(helm-ff-skip-boring-files t))
+(custom-theme-set-variables 'user '(helm-ff-skip-boring-files t))
 
 (helm-mode 1)
 (diminish 'helm-mode)
@@ -316,7 +314,7 @@ line is blank."
 (evil-leader/set-key
   "oa" 'org-agenda
   "oc" 'org-capture)
-:config
+
 (custom-theme-set-variables
   'user
   '(org-default-notes-file "~/org/notes.org")
@@ -368,7 +366,8 @@ only whitespace."
     (forward-line 1)
     (back-to-indentation)))
 
-(defadvice evil-normal-state (after indent-whitespace-hygiene-after-evil-normal-state activate)
+(defadvice evil-normal-state
+    (after indent-whitespace-hygiene-after-evil-normal-state activate)
   (ttuegel/indent-whitespace-hygiene))
 
 ;; rainbow-delimiters
