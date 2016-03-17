@@ -457,6 +457,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (require 'hindent)
 (custom-theme-set-variables 'user '(hindent-style "johan-tibell"))
 (add-hook 'haskell-mode-hook #'hindent-mode)
+(diminish 'hindent-mode)
 
 ;; nix-mode
 
