@@ -350,18 +350,26 @@ line is blank."
 
 ;; Fix trailing whitespace.
 
-(defadvice newline (after indent-clean-after-newline activate)
+(defun ttuegel/indent-whitespace-hygiene ()
+  "Remove whitespace from the current line if it is only whitespace."
+  (save-excursion
+    (beginning-of-line)
+    (while
+        (re-search-forward "^[[:space:]]+$" (line-end-position) t)
+      (replace-match ""))))
+
+(defadvice newline (after indent-whitespace-hygiene-after-newline activate)
   "Stop ill-behaved major-modes from leaving indentation on blank lines.
 After a newline, remove whitespace from the previous line if that line is
 only whitespace."
   (progn
     (forward-line -1)
-    (beginning-of-line)
-    (while
-        (re-search-forward "^[[:space:]]+$" (line-end-position) t)
-      (replace-match ""))
+    (ttuegel/indent-whitespace-hygiene)
     (forward-line 1)
     (back-to-indentation)))
+
+(defadvice evil-normal-state (after indent-whitespace-hygiene-after-evil-normal-state activate)
+  (ttuegel/indent-whitespace-hygiene))
 
 ;; rainbow-delimiters
 
