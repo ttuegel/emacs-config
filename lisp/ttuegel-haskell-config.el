@@ -2,6 +2,9 @@
 ;;; Commentary:
 ;;; Code:
 
+(add-to-list 'load-path "~/.emacs.d/haskell-true-indent")
+(require 'haskell-true-indent)
+
 ; Disable the HLint flycheck checker.
 (require 'flycheck)
 (setq flycheck-checkers (delq 'haskell-hlint flycheck-checkers))
@@ -22,12 +25,7 @@
 
 (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'haskell-mode-hook #'yas-minor-mode)
-(add-hook 'haskell-mode-hook #'turn-on-haskell-indent)
-
-(require 'hindent)
-(custom-theme-set-variables 'user '(hindent-style "johan-tibell"))
-(add-hook 'haskell-mode-hook #'hindent-mode)
-(diminish 'hindent-mode)
+(add-hook 'haskell-mode-hook #'turn-on-haskell-true-indent)
 
 (provide 'ttuegel-haskell-config)
 ;;; ttuegel-haskell-config.el ends here
