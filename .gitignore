@@ -1,2 +1,3 @@
 org-clock-save.el
 /auto-save-list
+/session*
