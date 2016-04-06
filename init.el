@@ -402,28 +402,25 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   (setq auto-fill-function 'ttuegel/LaTeX-auto-fill-function))
 
 (require 'tex-site)
+
 (add-to-list 'auto-mode-alist '("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode))
+
 (custom-theme-set-variables
   'user
   '(font-latex-fontify-script nil)
   '(font-latex-fontify-sectioning 'color)
   '(font-latex-math-environments
     '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
-      "alignat" "xalignat" "dmath" "math")))
+      "alignat" "xalignat" "dmath" "math"))
+  '(TeX-view-program-selection
+    '(((output-dvi has-no-display-manager) "dvi2tty")
+      (output-dvi "Okular")
+      (output-pdf "Okular")
+      (output-html "xdg-open"))))
 
 (add-hook 'LaTeX-mode-hook #'yas-minor-mode)
-
-(add-hook 'LaTeX-mode-hook
-          (lambda ()
-            (ttuegel/LaTeX-setup-auto-fill)
-            (flyspell-mode 1)))
-
-(add-hook 'LaTeX-mode-hook
-          (lambda ()
-            (add-to-list 'TeX-command-list
-                         '("Rubber"
-                           "rubber --pdf %t" TeX-run-command nil
-                           (latex-mode)))))
+(add-hook 'LaTeX-mode-hook (lambda () (ttuegel/LaTeX-setup-auto-fill)))
+(add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1)))
 
 ;; flycheck
 
