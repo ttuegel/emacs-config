@@ -41,26 +41,34 @@
 (defun nix-syntax-propertize (start end)
   "Special syntax properties for Nix."
   ;; search for multi-line string delimiters
-  (while (re-search-forward "''" end t)
-    (let* ((context (save-excursion (save-match-data (syntax-ppss start))))
-           (string-type (nth 3 context))
-           (comment-type (nth 4 context))
-           (qbeg (match-beginning 0))
-           (qend (match-end 0)))
-      (when (not comment-type)
-        (pcase string-type
-          (`t
-           (if (looking-at "${")
-               ;; escaped string interpolation
-               (put-text-property qbeg (match-end 0)
-                                  'syntax-table (string-to-syntax "\\"))
-             ;; ending multi-line string delimiter
-             (put-text-property qbeg qend
-                                'syntax-table (string-to-syntax "|"))))
-          (`nil
-           ;; beginning multi-line string delimiter
-           (put-text-property qbeg qend
-                              'syntax-table (string-to-syntax "|"))))))))
+  (goto-char start)
+  (remove-text-properties start end '(syntax-table nil))
+  (funcall
+   (syntax-propertize-rules
+    ("''"
+     (0 (ignore (nix-syntax-propertize-multiline-string)))))
+   start end))
+
+(defun nix-syntax-propertize-multiline-string ()
+  "Set correct syntax properies for multiline string delimiters."
+  (let* ((start (match-beginning 0))
+         (end (match-end 0))
+         (context (save-excursion (save-match-data (syntax-ppss start))))
+         (string-type (nth 3 context)))
+    (pcase string-type
+      (`t
+       ;; inside a multiline string
+       (if (save-excursion (goto-char end) (looking-at "${"))
+           ;; escaped string interpolation, do nothing
+           (put-text-property start (match-end 0)
+                              'syntax-table (string-to-syntax "\\"))
+         ;; ending multi-line string delimiter
+         (put-text-property (1- end) end
+                            'syntax-table (string-to-syntax "|"))))
+      (`nil
+       ;; beginning multi-line string delimiter
+       (put-text-property start (1+ start)
+                          'syntax-table (string-to-syntax "|"))))))
 
 (defun nix-indent-line ()
   "Indent current line in a Nix expression."
@@ -93,7 +101,10 @@ The hook `nix-mode-hook' is run when Nix mode is started.
   (set-syntax-table nix-mode-syntax-table)
 
   ;; Font lock support.
-  (setq font-lock-defaults '(nix-font-lock-keywords nil nil nil nil))
+  (setq-local font-lock-defaults '(nix-font-lock-keywords nil nil nil nil))
+
+  ;; Special syntax properties for Nix
+  (setq-local syntax-propertize-function 'nix-syntax-propertize)
 
   ;; Look at text properties when parsing
   (setq-local parse-sexp-lookup-properties t)
