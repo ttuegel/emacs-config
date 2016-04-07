@@ -412,10 +412,13 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
   '(font-latex-math-environments
     '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
       "alignat" "xalignat" "dmath" "math"))
+  '(TeX-auto-save t)
+  '(TeX-parse-self t)
   '(TeX-save-query nil)
+  '(TeX-source-correlate-mode t)
   '(TeX-view-program-selection
     '(((output-dvi has-no-display-manager) "dvi2tty")
-      (output-dvi "Okular")
+      (output-dvi "xdvi")
       (output-pdf "Okular")
       (output-html "xdg-open"))))
 
