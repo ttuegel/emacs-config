@@ -8,6 +8,20 @@
 
 ;;; Code:
 
+(defun nix-syntax-match-antiquote (limit)
+  (let ((pos (next-single-char-property-change (point) 'nix-syntax-antiquote
+                                               nil limit)))
+    (when (and pos (> pos (point)))
+      (goto-char pos)
+      (let ((char (char-after pos)))
+        (pcase char
+          (`?$
+           (forward-char 2))
+          (`?}
+           (forward-char 1)))
+        (set-match-data (list pos (point)))
+        t))))
+
 (defconst nix-font-lock-keywords
   '("\\_<if\\_>" "\\_<then\\_>" "\\_<else\\_>" "\\_<assert\\_>" "\\_<with\\_>"
     "\\_<let\\_>" "\\_<in\\_>" "\\_<rec\\_>" "\\_<inherit\\_>" "\\_<or\\_>"
@@ -26,7 +40,8 @@
     ("<[a-zA-Z0-9._\\+-]+\\(/[a-zA-Z0-9._\\+-]+\\)*>"
      . font-lock-constant-face)
     ("[a-zA-Z0-9._\\+-]*\\(/[a-zA-Z0-9._\\+-]+\\)+"
-     . font-lock-constant-face))
+     . font-lock-constant-face)
+    (nix-syntax-match-antiquote 0 font-lock-preprocessor-face t))
   "Font lock keywords for nix.")
 
 (defvar nix-mode-syntax-table
@@ -63,7 +78,9 @@
   "Set syntax properties for antiquote marks."
   (let* ((start (match-beginning 0)))
     (put-text-property start (1+ start)
-                       'syntax-table (string-to-syntax "|"))))
+                       'syntax-table (string-to-syntax "|"))
+    (put-text-property start (+ start 2)
+                       'nix-syntax-antiquote t)))
 
 (defun nix-syntax-propertize-close-brace ()
   "Set syntax properties for close braces.
@@ -73,18 +90,18 @@ If a close brace `}' ends an antiquote, the next character begins a string."
          (context (save-excursion (save-match-data (syntax-ppss start))))
          (open (nth 1 context)))
     (when open ;; a corresponding open-brace was found
-      (let* ((antiquote (eq ?$ (char-after (- open 1))))
-             (escaped (and (eq ?' (char-after (- open 2)))
-                           (eq ?' (char-after (- open 3))))))
-        (when (and antiquote (not escaped))
+      (let* ((antiquote (get-text-property open 'nix-syntax-antiquote)))
+        (when antiquote
           (put-text-property (+ start 1) (+ start 2)
-                             'syntax-table (string-to-syntax "|")))))))
+                             'syntax-table (string-to-syntax "|"))
+          (put-text-property start (1+ start)
+                             'nix-syntax-antiquote t))))))
 
 (defun nix-syntax-propertize (start end)
   "Special syntax properties for Nix."
   ;; search for multi-line string delimiters
   (goto-char start)
-  (remove-text-properties start end '(syntax-table nil))
+  (remove-text-properties start end '(syntax-table nil nix-syntax-antiquote nil))
   (funcall
    (syntax-propertize-rules
     ("''\\${"
