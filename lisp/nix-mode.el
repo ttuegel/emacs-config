@@ -40,7 +40,7 @@
 
 (defun nix-syntax-propertize-escaped-antiquote ()
   "Set syntax properies for escaped antiquote marks."
-  )
+  nil)
 
 (defun nix-syntax-propertize-multiline-string ()
   "Set syntax properies for multiline string delimiters."
@@ -51,13 +51,9 @@
     (pcase string-type
       (`t
        ;; inside a multiline string
-       (if (save-excursion (goto-char end) (looking-at "${"))
-           ;; escaped string interpolation, do nothing
-           (put-text-property start (match-end 0)
-                              'syntax-table (string-to-syntax "\\"))
-         ;; ending multi-line string delimiter
-         (put-text-property (1- end) end
-                            'syntax-table (string-to-syntax "|"))))
+       ;; ending multi-line string delimiter
+       (put-text-property (1- end) end
+                          'syntax-table (string-to-syntax "|")))
       (`nil
        ;; beginning multi-line string delimiter
        (put-text-property start (1+ start)
@@ -65,12 +61,24 @@
 
 (defun nix-syntax-propertize-antiquote ()
   "Set syntax properties for antiquote marks."
-  )
+  (let* ((start (match-beginning 0)))
+    (put-text-property start (1+ start)
+                       'syntax-table (string-to-syntax "|"))))
 
 (defun nix-syntax-propertize-close-brace ()
   "Set syntax properties for close braces.
 If a close brace `}' ends an antiquote, the next character begins a string."
-  )
+  (let* ((start (match-beginning 0))
+         (end (match-end 0))
+         (context (save-excursion (save-match-data (syntax-ppss start))))
+         (open (nth 1 context)))
+    (when open ;; a corresponding open-brace was found
+      (let* ((antiquote (eq ?$ (char-after (- open 1))))
+             (escaped (and (eq ?' (char-after (- open 2)))
+                           (eq ?' (char-after (- open 3))))))
+        (when (and antiquote (not escaped))
+          (put-text-property (+ start 1) (+ start 2)
+                             'syntax-table (string-to-syntax "|")))))))
 
 (defun nix-syntax-propertize (start end)
   "Special syntax properties for Nix."
@@ -79,11 +87,11 @@ If a close brace `}' ends an antiquote, the next character begins a string."
   (remove-text-properties start end '(syntax-table nil))
   (funcall
    (syntax-propertize-rules
-    ("''${"
+    ("''\\${"
      (0 (ignore (nix-syntax-propertize-escaped-antiquote))))
     ("''"
      (0 (ignore (nix-syntax-propertize-multiline-string))))
-    ("${"
+    ("\\${"
      (0 (ignore (nix-syntax-propertize-antiquote))))
     ("}"
      (0 (ignore (nix-syntax-propertize-close-brace)))))
