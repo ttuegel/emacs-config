@@ -407,6 +407,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 
 (custom-theme-set-variables
   'user
+  '(safe-local-variable-values (quote ((TeX-command-extra-options . "-shell-escape"))))
   '(font-latex-fontify-script nil)
   '(font-latex-fontify-sectioning 'color)
   '(font-latex-math-environments
