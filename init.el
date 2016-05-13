@@ -481,5 +481,7 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 
 (add-hook 'after-save-hook 'byte-compile-current-buffer)
 
+(require 'ats2-mode)
+
 (provide 'init)
 ;;; init.el ends here
