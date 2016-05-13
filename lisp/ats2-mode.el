@@ -4,7 +4,7 @@
 ;; updated and modified by Matthew Danish <mrd@debian.org> 2008-2013
 
 ;; Author: Stefan Monnier <monnier@iro.umontreal.ca>
-;; Keywords: 
+;; Keywords:
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -55,7 +55,6 @@
     ;; the reverse.  We chose the reverse, which fails more gracefully.
     ;; Oh, and ' is also overloaded for '( '{ and '[  :-(
     (modify-syntax-entry ?\' "_ p" st)
-    ;; 
     (modify-syntax-entry ?\{ "(}" st)
     (modify-syntax-entry ?\} "){" st)
     (modify-syntax-entry ?\[ "(]" st)
@@ -107,7 +106,7 @@
   (let ((st (copy-syntax-table ats-mode-syntax-table)))
     (modify-syntax-entry ?_ "w" st)
     st))
-    
+
 ;; Font-lock.
 
 (defface ats-font-lock-static-face
@@ -192,21 +191,21 @@
       ;; to be a loop in order to handle cases like ( foo : type )
       ;; where initially it considers ( .. | .. ) but finds no '|'
       ;; char so it must then go inside and look for sub-regions like
-      ;; ": type". 
+      ;; ": type".
       ;;
       ;; Each branch of the cond must be sure to make progress, the
       ;; point must advance, or else infinite-loop bugs may arise.
       (while (and (not foundp) (< (point) limit))
         (setq key-begin 0 key-end 0)
-        (cond 
+        (cond
          ((re-search-forward "(\\|:[^=]\\|{\\|[^[:space:].:-]<" limit t)
           (setq pt (setq begin (match-beginning 0)))
           (when pt (goto-char pt))
-          (cond 
+          (cond
            ;; handle { ... }
            ((looking-at "{")
             (forward-char 1)
-            (cond 
+            (cond
              ((save-excursion
                 (forward-word -1)
                 (looking-at "where"))
@@ -250,7 +249,7 @@
            ((looking-at "[^[:space:].:-]<")
             (forward-char 2)
             (incf begin)
-            (cond 
+            (cond
              ((re-search-forward ">" limit t)
               (setq end (match-end 0))
               (store)
@@ -279,7 +278,7 @@
     "stadef" "stavar" "staload" "symelim" "symintr" "then" "try" "tkindef"
     "type" "typedef" "propdef" "viewdef" "vtypedef" "viewtypedef" "val" "prval"
     "var" "prvar" "when" "where" "for" "while" "with" "withtype"
-    "withprop" "withview" "withvtype" "withviewtype")) 
+    "withprop" "withview" "withvtype" "withviewtype"))
 
 (defun wrap-word-keyword (w)
   (concat "\\<" w "\\>"))
@@ -305,14 +304,12 @@
   (append
    '((ats-font-lock-c-code-search (0 'ats-font-lock-c-face t))
      ;; ("%{[[:print:][:cntrl:]]*%}" (0 'ats-font-lock-c-face))
-                                
      ;;     ("[^%]\\({[^|}]*|?[^}]*}\\)" (1 'ats-font-lock-static-face))
      ;;     ("[^']\\(\\[[^]|]*|?[^]]*\\]\\)" (1 'ats-font-lock-static-face))
      ("\\.<[^>]*>\\." (0 'ats-font-lock-metric-face))
      (ats-font-lock-static-search
       (0 'ats-font-lock-static-face)
       (1 'ats-font-lock-keyword-face)))
-   
    (list (list (mapconcat 'identity ats-keywords "\\|")
                '(0 'ats-font-lock-keyword-face)))))
 
@@ -349,7 +346,7 @@
       ;; the cc-mode indentation engine.
       (narrow-to-region c-start c-end)
       (c-indent-line arg))))
-   
+
 ;;;###autoload
 (define-derived-mode ats-mode fundamental-mode "ATS2"
   "Major mode to edit ATS2 source code."
@@ -370,10 +367,10 @@
            (format "patscc -tcats %s" file)))
     (put 'compile-command 'permanent-local t))
   (local-set-key (kbd "C-c C-c") 'compile)
-  (cond 
+  (cond
    ;; Emacs 21
    ((and (< emacs-major-version 22)
-         (not xemacsp)) 
+         (not xemacsp))
     (pushnew '("\\(syntax error: \\)?\\([^\n:]*\\): \\[?[0-9]*(line=\\([0-9]*\\), offs=\\([0-9]*\\))\\]?" 2 3 4)
              compilation-error-regexp-alist))
    ;; Emacs 22+ has an improved compilation mode
