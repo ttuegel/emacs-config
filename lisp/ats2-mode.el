@@ -110,29 +110,25 @@
 ;; Font-lock.
 
 (defface ats-font-lock-static-face
-  '(;; (default :inherit font-lock-type-face)
-    (t (:foreground "SkyBlue" :weight normal)))
+  '((default :inherit font-lock-type-face))
   "Face used for static-related parts of code."
   :group 'ats-font-lock-faces)
 (defvar ats-font-lock-static-face 'ats-font-lock-static-face)
 
 (defface ats-font-lock-metric-face
-  '(;; (default :inherit font-lock-type-face)
-    (t (:foreground "Wheat" :weight bold)))
+  '((default :inherit font-lock-type-face))
   "Face used for termination metrics."
   :group 'ats-font-lock-faces)
 (defvar ats-font-lock-metric-face 'ats-font-lock-metric-face)
 
 (defface ats-font-lock-keyword-face
-  '(;; (default :inherit font-lock-keyword-face)
-    (t (:foreground "Cyan" :weight normal)))
+  '((default :inherit font-lock-keyword-face))
   "Face used for keywords."
   :group 'ats-font-lock-faces)
 (defvar ats-font-lock-keyword-face 'ats-font-lock-keyword-face)
 
 (defface ats-font-lock-c-face
-  '(;; (default :inherit font-lock-comment-face)
-    (t (:foreground "Pink" :weight normal)))
+  '((default :inherit font-lock-comment-face))
   "Face used for C code."
   :group 'ats-font-lock-faces)
 (defvar ats-font-lock-c-face 'ats-font-lock-c-face)
