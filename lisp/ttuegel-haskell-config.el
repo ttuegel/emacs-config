@@ -9,10 +9,6 @@
 (require 'flycheck)
 (setq flycheck-checkers (delq 'haskell-hlint flycheck-checkers))
 
-; Enable ghc-mod.
-(require 'ghc)
-(custom-theme-set-variables 'user '(ghc-sort-key nil))
-
 (require 'haskell-mode)
 
 (custom-theme-set-variables

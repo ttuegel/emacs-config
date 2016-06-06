@@ -465,9 +465,6 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
 (define-key company-active-map (kbd "C-t") 'company-select-previous)
 (global-company-mode)
 
-(require 'company-ghc)
-;(add-to-list 'company-backends 'company-ghc)
-
 ;; emacs-lisp-mode
 
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
@@ -480,8 +477,6 @@ used to fill a paragraph to `ttuegel/LaTeX-auto-fill-function'."
     (byte-compile-file buffer-file-name)))
 
 (add-hook 'after-save-hook 'byte-compile-current-buffer)
-
-(require 'ats2-mode)
 
 (provide 'init)
 ;;; init.el ends here
