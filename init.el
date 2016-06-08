@@ -299,7 +299,8 @@ only whitespace."
   (evil-leader/set-key "h" helm-command-map)
 
   (bind-key "C-h" 'helm-next-line helm-map)
-  (bind-key "C-t" 'helm-previous-line helm-map))
+  (bind-key "C-t" 'helm-previous-line helm-map)
+  (bind-key "C-n" 'helm-execute-persistent-action helm-map))
 (helm-mode 1)
 (diminish 'helm-mode)
 
