@@ -11,6 +11,23 @@
 
 ;;; Emacs settings
 
+(bind-key "C-z" ctl-x-map)
+
+;; Emacs-mode equivalent of Vim motion keys
+(bind-keys
+  ("C-t" . 'previous-line)
+  ("C-h" . 'next-line)
+  ("C-d" . 'backward-char)
+  ("C-n" . 'forward-char)
+
+  ("C-T" . evil-scroll-up)
+  ("C-H" . evil-scroll-down)
+  ("C-D" . beginning-of-visual-line)
+  ("C-N" . end-of-visual-line)
+
+  ("C-M-t" . evil-scroll-page-up)
+  ("C-M-h" . evil-scroll-page-down))
+
 ;; Use UTF-8 everywhere. It's 2016, how is this not default?
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
@@ -46,7 +63,7 @@
 ;; Set color scheme
 (customize-set-variable 'custom-safe-themes t)
 (use-package monokai-theme
-  :config
+ :config
   (load-theme 'monokai)
   :demand)
 
@@ -132,6 +149,39 @@ only whitespace."
    mode-line-misc-info
    mode-line-end-spaces))
 
+;; Search
+
+(defvar ttuegel/search-map (make-sparse-keymap))
+(bind-key "C-f" ttuegel/search-map)
+(bind-keys
+ :map ttuegel/search-map
+ ("f" . search-forward-regexp)
+ ("F" . search-backward-regexp))
+
+;; Buffers
+
+(bind-key "C-b" 'helm-buffers-list ctl-x-map)
+
+(defvar ttuegel/buffer-map (make-sparse-keymap))
+(bind-key "b" ttuegel/buffer-map ctl-x-map)
+(bind-keys
+ :map ttuegel/buffer-map
+ ("k" . kill-buffer)
+ ("K" . kill-other-buffers)
+ ("n" . switch-to-next-buffer)
+ ("p" . switch-to-prev-buffer)
+ ("R" . (lambda () (interactive) (revert-buffer nil t)))
+ ("r" . rename-current-buffer-file))
+
+;; Errors
+
+(defvar ttuegel/error-map (make-sparse-keymap))
+(bind-key "e" ttuegel/error-map ctl-x-map)
+(bind-keys
+ :map ttuegel/error-map
+ ("h" . next-error)
+ ("t" . previous-error))
+
 ;;; Required Packages
 
 ;; Make buffer names more unique
@@ -140,15 +190,25 @@ only whitespace."
   (customize-set-variable 'uniquify-buffer-name-style 'forward))
 
 ;; Be evil
-(use-package evil-leader :demand
-  :config
-  (evil-leader/set-leader "C-SPC"))
-(global-evil-leader-mode)
-
-(bind-key "C-SPC" ctl-x-map)
-
 (use-package evil :demand
   :config
+  (customize-set-variable 'evil-toggle-key "C-,")
+
+  ;; Windows
+  (bind-key "w" evil-window-map ctl-x-map)
+  (bind-keys
+   :map evil-window-map
+   ("d" . evil-window-left)
+   ("D" . evil-window-move-far-left)
+   ("h" . evil-window-down)
+   ("H" . evil-window-move-very-bottom)
+   ("t" . evil-window-up)
+   ("T" . evil-window-move-very-top)
+   ("n" . evil-window-right)
+   ("N" . evil-window-move-far-right)
+   ("w" . evil-window-new)
+   ("W" . evil-window-vnew)
+   ("k" . evil-window-delete))
 
   ;; Whitespace
   (defadvice evil-normal-state
@@ -174,99 +234,41 @@ only whitespace."
   (ttuegel/set-evil-tag evil-operator-state-tag " O " (:background "#AE81FF"))
   (ttuegel/set-evil-tag evil-replace-state-tag " R " (:background "#FD5FF0"))
 
-  ;; Use C-<return> instead of ESC
-  (define-key evil-insert-state-map (kbd "C-<return>") 'evil-normal-state)
-  (define-key evil-emacs-state-map (kbd "C-<return>") 'evil-normal-state)
-  (define-key evil-motion-state-map (kbd "C-<return>") 'evil-normal-state)
-  (define-key evil-operator-state-map (kbd "C-<return>") 'evil-normal-state)
-  (define-key evil-replace-state-map (kbd "C-<return>") 'evil-normal-state)
-  (define-key evil-visual-state-map (kbd "C-<return>") 'evil-normal-state)
+  (customize-set-variable 'evil-mode-line-format '(before . mode-line-front-space))
 
-  (defun ttuegel/evil-map (key def &rest bindings)
-    (evil-leader--def-keys evil-normal-state-map key def bindings)
-    (evil-leader--def-keys evil-visual-state-map key def bindings)
-    (evil-leader--def-keys evil-motion-state-map key def bindings)
-    (evil-leader--def-keys evil-operator-state-map key def bindings))
+  (bind-key "<C-return>" 'evil-normal-state)
 
   ;; Vim motion keys
-  (ttuegel/evil-map "t" 'evil-previous-visual-line
-                    "h" 'evil-next-visual-line
-                    "d" 'evil-backward-char
-                    "n" 'evil-forward-char)
+  (bind-keys
+   :map evil-motion-state-map
+   ("t" . evil-previous-visual-line)
+   ("h" . evil-next-visual-line)
+   ("d" . evil-backward-char)
+   ("n" . evil-forward-char)
 
-  ;; Emacs-mode equivalent of Vim motion keys
-  (global-set-key (kbd "C-t") 'previous-line)
-  (global-set-key (kbd "C-h") 'next-line)
-  (global-set-key (kbd "C-d") 'backward-char)
-  (global-set-key (kbd "C-n") 'forward-char)
+   ("T" . evil-scroll-up)
+   ("H" . evil-scroll-down)
+   ("D" . beginning-of-visual-line)
+   ("N" . end-of-visual-line)
 
-  ;; Beginning/end of line (home/end)
-  ;; Use back-to-indentation instead of evil-beginning-of-line so that
-  ;; cursor ends up at the first non-whitespace character of a line. 0
-  ;; can be used to go to real beginning of line
-  (ttuegel/evil-map "_" 'back-to-indentation
-                    "-" 'evil-end-of-line)
+   ("M-t" . evil-scroll-page-up)
+   ("M-h" . evil-scroll-page-down))
 
-  ;; Scrolling
-  (ttuegel/evil-map "\M-t" 'evil-scroll-page-up
-                    "\M-h" 'evil-scroll-page-down
-                    "T" 'evil-scroll-up
-                    "H" 'evil-scroll-down)
+  (unbind-key "j" evil-motion-state-map)
+  (unbind-key "k" evil-motion-state-map)
+  (unbind-key "l" evil-motion-state-map)
 
-  (ttuegel/evil-map "k" 'evil-delete)
+  (unbind-key "C-f" evil-motion-state-map)
+  (unbind-key "C-b" evil-motion-state-map)
 
-  ;; Search
-  (ttuegel/evil-map "/" 'isearch-forward
-                    "?" 'isearch-backward
-                    "l" 'isearch-repeat-forward
-                    "L" 'isearch-repeat-backward)
+  (bind-keys
+   :map evil-normal-state-map
+   ("k" . evil-delete)
+   ("K" . evil-delete-line))
 
-  (global-set-key (kbd "C-c /") 'isearch-forward)
-  (global-set-key (kbd "C-c ?") 'isearch-backward)
-  (global-set-key (kbd "C-c l") 'isearch-repeat-forward)
-  (global-set-key (kbd "C-c L") 'isearch-repeat-backward)
+  (unbind-key "d" evil-normal-state-map)
+  (unbind-key "D" evil-normal-state-map)
 
-  ;; Windows
-  (define-key ctl-x-map "w" 'evil-window-map)
-  (evil-leader/set-key "w" 'evil-window-map)
-  (define-key evil-window-map "d" 'evil-window-left)
-  (define-key evil-window-map "D" 'evil-window-move-far-left)
-  (define-key evil-window-map "h" 'evil-window-down)
-  (define-key evil-window-map "H" 'evil-window-move-very-bottom)
-  (define-key evil-window-map "t" 'evil-window-up)
-  (define-key evil-window-map "T" 'evil-window-move-very-top)
-  (define-key evil-window-map "n" 'evil-window-right)
-  (define-key evil-window-map "N" 'evil-window-move-far-right)
-  (define-key evil-window-map "w" 'evil-window-vnew)
-  (define-key evil-window-map "W" 'evil-window-new)
-  (define-key evil-window-map "k" 'evil-window-delete)
-
-  (evil-leader/set-key "TAB"
-    (lambda ()
-      (interactive)
-      (switch-to-buffer (other-buffer (current-buffer) t))))
-
-  ;; C-x map
-  (evil-leader/set-key "C-SPC" ctl-x-map)
-
-  ;; Emacs state
-  (ttuegel/evil-map "C-," 'evil-emacs-state)
-  (global-set-key (kbd "C-,") 'evil-exit-emacs-state)
-
-  ;; Buffers
-  (evil-leader/set-key
-    "bK" 'kill-other-buffers
-    "bn" 'switch-to-next-buffer
-    "bp" 'switch-to-prev-buffer
-    "bR" (lambda () (interactive) (revert-buffer nil t))
-    "br" 'rename-current-buffer-file)
-
-  ;; Errors
-  (evil-leader/set-key
-    "en" 'next-error
-    "ep" 'previous-error)
-
-  (customize-set-variable 'evil-mode-line-format '(before . mode-line-front-space))
   (customize-set-variable 'evil-shift-width tab-width))
 (evil-mode t)
 
@@ -280,8 +282,10 @@ only whitespace."
   :diminish undo-tree-mode
   :config
   (global-undo-tree-mode 1)
-  (ttuegel/evil-map "u" 'undo-tree-undo
-                    "U" 'undo-tree-redo)
+  (bind-keys
+   :map evil-normal-state-map
+   ("u" . undo-tree-undo)
+   ("U" . undo-tree-redo))
   :demand)
 
 ;; Helm
@@ -295,8 +299,9 @@ only whitespace."
   (require 'helm-config)
   (customize-set-variable 'helm-ff-skip-boring-files t)
 
-  (bind-key "M-SPC" 'helm-M-x)
-  (evil-leader/set-key "h" helm-command-map)
+  (bind-key "M-z" 'helm-M-x)
+  (bind-key "C-h" helm-command-map ctl-x-map)
+  (bind-key "C-f" 'helm-find-files ctl-x-map)
 
   (bind-key "C-h" 'helm-next-line helm-map)
   (bind-key "C-t" 'helm-previous-line helm-map)
@@ -313,59 +318,26 @@ only whitespace."
 ;; Avy
 (use-package avy :demand
   :config
-  (ttuegel/evil-map "f" 'avy-goto-char
-                    "F" 'avy-goto-line))
+  (bind-keys
+   :map evil-normal-state-map
+   ("f" . avy-goto-char)
+   ("F" . avy-goto-line)))
 
 ;;; Optional Packages
 
 ;; Git
 
+(defvar ttuegel/vc-map (make-sparse-keymap))
+(bind-key "g" ttuegel/vc-map ctl-x-map)
+
 (use-package magit
   :config
   (diminish 'auto-revert-mode)
-  (evil-leader/set-key "gs" 'magit-status))
+  (bind-key "s" 'magit-status ttuegel/vc-map))
 
 (use-package git-timemachine
   :config
-  (evil-leader/set-key "gt" 'git-timemachine-toggle))
-
-;; Org
-
-(use-package org
-  :init
-  (evil-leader/set-key
-    "oa" 'org-agenda
-    "oc" 'org-capture
-    "os" 'org-save-all-org-buffers)
-  :config
-  (customize-set-variable
-   'org-modules
-   '(org-bbdb org-bibtex org-docview org-gnus org-info org-habit
-              org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m))
-  (customize-set-variable 'org-default-notes-file "~/org/notes.org")
-  (customize-set-variable 'org-agenda-files '("~/org"))
-
-  (custom-theme-set-faces
-   'user
-   '(org-level-1 ((t (:inherit nil :foreground "#FD971F" :height 1.0))))
-   '(org-level-2 ((t (:inherit nil :foreground "#A6E22E" :height 1.0))))
-   '(org-level-3 ((t (:inherit nil :foreground "#66D9EF" :height 1.0))))
-   '(org-level-4 ((t (:inherit nil :foreground "#E6DB74" :height 1.0))))
-   '(org-level-5 ((t (:inherit nil :foreground "#A1EFE4"))))
-   '(org-level-6 ((t (:inherit nil :foreground "#A6E22E"))))
-   '(org-level-7 ((t (:inherit nil :foreground "#F92672"))))
-   '(org-level-8 ((t (:inherit nil :foreground "#66D9EF")))))
-
-  ;; Cursor movement (agenda mode)
-  (define-key org-agenda-mode-map (kbd "h") 'org-agenda-next-item)
-  (define-key org-agenda-mode-map (kbd "t") 'org-agenda-previous-item)
-  (define-key org-agenda-mode-map (kbd "C-h") 'org-agenda-next-date-line)
-  (define-key org-agenda-mode-map (kbd "C-t") 'org-agenda-previous-date-line)
-  (define-key org-agenda-mode-map (kbd "d") 'org-agenda-todo)
-
-  (global-set-key (kbd "C-c l") 'org-store-link)
-
-  (add-hook 'org-mode-hook 'auto-fill-mode))
+  (bind-key "t" 'git-timemachine-toggle ttuegel/vc-map))
 
 ;; Rainbow Delimiters
 
