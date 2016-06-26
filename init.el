@@ -319,7 +319,7 @@ only whitespace."
 (use-package avy :demand
   :config
   (bind-keys
-   :map evil-normal-state-map
+   :map evil-motion-state-map
    ("f" . avy-goto-char)
    ("F" . avy-goto-line)))
 
