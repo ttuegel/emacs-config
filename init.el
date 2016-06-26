@@ -318,6 +318,7 @@ only whitespace."
 ;; Avy
 (use-package avy :demand
   :config
+  (customize-set-variable 'avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   (bind-keys
    :map evil-motion-state-map
    ("f" . avy-goto-char)
