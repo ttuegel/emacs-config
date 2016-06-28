@@ -189,6 +189,14 @@ only whitespace."
   :config
   (customize-set-variable 'uniquify-buffer-name-style 'forward))
 
+(defun ttuegel/beginning-of-line ()
+  (interactive)
+  (let ((before (point)))
+    (unless (eq before (line-beginning-position))
+      (back-to-indentation)
+      (let ((after (point)))
+        (when (eq before after) (beginning-of-line))))))
+
 ;; Be evil
 (use-package evil :demand
   :config
@@ -248,8 +256,8 @@ only whitespace."
 
    ("T" . evil-scroll-up)
    ("H" . evil-scroll-down)
-   ("D" . beginning-of-visual-line)
-   ("N" . end-of-visual-line)
+   ("D" . ttuegel/beginning-of-line)
+   ("N" . end-of-line)
 
    ("M-t" . evil-scroll-page-up)
    ("M-h" . evil-scroll-page-down))
