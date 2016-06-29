@@ -280,7 +280,7 @@ only whitespace."
   (customize-set-variable 'evil-shift-width tab-width))
 (evil-mode t)
 
-(use-package evil-surround)
+(use-package evil-surround :demand)
 (global-evil-surround-mode 1)
 
 (use-package evil-indent-textobject :demand)
