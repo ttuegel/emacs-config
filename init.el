@@ -268,6 +268,8 @@ only whitespace."
 
   (unbind-key "C-f" evil-motion-state-map)
   (unbind-key "C-b" evil-motion-state-map)
+  (unbind-key "-" evil-motion-state-map)
+  (unbind-key "+" evil-motion-state-map)
 
   (bind-keys
    :map evil-normal-state-map
