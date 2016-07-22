@@ -442,7 +442,7 @@ only whitespace."
 
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'yas-minor-mode)
-  (add-hook 'haskell-mode-hook #'turn-on-hs-indent))
+  (add-hook 'haskell-mode-hook #'turn-on-haskell-indentation))
 
 (provide 'init)
 ;;; init.el ends here
