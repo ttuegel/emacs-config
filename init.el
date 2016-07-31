@@ -155,8 +155,8 @@ only whitespace."
 (bind-key "C-f" ttuegel/search-map)
 (bind-keys
  :map ttuegel/search-map
- ("f" . (lambda () (isearch-forward t)))
- ("F" . (lambda () (isearch-backward t))))
+ ("f" . (lambda () (interactive) (isearch-forward t)))
+ ("F" . (lambda () (interactive) (isearch-backward t))))
 
 ;; Buffers
 
