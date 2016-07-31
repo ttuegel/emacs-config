@@ -84,8 +84,8 @@
 
 ;; Tabs
 (customize-set-variable 'tab-always-indent t)
-(customize-set-variable 'tab-stop-list (number-sequence 4 120 4))
-(customize-set-variable 'tab-width 4)
+(customize-set-variable 'tab-stop-list (number-sequence 2 120 2))
+(customize-set-variable 'tab-width 2)
 (customize-set-variable 'indent-tabs-mode nil)
 
 ;; Fill column
