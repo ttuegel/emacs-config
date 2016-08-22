@@ -445,5 +445,8 @@ only whitespace."
   (add-hook 'haskell-mode-hook #'turn-on-haskell-simple-indent)
   (add-hook 'haskell-mode-hook #'intero-mode))
 
+; Load xml-mode for Relax NG documents
+(add-to-list 'auto-mode-alist '("\\.rng\\'" . xml-mode))
+
 (provide 'init)
 ;;; init.el ends here
