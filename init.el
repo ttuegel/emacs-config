@@ -397,6 +397,11 @@ only whitespace."
 (use-package ledger-mode
   :mode ("\\.ledger\\'" . ledger-mode))
 
+;; YAML
+
+(use-package yaml-mode
+  :mode ("\\.\\(yml\\|yaml\\)\\'" . yaml-mode))
+
 ;; Snippets
 
 (use-package yasnippet
