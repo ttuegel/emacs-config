@@ -435,8 +435,7 @@ only whitespace."
 
 ;; Haskell
 
-(add-to-list 'load-path "~/.emacs.d/hs-indent")
-(use-package hs-indent)
+(use-package hindent)
 
 (use-package haskell-mode
   :config
@@ -447,7 +446,7 @@ only whitespace."
 
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'yas-minor-mode)
-  (add-hook 'haskell-mode-hook #'turn-on-haskell-simple-indent)
+  (add-hook 'haskell-mode-hook #'hindent-mode)
   (add-hook 'haskell-mode-hook #'intero-mode))
 
 ; Load xml-mode for Relax NG documents
