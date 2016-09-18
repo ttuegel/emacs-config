@@ -308,6 +308,7 @@ only whitespace."
   :config
   (require 'helm-config)
   (customize-set-variable 'helm-ff-skip-boring-files t)
+  (customize-set-variable 'helm-split-window-in-side-p t)
 
   (bind-key "M-z" 'helm-M-x)
   (bind-key "C-h" helm-command-map ctl-x-map)
