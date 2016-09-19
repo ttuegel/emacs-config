@@ -5,7 +5,6 @@
 (require 'package)
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")
         ("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
 
@@ -15,7 +14,6 @@
   (require 'use-package))
 
 (setq use-package-always-ensure t)
-(setq use-package-always-pin "melpa-stable")
 
 (use-package diminish :demand)
 (use-package bind-key :demand)
@@ -292,10 +290,10 @@ only whitespace."
   (customize-set-variable 'evil-shift-width tab-width))
 (evil-mode t)
 
-(use-package evil-surround :demand :pin melpa)
+(use-package evil-surround :demand)
 (global-evil-surround-mode 1)
 
-(use-package evil-indent-textobject :demand :pin melpa)
+(use-package evil-indent-textobject :demand)
 
 ;; Undo Tree
 (use-package undo-tree
