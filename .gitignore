@@ -3,3 +3,4 @@ org-clock-save.el
 /session*
 recentf
 *.elc
+/elpa/

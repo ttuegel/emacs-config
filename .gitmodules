@@ -4,3 +4,6 @@
 [submodule "hs-indent"]
 	path = hs-indent
 	url = git@github.com:ttuegel/haskell-true-indent.git
+[submodule "use-package"]
+	path = use-package
+	url = https://github.com/jwiegley/use-package.git

@@ -2,31 +2,29 @@
 ;;; Commentary:
 ;;; Code:
 
-(eval-when-compile (require 'use-package))
+(require 'package)
+(setq package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize)
 
-(require 'diminish)
-(require 'bind-key)
+(add-to-list 'load-path "~/.emacs.d/use-package")
+
+(eval-when-compile
+  (require 'use-package))
+
+(setq use-package-always-ensure t)
+(setq use-package-always-pin "melpa-stable")
+
+(use-package diminish :demand)
+(use-package bind-key :demand)
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
 ;;; Emacs settings
 
 (bind-key "C-z" ctl-x-map)
-
-;; Emacs-mode equivalent of Vim motion keys
-(bind-keys
-  ("C-t" . 'previous-line)
-  ("C-h" . 'next-line)
-  ("C-d" . 'backward-char)
-  ("C-n" . 'forward-char)
-
-  ("C-T" . evil-scroll-up)
-  ("C-H" . evil-scroll-down)
-  ("C-D" . beginning-of-visual-line)
-  ("C-N" . end-of-visual-line)
-
-  ("C-M-t" . evil-scroll-page-up)
-  ("C-M-h" . evil-scroll-page-down))
 
 ;; Use UTF-8 everywhere. It's 2016, how is this not default?
 (set-terminal-coding-system 'utf-8)
@@ -160,8 +158,6 @@ only whitespace."
 
 ;; Buffers
 
-(bind-key "C-b" 'helm-buffers-list ctl-x-map)
-
 (defvar ttuegel/buffer-map (make-sparse-keymap))
 (bind-key "b" ttuegel/buffer-map ctl-x-map)
 (bind-keys
@@ -185,9 +181,7 @@ only whitespace."
 ;;; Required Packages
 
 ;; Make buffer names more unique
-(use-package uniquify :demand
-  :config
-  (customize-set-variable 'uniquify-buffer-name-style 'forward))
+(customize-set-variable 'uniquify-buffer-name-style 'forward)
 
 (defun ttuegel/beginning-of-line ()
   (interactive)
@@ -200,6 +194,22 @@ only whitespace."
 ;; Be evil
 (use-package evil :demand
   :config
+
+  ;; Emacs-mode equivalent of Vim motion keys
+  (bind-keys
+   ("C-t" . 'previous-line)
+   ("C-h" . 'next-line)
+   ("C-d" . 'backward-char)
+   ("C-n" . 'forward-char)
+
+   ("C-T" . evil-scroll-up)
+   ("C-H" . evil-scroll-down)
+   ("C-D" . beginning-of-visual-line)
+   ("C-N" . end-of-visual-line)
+
+   ("C-M-t" . evil-scroll-page-up)
+   ("C-M-h" . evil-scroll-page-down))
+
   (customize-set-variable 'evil-toggle-key "C-,")
 
   ;; Windows
@@ -282,10 +292,10 @@ only whitespace."
   (customize-set-variable 'evil-shift-width tab-width))
 (evil-mode t)
 
-(use-package evil-surround :demand)
+(use-package evil-surround :demand :pin melpa)
 (global-evil-surround-mode 1)
 
-(use-package evil-indent-textobject :demand)
+(use-package evil-indent-textobject :demand :pin melpa)
 
 ;; Undo Tree
 (use-package undo-tree
@@ -304,11 +314,13 @@ only whitespace."
 (when (file-exists-p "~/.emacs.d/helm")
   (add-to-list 'load-path "~/.emacs.d/helm"))
 
-(use-package helm :demand
+(use-package helm-config :ensure helm :demand
   :config
-  (require 'helm-config)
+  (require 'helm-files)
   (customize-set-variable 'helm-ff-skip-boring-files t)
   (customize-set-variable 'helm-split-window-in-side-p t)
+
+  (bind-key "C-b" 'helm-buffers-list ctl-x-map)
 
   (bind-key "M-z" 'helm-M-x)
   (bind-key "C-h" helm-command-map ctl-x-map)
@@ -316,15 +328,13 @@ only whitespace."
 
   (bind-key "C-h" 'helm-next-line helm-map)
   (bind-key "C-t" 'helm-previous-line helm-map)
-  (bind-key "C-n" 'helm-execute-persistent-action helm-map))
-(helm-mode 1)
-(diminish 'helm-mode)
+  (bind-key "C-n" 'helm-execute-persistent-action helm-map)
 
-(use-package helm-files :demand
-  :config
   (bind-key "C-f" 'helm-find-files helm-command-map)
   (bind-key "C-d" 'helm-find-files-up-one-level helm-read-file-map)
   (bind-key "C-d" 'helm-find-files-up-one-level helm-find-files-map))
+(helm-mode 1)
+(diminish 'helm-mode)
 
 ;; Avy
 (use-package avy :demand
@@ -357,7 +367,7 @@ only whitespace."
 
 ;; TeX
 
-(use-package tex-site
+(use-package tex-site :ensure auctex
   :commands latex-mode
   :mode ("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode)
   :config
@@ -382,6 +392,11 @@ only whitespace."
    (add-hook 'LaTeX-mode-hook #'yas-minor-mode)
    (add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1))))
 
+;; Markdown
+
+(use-package markdown-mode
+  :mode ("\\.md\\'" . markdown-mode))
+
 ;; Flycheck
 
 (use-package flycheck
@@ -402,14 +417,6 @@ only whitespace."
 
 (use-package yaml-mode
   :mode ("\\.\\(yml\\|yaml\\)\\'" . yaml-mode))
-
-;; Snippets
-
-(use-package yasnippet
-  :diminish yas-minor-mode
-  :config
-  (customize-set-variable 'yas-snippet-dirs '("~/.emacs.d/snippets"))
-  (yas-reload-all))
 
 ;; Company
 
@@ -436,7 +443,7 @@ only whitespace."
 
 ;; Haskell
 
-(use-package hindent)
+(use-package intero)
 
 (use-package haskell-mode
   :config
@@ -451,7 +458,7 @@ only whitespace."
   (add-hook 'haskell-mode-hook #'turn-on-haskell-simple-indent)
   (add-hook 'haskell-mode-hook #'intero-mode))
 
-; Load xml-mode for Relax NG documents
+;; XML
 (add-to-list 'auto-mode-alist '("\\.rng\\'" . xml-mode))
 
 (provide 'init)
