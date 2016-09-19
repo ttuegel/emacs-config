@@ -56,38 +56,39 @@
 ;; Ask `y or n' rather than `yes or no'
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; Make buffer names more unique
+(customize-set-variable 'uniquify-buffer-name-style 'forward)
+
 ;; Set color scheme
 (customize-set-variable 'custom-safe-themes t)
-(use-package monokai-theme
- :config
-  (load-theme 'monokai)
-  :demand)
+(use-package monokai-theme :demand
+  :config
+  (load-theme 'monokai))
 
 ;; Ignore common extensions.
 (customize-set-variable
  'completion-ignored-extensions
  '(".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".hi" ".elc"))
 
-;; Fonts
-(custom-theme-set-faces
- 'user
+;;; Fonts
 
- ;; Use Source Code Pro font by default.
- '(default ((t (:family "Source Code Pro"))))
+;; Use Source Code Pro font by default.
 
- ;; Don't use italics to indicate types.
- '(font-lock-type-face ((t :slant normal))))
+(custom-theme-set-faces 'user '(default ((t (:family "Source Code Pro")))))
 
-;; Tabs
+;; Don't use italics to indicate types.
+(custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
+
+;;; Tabs
 (customize-set-variable 'tab-always-indent t)
 (customize-set-variable 'tab-stop-list (number-sequence 2 120 2))
 (customize-set-variable 'tab-width 2)
 (customize-set-variable 'indent-tabs-mode nil)
 
-;; Fill column
+;;; Fill column
 (customize-set-variable 'fill-column 80)
 
-;; Whitespace
+;;; Whitespace
 (customize-set-variable 'whitespace-style '(face trailing tabs))
 (global-whitespace-mode t)
 (diminish 'global-whitespace-mode)
@@ -110,13 +111,14 @@ only whitespace."
     (forward-line 1)
     (back-to-indentation)))
 
-;; Parentheses
+;;; Parentheses
 (show-paren-mode t)
+(use-package rainbow-delimiters)
 
-;; Automatic indentation
+;;; Automatic indentation
 (electric-indent-mode t)
 
-;; Mode line
+;;; Mode line
 
 (defun ttuegel/mode-line-buffer-modified ()
   "Mode line indicator that the buffer is modified"
@@ -145,7 +147,7 @@ only whitespace."
    mode-line-misc-info
    mode-line-end-spaces))
 
-;; Search
+;;; Search
 
 (defvar ttuegel/search-map (make-sparse-keymap))
 (bind-key "C-f" ttuegel/search-map)
@@ -154,7 +156,7 @@ only whitespace."
  ("f" . (lambda () (interactive) (isearch-forward t)))
  ("F" . (lambda () (interactive) (isearch-backward t))))
 
-;; Buffers
+;;; Buffers
 
 (defvar ttuegel/buffer-map (make-sparse-keymap))
 (bind-key "b" ttuegel/buffer-map ctl-x-map)
@@ -167,7 +169,7 @@ only whitespace."
  ("R" . (lambda () (interactive) (revert-buffer nil t)))
  ("r" . rename-current-buffer-file))
 
-;; Errors
+;;; Errors
 
 (defvar ttuegel/error-map (make-sparse-keymap))
 (bind-key "e" ttuegel/error-map ctl-x-map)
@@ -178,10 +180,8 @@ only whitespace."
 
 ;;; Required Packages
 
-;; Make buffer names more unique
-(customize-set-variable 'uniquify-buffer-name-style 'forward)
-
 (defun ttuegel/beginning-of-line ()
+  "`beginning-of-line' if `back-to-indentation' does not move the cursor."
   (interactive)
   (let ((before (point)))
     (unless (eq before (line-beginning-position))
@@ -189,7 +189,7 @@ only whitespace."
       (let ((after (point)))
         (when (eq before after) (beginning-of-line))))))
 
-;; Be evil
+;;; Be Evil
 (use-package evil :demand
   :config
 
@@ -296,21 +296,16 @@ only whitespace."
 (use-package evil-indent-textobject :demand)
 
 ;; Undo Tree
-(use-package undo-tree
+(use-package undo-tree :demand
   :diminish undo-tree-mode
   :config
   (global-undo-tree-mode 1)
   (bind-keys
    :map evil-normal-state-map
    ("u" . undo-tree-undo)
-   ("U" . undo-tree-redo))
-  :demand)
+   ("U" . undo-tree-redo)))
 
 ;; Helm
-
-;; Use my development helm version, if present
-(when (file-exists-p "~/.emacs.d/helm")
-  (add-to-list 'load-path "~/.emacs.d/helm"))
 
 (use-package helm-config :ensure helm :demand
   :config
@@ -336,12 +331,12 @@ only whitespace."
 
 ;; Avy
 (use-package avy :demand
+  :init
+  :bind (:map evil-motion-state-map
+              ("f" . avy-goto-char)
+              ("F" . avy-goto-line))
   :config
-  (customize-set-variable 'avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
-  (bind-keys
-   :map evil-motion-state-map
-   ("f" . avy-goto-char)
-   ("F" . avy-goto-line)))
+  (customize-set-variable 'avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
 ;;; Optional Packages
 
@@ -358,10 +353,6 @@ only whitespace."
 (use-package git-timemachine
   :config
   (bind-key "t" 'git-timemachine-toggle ttuegel/vc-map))
-
-;; Rainbow Delimiters
-
-(use-package rainbow-delimiters)
 
 ;; TeX
 
@@ -452,7 +443,6 @@ only whitespace."
 
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'yas-minor-mode)
-  (add-hook 'haskell-mode-hook #'hindent-mode)
   (add-hook 'haskell-mode-hook #'turn-on-haskell-simple-indent)
   (add-hook 'haskell-mode-hook #'intero-mode))
 
