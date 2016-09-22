@@ -443,7 +443,6 @@ only whitespace."
 
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'yas-minor-mode)
-  (add-hook 'haskell-mode-hook #'turn-on-haskell-simple-indent)
   (add-hook 'haskell-mode-hook #'intero-mode))
 
 ;; XML
