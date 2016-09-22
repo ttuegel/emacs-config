@@ -442,7 +442,6 @@ only whitespace."
   (customize-set-variable 'haskell-process-suggest-remove-import-lines nil)
 
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'haskell-mode-hook #'yas-minor-mode)
   (add-hook 'haskell-mode-hook #'intero-mode))
 
 ;; XML
