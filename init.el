@@ -415,7 +415,9 @@ only whitespace."
 ;; Nix
 
 (use-package nix-mode
-  :mode ("\\.nix\\'" . nix-mode))
+  :mode ("\\.nix\\'" . nix-mode)
+  :config
+  (add-hook 'nix-mode-hook #'rainbow-delimiters-mode))
 
 ;; Ledger
 
