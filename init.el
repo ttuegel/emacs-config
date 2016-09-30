@@ -261,7 +261,7 @@ only whitespace."
 
   (customize-set-variable 'evil-mode-line-format '(before . mode-line-front-space))
 
-  (bind-key "<C-return>" 'evil-normal-state)
+  (bind-key* "C-/" 'evil-normal-state)
 
   ;; Vim motion keys
   (bind-keys
