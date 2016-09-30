@@ -463,5 +463,10 @@ only whitespace."
   (add-hook 'TeX-mode-hook #'zotelo-minor-mode)
   (add-hook 'org-mode-hook #'zotelo-minor-mode))
 
+;; org-mode
+(use-package org
+  :config
+  (customize-set-variable 'org-catch-invisible-edits 'show))
+
 (provide 'init)
 ;;; init.el ends here
