@@ -456,5 +456,12 @@ only whitespace."
 ;; XML
 (add-to-list 'auto-mode-alist '("\\.rng\\'" . xml-mode))
 
+;; Zotero integration
+
+(use-package zotelo
+  :config
+  (add-hook 'TeX-mode-hook #'zotelo-minor-mode)
+  (add-hook 'org-mode-hook #'zotelo-minor-mode))
+
 (provide 'init)
 ;;; init.el ends here
