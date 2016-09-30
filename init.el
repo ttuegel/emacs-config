@@ -25,6 +25,10 @@
 
 ;;; Emacs settings
 
+;; Don't EVER touch my init.el!
+(eval-after-load "cus-edit"
+  '(defun customize-save-variable (variable value &optional comment) value))
+
 (bind-key "C-z" ctl-x-map)
 
 ;; Use UTF-8 everywhere. It's 2016, how is this not default?
@@ -454,27 +458,3 @@ only whitespace."
 
 (provide 'init)
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(auto-save-default nil)
- '(blink-cursor-mode nil)
- '(default-frame-alist (quote ((cursor-color . "white"))))
- '(inhibit-startup-screen t)
- '(make-backup-files nil)
- '(package-selected-packages
-   (quote
-    (intero yaml-mode ledger-mode nix-mode markdown-mode auctex git-timemachine magit avy helm evil-indent-textobject evil-surround rainbow-delimiters monokai-theme bind-key diminish)))
- '(select-enable-clipboard nil)
- '(uniquify-buffer-name-style (quote forward) nil (uniquify))
- '(visible-bell t)
- '(x-select-enable-clipboard nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Source Code Pro"))))
- '(font-lock-type-face ((t :slant normal))))
