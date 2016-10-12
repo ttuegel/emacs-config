@@ -386,6 +386,7 @@ only whitespace."
      (output-dvi "xdvi")
      (output-pdf "Okular")
      (output-html "xdg-open")))
+  (customize-set-variable 'reftex-plug-into-AUCTeX t)
 
   (add-hook 'TeX-mode-hook #'reftex-mode)
   (add-hook 'LaTeX-mode-hook #'yas-minor-mode)
