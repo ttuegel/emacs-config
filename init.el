@@ -472,9 +472,12 @@ only whitespace."
 ;; org-mode
 (use-package org
   :config
-  (customize-set-variable 'org-catch-invisible-edits 'show))
+  (customize-set-variable 'org-catch-invisible-edits 'show)
+  (add-to-list 'org-file-apps '("pdf" . "okular %s")))
 
-(use-package org-ref)
+(use-package org-ref
+  :config
+  (customize-set-variable 'org-ref-pdf-directory "~/bib/files/"))
 
 (provide 'init)
 ;;; init.el ends here
