@@ -392,6 +392,8 @@ only whitespace."
   (add-hook 'LaTeX-mode-hook #'yas-minor-mode)
   (add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1))))
 
+(customize-set-variable 'reftex-default-bibliography "~/bib/default.bib")
+
 ;; Markdown
 
 (use-package markdown-mode
