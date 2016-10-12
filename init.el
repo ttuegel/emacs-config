@@ -387,8 +387,9 @@ only whitespace."
      (output-pdf "Okular")
      (output-html "xdg-open")))
 
-   (add-hook 'LaTeX-mode-hook #'yas-minor-mode)
-   (add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1))))
+  (add-hook 'TeX-mode-hook #'reftex-mode)
+  (add-hook 'LaTeX-mode-hook #'yas-minor-mode)
+  (add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1))))
 
 ;; Markdown
 
