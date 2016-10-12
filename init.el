@@ -471,5 +471,7 @@ only whitespace."
   :config
   (customize-set-variable 'org-catch-invisible-edits 'show))
 
+(use-package org-ref)
+
 (provide 'init)
 ;;; init.el ends here
