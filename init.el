@@ -468,17 +468,7 @@ only whitespace."
 ;; org-mode
 (use-package org
   :config
-  (customize-set-variable 'org-catch-invisible-edits 'show)
-  (custom-theme-set-faces
-   'user
-   '(org-level-1 ((t (:inherit nil :foreground "#FD971F" :height 1.0))))
-   '(org-level-2 ((t (:inherit nil :foreground "#A6E22E" :height 1.0))))
-   '(org-level-3 ((t (:inherit nil :foreground "#66D9EF" :height 1.0))))
-   '(org-level-4 ((t (:inherit nil :foreground "#E6DB74" :height 1.0))))
-   '(org-level-5 ((t (:inherit nil :foreground "#A1EFE4"))))
-   '(org-level-6 ((t (:inherit nil :foreground "#A6E22E"))))
-   '(org-level-7 ((t (:inherit nil :foreground "#F92672"))))
-   '(org-level-8 ((t (:inherit nil :foreground "#66D9EF"))))))
+  (customize-set-variable 'org-catch-invisible-edits 'show))
 
 (provide 'init)
 ;;; init.el ends here
