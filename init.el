@@ -11,6 +11,7 @@
       '(("melpa-stable" . 1)))
 (package-initialize)
 
+(add-to-list 'load-path "~/el/biblio.el")
 (add-to-list 'load-path "~/.emacs.d/use-package")
 
 (eval-when-compile
@@ -392,7 +393,17 @@ only whitespace."
   (add-hook 'LaTeX-mode-hook #'yas-minor-mode)
   (add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1))))
 
-(customize-set-variable 'reftex-default-bibliography "~/bib/default.bib")
+(setq reftex-default-bibliography "~/bib/default.bib")
+
+(setq bibtex-completion-bibliography "~/bib/default.bib")
+(setq bibtex-completion-library-path "~/bib/files/")
+(setq bibtex-completion-pdf-open-function 'org-open-file)
+
+(use-package helm-bibtex)
+(require 'biblio)
+
+(setq bibtex-autokey-edit-before-use nil)
+(setq bibtex-autokey-year-title-separator "_")
 
 ;; Markdown
 
@@ -462,22 +473,11 @@ only whitespace."
 ;; XML
 (add-to-list 'auto-mode-alist '("\\.rng\\'" . xml-mode))
 
-;; Zotero integration
-
-(use-package zotelo
-  :config
-  (add-hook 'TeX-mode-hook #'zotelo-minor-mode)
-  (add-hook 'org-mode-hook #'zotelo-minor-mode))
-
 ;; org-mode
 (use-package org
   :config
   (customize-set-variable 'org-catch-invisible-edits 'show)
   (add-to-list 'org-file-apps '("pdf" . "okular %s")))
-
-(use-package org-ref
-  :config
-  (customize-set-variable 'org-ref-pdf-directory "~/bib/files/"))
 
 (provide 'init)
 ;;; init.el ends here
