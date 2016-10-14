@@ -402,6 +402,8 @@ only whitespace."
 (use-package helm-bibtex)
 (require 'biblio)
 
+(setq bibtex-entry-format '(opts-or-alts numerical-fields inherit-booktitle last-comma delimiters unify-case braces strings sort-fields))
+(setq bibtex-text-indentation 0)
 (setq bibtex-autokey-edit-before-use nil)
 (setq bibtex-autokey-year-title-separator "_")
 
