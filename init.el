@@ -13,6 +13,7 @@
 
 (add-to-list 'load-path "~/el/biblio.el")
 (add-to-list 'load-path "~/.emacs.d/use-package")
+(add-to-list 'load-path "~/.emacs.d/lisp")
 
 (eval-when-compile
   (require 'use-package))
@@ -401,6 +402,7 @@ only whitespace."
 
 (use-package helm-bibtex)
 (require 'biblio)
+(require 'bibtex-normalize)
 
 (setq bibtex-entry-format '(opts-or-alts numerical-fields inherit-booktitle last-comma delimiters unify-case braces strings sort-fields))
 (setq bibtex-text-indentation 0)
