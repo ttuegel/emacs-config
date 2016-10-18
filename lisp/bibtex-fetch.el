@@ -28,6 +28,24 @@
 (require 'select)
 (require 'xml)
 
+(defun bibtex-fetch/url-retrieve-callback (status callback cbargs)
+  (let ((ready t))
+    (progn
+      (while status
+        (setq ready nil)
+        (pcase (pop status)
+          (`(:redirect ,redir) (bibtex-fetch/url-retrieve redir callback cbargs))
+          (`(:error (,err ,data)) (signal err data))))
+      (when ready (apply callback cbargs)))))
+
+
+(defun bibtex-fetch/url-retrieve (url callback &optional cbargs)
+  "Asynchronously retrieve URL and then CALLBACK.
+
+HTTP redirects are processed automatically. CALLBACK is not called if errors
+occur."
+  (url-retrieve url #'bibtex-fetch/url-retrieve-callback (list callback cbargs) t))
+
 (defun bibtex-fetch/remove-delimiters (s)
   "Remove the outer-most string delimiters around a BibTeX field."
   (s-chop-suffix "\""
@@ -302,13 +320,15 @@ arguments, but it may assume that `match-data' is set.")
   "The URL of the document associated with arXiv identifier ID."
   (s-concat "https://arxiv.org/pdf/" id))
 
+(defun bibtex-fetch/arxiv-document-callback (dest)
+  (write-file dest)
+  (kill-buffer))
+
 (defun bibtex-fetch/arxiv-document (url dest)
   "Fetch the document (PDF) corresponding to an arXiv URL and write it to DEST."
   (let* ((arxiv-id (match-string 1 url))
          (arxiv-pdf-url (bibtex-fetch/arxiv-document-url arxiv-id)))
-    (with-current-buffer (url-retrieve-synchronously arxiv-pdf-url)
-      (write-file dest)
-      (kill-buffer))))
+    (bibtex-fetch/url-retrieve arxiv-pdf-url #'bibtex-fetch/arxiv-document-callback (list dest))))
 
 (defvar bibtex-fetch-document-handlers
   (list (cons bibtex-fetch/arxiv-rx #'bibtex-fetch/arxiv-document))
