@@ -25,29 +25,7 @@
 ;;; Code:
 
 (require 'bibtex)
-(require 's)
-
-(defun bibtex-normalize/texify-whitespace (string)
-  "Replace extended whitespace as TeX would."
-  (replace-regexp-in-string "[ \n\t]+" " " string))
-
-(defun bibtex-normalize/pprint-field (item)
-  (let ((field (car item))
-        (value (cdr item)))
-    (unless (or (equal field "=type=")
-                (equal field "=key="))
-      (insert "  " (s-downcase field)
-              " = " (bibtex-normalize/texify-whitespace value)
-              ",\n"))))
-
-(defun bibtex-normalize/pprint-entry (entry)
-  "Pretty-print a parsed BibTeX entry."
-  (let ((type (cdr (assoc "=type=" entry)))
-        (key (cdr (assoc "=key=" entry))))
-    (when (and type key)
-      (insert "@" (s-downcase type) "{" key ",\n")
-      (mapc #'bibtex-normalize/pprint-field entry)
-      (insert "}\n"))))
+(require 'bibtex-print)
 
 (defun bibtex-normalize/next-entry ()
   "Jump to the beginning of the next bibtex entry."
@@ -56,6 +34,10 @@
       ;; go to beginning of the entry
       (bibtex-beginning-of-entry)
     (goto-char (point-max))))
+
+(defun bibtex-normalize/demangle-names (names)
+  (mapcar 'bibtex-autokey-demangle-name
+          (split-string names "[ \t\n]+and[ \t\n]+")))
 
 (defun bibtex-normalize/parse-and-delete-entry ()
   "Parse a BibTeX entry at point and then delete it."
@@ -69,7 +51,8 @@
 
 (defun bibtex-normalize-entry ()
   "Normalize the BibTeX entry at point."
-  (bibtex-normalize/pprint-entry (bibtex-normalize/parse-and-delete-entry)))
+  (bibtex-print-entry (bibtex-normalize/parse-and-delete-entry))
+  (bibtex-beginning-of-entry))
 
 (defun bibtex-normalize-buffer ()
   "Normalize every entry in the current BibTeX buffer."
