@@ -29,7 +29,7 @@
 (require 'xml)
 
 (defun bibtex-fetch/remove-delimiters (s)
-  (s-chop-suffix "\"" 
+  (s-chop-suffix "\""
   (s-chop-suffix "}"
   (s-chop-prefix "{"
   (s-chop-prefix "\"" s)))))
@@ -262,11 +262,12 @@ Concatenate the key:
              (year (bibtex-fetch/arxiv-entry-year entry))
              (authors (bibtex-fetch/arxiv-entry-authors entry))
              (bib (list (cons "=type=" "article")
+                        (cons "author" authors)
                         (cons "title" title)
                         (cons "year" year)
                         (cons "archiveprefix" "{arXiv}")
                         (cons "eprint" (s-concat "{" arxiv-id "}"))
-                        (cons "author" authors))))
+                        (cons "url" (s-concat "{" url "}")))))
         (add-to-list 'bib (cons "=key=" (bibtex-fetch/generate-key bib)))))))
 
 (defvar bibtex-fetch-entry-handlers
