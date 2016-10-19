@@ -33,10 +33,16 @@
   (let ((ready t))
     (progn
       (while status
-        (setq ready nil)
         (pcase (pop status)
-          (`(:redirect ,redir) (bibtex-fetch/url-retrieve redir callback cbargs))
-          (`(:error (,err ,data)) (signal err data))))
+          (`(:redirect ,redir)
+           (progn
+             (setq ready nil)
+             (bibtex-fetch/url-retrieve redir callback cbargs)))
+          (`(:error (,err ,data))
+           (progn
+             (setq ready nil)
+             (signal err data)))
+          (_ nil)))
       (when ready (apply callback cbargs)))))
 
 
@@ -370,6 +376,12 @@ Restore point when finished."
       (setq matched
             (bibtex-fetch/run-document-handler url dest (pop handlers))))))
 
+(defun bibtex-capture ()
+  (interactive)
+  (progn
+    (bibtex-fetch-entry)
+    (bibtex-fetch-document)))
+
 (defun bibtex-open-document ()
   "Open the document associated with the BibTeX entry at point."
   (interactive)
@@ -389,6 +401,10 @@ Restore point when finished."
      (if url
          (browse-url url)
        (message "No URL for this entry.")))))
+
+(bind-key "C-c o" #'bibtex-open-document bibtex-mode-map)
+(bind-key "C-c M-o" #'bibtex-open-url bibtex-mode-map)
+(bind-key "C-c C-c" #'bibtex-capture bibtex-mode-map)
 
 (provide 'bibtex-fetch)
 ;;; bibtex-fetch.el ends here
