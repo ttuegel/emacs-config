@@ -375,5 +375,17 @@ arguments, the URL and the destination for the file.")
           (helm-open-file-with-default-tool document)
         (message "Could not open %s" document)))))
 
+(defun bibtex-open-url ()
+  "Open the URL associated with the BibTeX entry at point."
+  (interactive
+   (let* ((entry (save-excursion
+                   (bibtex-beginning-of-entry)
+                   (bibtex-parse-entry)))
+          (url (bibtex-fetch/remove-delimiters
+                (cdr (assoc "url" entry)))))
+     (if url
+         (browse-url url)
+       (message "No URL for this entry.")))))
+
 (provide 'bibtex-fetch)
 ;;; bibtex-fetch.el ends here
