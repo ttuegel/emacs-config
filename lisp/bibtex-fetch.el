@@ -24,6 +24,7 @@
 ;;; Code:
 
 (require 'bibtex)
+(require 'helm-utils)
 (require 'rx)
 (require 'select)
 (require 'xml)
@@ -361,6 +362,18 @@ arguments, the URL and the destination for the file.")
       (while (and (not matched) handlers)
         (setq matched
               (bibtex-fetch/run-document-handler url dest (pop handlers)))))))
+
+(defun bibtex-open-document ()
+  "Open the document associated with the BibTeX entry at point."
+  (interactive)
+  (save-excursion
+    (bibtex-beginning-of-entry)
+    (let* ((entry (bibtex-parse-entry))
+           (key (cdr (assoc "=key=" entry)))
+           (document (expand-file-name (s-concat "doc/" key ".pdf"))))
+      (if (file-readable-p document)
+          (helm-open-file-with-default-tool document)
+        (message "Could not open %s" document)))))
 
 (provide 'bibtex-fetch)
 ;;; bibtex-fetch.el ends here
