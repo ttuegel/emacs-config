@@ -366,14 +366,14 @@ arguments, the URL and the destination for the file.")
 (defun bibtex-open-document ()
   "Open the document associated with the BibTeX entry at point."
   (interactive)
-  (save-excursion
-    (bibtex-beginning-of-entry)
-    (let* ((entry (bibtex-parse-entry))
-           (key (cdr (assoc "=key=" entry)))
-           (document (expand-file-name (s-concat "doc/" key ".pdf"))))
-      (if (file-readable-p document)
-          (helm-open-file-with-default-tool document)
-        (message "Could not open %s" document)))))
+  (let* ((entry (save-excursion
+                  (bibtex-beginning-of-entry)
+                  (bibtex-parse-entry)))
+         (key (cdr (assoc "=key=" entry)))
+         (document (expand-file-name (s-concat "doc/" key ".pdf"))))
+    (if (file-readable-p document)
+        (helm-open-file-with-default-tool document)
+      (message "Could not open %s" document))))
 
 (defun bibtex-open-url ()
   "Open the URL associated with the BibTeX entry at point."
