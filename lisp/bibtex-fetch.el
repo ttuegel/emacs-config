@@ -348,12 +348,19 @@ arguments, the URL and the destination for the file.")
       (funcall handler-fun url final-dest)
       t)))
 
+(defun bibtex-fetch/parse-entry ()
+  "Parse the BibTeX entry at point.
+
+If point is inside or at the beginning of an entry, parse and return that entry.
+Restore point when finished."
+  (save-excursion
+    (bibtex-beginning-of-entry)
+    (bibtex-parse-entry)))
+
 (defun bibtex-fetch-document ()
   "Fetch the document corresponding to the BibTeX entry at point."
   (interactive)
-  (let* ((entry (save-excursion
-                  (bibtex-beginning-of-entry)
-                  (bibtex-parse-entry)))
+  (let* ((entry (bibtex-fetch/parse-entry))
          (url (bibtex-fetch/remove-delimiters
                (cdr (assoc "url" entry))))
          (key (cdr (assoc "=key=" entry)))
@@ -366,9 +373,7 @@ arguments, the URL and the destination for the file.")
 (defun bibtex-open-document ()
   "Open the document associated with the BibTeX entry at point."
   (interactive)
-  (let* ((entry (save-excursion
-                  (bibtex-beginning-of-entry)
-                  (bibtex-parse-entry)))
+  (let* ((entry (bibtex-fetch/parse-entry))
          (key (cdr (assoc "=key=" entry)))
          (document (expand-file-name (s-concat "doc/" key ".pdf"))))
     (if (file-readable-p document)
@@ -378,9 +383,7 @@ arguments, the URL and the destination for the file.")
 (defun bibtex-open-url ()
   "Open the URL associated with the BibTeX entry at point."
   (interactive
-   (let* ((entry (save-excursion
-                   (bibtex-beginning-of-entry)
-                   (bibtex-parse-entry)))
+   (let* ((entry (bibtex-fetch/parse-entry))
           (url (bibtex-fetch/remove-delimiters
                 (cdr (assoc "url" entry)))))
      (if url
