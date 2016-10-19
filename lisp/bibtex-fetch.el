@@ -351,17 +351,17 @@ arguments, the URL and the destination for the file.")
 (defun bibtex-fetch-document ()
   "Fetch the document corresponding to the BibTeX entry at point."
   (interactive)
-  (save-excursion
-    (bibtex-beginning-of-entry)
-    (let* ((entry (bibtex-parse-entry))
-           (url (bibtex-fetch/remove-delimiters
-                 (cdr (assoc "url" entry))))
-           (key (cdr (assoc "=key=" entry)))
-           (dest (s-concat "doc/" key ".pdf"))
-           (handlers bibtex-fetch-document-handlers) matched)
-      (while (and (not matched) handlers)
-        (setq matched
-              (bibtex-fetch/run-document-handler url dest (pop handlers)))))))
+  (let* ((entry (save-excursion
+                  (bibtex-beginning-of-entry)
+                  (bibtex-parse-entry)))
+         (url (bibtex-fetch/remove-delimiters
+               (cdr (assoc "url" entry))))
+         (key (cdr (assoc "=key=" entry)))
+         (dest (s-concat "doc/" key ".pdf"))
+         (handlers bibtex-fetch-document-handlers) matched)
+    (while (and (not matched) handlers)
+      (setq matched
+            (bibtex-fetch/run-document-handler url dest (pop handlers))))))
 
 (defun bibtex-open-document ()
   "Open the document associated with the BibTeX entry at point."
