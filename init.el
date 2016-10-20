@@ -395,6 +395,10 @@ only whitespace."
   (add-hook 'LaTeX-mode-hook #'yas-minor-mode)
   (add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1))))
 
+(use-package cdlatex
+  :config
+  (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex))
+
 (setq reftex-default-bibliography "~/bib/default.bib")
 
 (setq bibtex-completion-bibliography "~/bib/default.bib")
