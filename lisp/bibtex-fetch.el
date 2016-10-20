@@ -280,7 +280,7 @@ Concatenate the key:
   (let* ((arxiv-id (match-string 1 url))
          (arxiv-query-url (bibtex-fetch/arxiv-query-url arxiv-id)))
     (with-current-buffer
-      (url-retrieve-synchronously arxiv-query-url t)
+        (url-retrieve-synchronously arxiv-query-url t)
       (let* ((feed (car (xml-parse-region)))
              (entry (bibtex-fetch/xml-get-child feed 'entry))
              (doi (bibtex-fetch/arxiv-entry-doi entry))
@@ -296,8 +296,44 @@ Concatenate the key:
                         (cons "url" (s-concat "{" url "}")))))
         (add-to-list 'bib (cons "=key=" (bibtex-fetch/generate-key bib)))))))
 
+(defun bibtex-fetch/retrieve-bibtex (url)
+  "Retrieve a BibTeX entry from URL."
+  (let ((url-mime-accept-string "text/bibliography;style=bibtex, application/x-bibtex"))
+    (with-current-buffer
+        (url-retrieve-synchronously url t)
+      (goto-char (point-min))
+      (save-match-data (re-search-forward bibtex-entry-head))
+      (bibtex-fetch/parse-entry))))
+
+(defconst bibtex-fetch/doi-rx
+  (rx string-start
+      "http" (opt "s") "://" (opt "dx.") "doi.org/"
+      (submatch (one-or-more (any "A-Z" "a-z" "0-9" "./"))))
+  "A regular expression to match the DOI from a URL.")
+
+(defun bibtex-fetch/doi-query-url (doi)
+  (s-concat "https://doi.org/" doi))
+
+(defun bibtex-fetch/crossref-doi-query-url (doi)
+  (format
+   "http://crosscite.org/citeproc/format?doi=%s&style=bibtex&lang=en-US"
+   doi))
+
+(defun bibtex-fetch/doi-entry (url)
+  "Fetch the BibTeX info from an DOI URL."
+  (let* ((doi (match-string 1 url))
+         (entry
+          (or (bibtex-fetch/retrieve-bibtex (bibtex-fetch/doi-query-url doi))
+              (bibtex-fetch/retrieve-bibtex
+               (bibtex-fetch/crossref-doi-query-url doi))))
+         (key-cell (assoc "=key=" entry))
+         (new-key (bibtex-fetch/generate-key entry)))
+    (setcdr key-cell new-key)
+    entry))
+
 (defvar bibtex-fetch-entry-handlers
-  (list (cons bibtex-fetch/arxiv-rx #'bibtex-fetch/arxiv-entry))
+  (list (cons bibtex-fetch/arxiv-rx #'bibtex-fetch/arxiv-entry)
+        (cons bibtex-fetch/doi-rx #'bibtex-fetch/doi-entry))
   "The list of handlers to use to fetch a BibTeX entry from a URL.
 
 Each handler is a pair of a regular expression and a function that will be
