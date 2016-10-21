@@ -403,17 +403,12 @@ only whitespace."
 
 (setq bibtex-completion-bibliography "~/bib/default.bib")
 (setq bibtex-completion-library-path "~/bib/files/")
-(setq bibtex-completion-pdf-open-function 'org-open-file)
+(setq bibtex-completion-pdf-open-function #'helm-open-file-with-default-tool)
 
 (use-package helm-bibtex)
 (require 'biblio)
 (require 'bibtex-normalize)
 (require 'bibtex-fetch)
-
-(setq bibtex-entry-format '(opts-or-alts numerical-fields inherit-booktitle last-comma delimiters unify-case braces strings sort-fields))
-(setq bibtex-text-indentation 0)
-(setq bibtex-autokey-edit-before-use nil)
-(setq bibtex-autokey-year-title-separator "_")
 
 ;; Markdown
 
