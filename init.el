@@ -463,8 +463,6 @@ only whitespace."
 
 ;; Haskell
 
-(use-package intero)
-
 (use-package haskell-mode
   :config
   (customize-set-variable 'haskell-literate-default 'tex)
@@ -472,8 +470,7 @@ only whitespace."
   (customize-set-variable 'haskell-process-log t)
   (customize-set-variable 'haskell-process-suggest-remove-import-lines nil)
 
-  (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'haskell-mode-hook #'intero-mode))
+  (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode))
 
 ;; XML
 (add-to-list 'auto-mode-alist '("\\.rng\\'" . xml-mode))
