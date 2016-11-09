@@ -481,5 +481,8 @@ only whitespace."
   (customize-set-variable 'org-catch-invisible-edits 'show)
   (add-to-list 'org-file-apps '("pdf" . "okular %s")))
 
+;; company
+(use-package company)
+
 (provide 'init)
 ;;; init.el ends here
