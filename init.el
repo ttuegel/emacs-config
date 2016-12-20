@@ -385,13 +385,19 @@ only whitespace."
   (customize-set-variable 'TeX-parse-self t)
   (customize-set-variable 'TeX-save-query nil)
   (customize-set-variable 'TeX-source-correlate-mode t)
+  (customize-set-variable 'reftex-plug-into-AUCTeX t)
+
+  ;; Use a proper URL with Okular
+  (setq TeX-view-program-list
+        '(("Okular"
+            ("okular --unique file:%o" (mode-io-correlate "#src:%n%a"))
+            "okular")))
   (customize-set-variable
    'TeX-view-program-selection
    '(((output-dvi has-no-display-manager) "dvi2tty")
      (output-dvi "xdvi")
      (output-pdf "Okular")
      (output-html "xdg-open")))
-  (customize-set-variable 'reftex-plug-into-AUCTeX t)
 
   (add-hook 'TeX-mode-hook #'reftex-mode)
   (add-hook 'LaTeX-mode-hook #'yas-minor-mode)
