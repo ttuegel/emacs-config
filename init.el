@@ -392,10 +392,10 @@ only whitespace."
      (output-pdf "Okular")
      (output-html "xdg-open")))
   (customize-set-variable 'reftex-plug-into-AUCTeX t)
-  (TeX-global-PDF-mode t)
 
   (add-hook 'TeX-mode-hook #'reftex-mode)
   (add-hook 'LaTeX-mode-hook #'yas-minor-mode)
+  (add-hook 'LaTeX-mode-hook (lambda () (TeX-PDF-mode t)))
   (add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1))))
 
 (setq reftex-default-bibliography "~/bib/default.bib")
