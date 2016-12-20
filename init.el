@@ -372,7 +372,9 @@ only whitespace."
   :commands latex-mode
   :mode ("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode)
   :config
-  (customize-set-variable 'safe-local-variable-names '((TeX-command-extra-options . "-shell-escape")))
+  (customize-set-variable
+   'safe-local-variable-names
+   '((TeX-command-extra-options . "-shell-escape")))
   (customize-set-variable 'font-latex-fontify-script nil)
   (customize-set-variable 'font-latex-fontify-sectioning 'color)
   (customize-set-variable
