@@ -388,10 +388,9 @@ only whitespace."
   (customize-set-variable 'reftex-plug-into-AUCTeX t)
 
   ;; Use a proper URL with Okular
-  (setq TeX-view-program-list
-        '(("Okular"
-            ("okular --unique file:%o" (mode-io-correlate "#src:%n%a"))
-            "okular")))
+  (let ((okular-cmd ("okular --unique file:%o"
+                     (mode-io-correlate "#src:%n%a"))))
+    (setq TeX-view-program-list '(("Okular" okular-cmd "okular"))))
   (customize-set-variable
    'TeX-view-program-selection
    '(((output-dvi has-no-display-manager) "dvi2tty")
