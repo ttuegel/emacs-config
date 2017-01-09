@@ -476,6 +476,12 @@ only whitespace."
 
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode))
 
+(use-package dante
+  :commands 'dante-mode
+  :init
+  (add-hook 'haskell-mode-hook #'dante-mode)
+  (add-hook 'haskell-mode-hook #'flycheck-mode))
+
 ;; XML
 (add-to-list 'auto-mode-alist '("\\.rng\\'" . xml-mode))
 
