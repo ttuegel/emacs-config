@@ -488,8 +488,7 @@ only whitespace."
 ;; org-mode
 (use-package org
   :config
-  (customize-set-variable 'org-catch-invisible-edits 'show)
-  (add-to-list 'org-file-apps '("pdf" . "okular %s")))
+  (customize-set-variable 'org-catch-invisible-edits 'show))
 
 ;; company
 (use-package company)
