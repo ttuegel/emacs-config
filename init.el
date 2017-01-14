@@ -493,5 +493,10 @@ only whitespace."
 ;; company
 (use-package company)
 
+;; rust
+(use-package rust-mode)
+(use-package flycheck-rust)
+(use-package cargo)
+
 (provide 'init)
 ;;; init.el ends here
