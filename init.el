@@ -323,7 +323,7 @@ only whitespace."
   :config
   (require 'helm-files)
   (customize-set-variable 'helm-ff-skip-boring-files t)
-  (customize-set-variable 'helm-split-window-in-side-p t)
+  (customize-set-variable 'helm-split-window-default-side 'same)
 
   (bind-key "C-b" 'helm-buffers-list ctl-x-map)
 
