@@ -494,7 +494,9 @@ only whitespace."
 (use-package company)
 
 ;; rust
-(use-package rust-mode)
+(use-package rust-mode
+  :init
+  (add-hook 'rust-mode-hook #'flycheck-mode))
 (use-package flycheck-rust)
 (use-package cargo)
 
