@@ -391,6 +391,12 @@ only whitespace."
   (setq TeX-view-program-list
         '(("Okular" ("okular --unique file:%o"
                      (mode-io-correlate "#src:%n%a")) "okular")))
+  ;; Use absolute filename for "%o" expansion
+  (setq TeX-expand-list
+        '(("%o"
+           (lambda nil
+             (expand-file-name
+              (funcall file (TeX-output-extension) t))))))
   (customize-set-variable
    'TeX-view-program-selection
    '(((output-dvi has-no-display-manager) "dvi2tty")
