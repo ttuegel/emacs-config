@@ -91,6 +91,12 @@
 ;; Don't use italics to indicate types.
 (custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
 
+;; Dim the scroll bars
+(custom-theme-set-faces
+ 'user
+ `(scroll-bar ((t :foreground ,monokai-comments
+                  :background ,monokai-background))))
+
 ;;; Tabs
 (customize-set-variable 'tab-always-indent t)
 (customize-set-variable 'tab-stop-list (number-sequence 2 120 2))
