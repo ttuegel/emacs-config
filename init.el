@@ -55,6 +55,7 @@
 ;; What is this, Microsoft Word?
 (menu-bar-mode -1)
 (tool-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; Thank you, but I know what program this is.
 (customize-set-variable 'inhibit-startup-screen t)
