@@ -34,7 +34,7 @@
 
 (bind-key "C-z" ctl-x-map)
 
-;; Use UTF-8 everywhere. It's 2016, how is this not default?
+;; Use UTF-8 everywhere. It's 2017, how is this not default?
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
