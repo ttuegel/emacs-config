@@ -513,5 +513,8 @@ only whitespace."
 (use-package flycheck-rust)
 (use-package cargo)
 
+;; notmuch
+(use-package notmuch)
+
 (provide 'init)
 ;;; init.el ends here
