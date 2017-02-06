@@ -50,12 +50,13 @@
 (customize-set-variable 'blink-cursor-mode nil)
 
 ;; Make the cursor white by default.
-(customize-set-variable 'default-frame-alist '((cursor-color . "white")))
+(add-to-list 'default-frame-alist '(cursor-color . "white"))
 
 ;; What is this, Microsoft Word?
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
+(add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
+(add-to-list 'default-frame-alist '(horizontal-scroll-bars . nil))
 
 ;; Thank you, but I know what program this is.
 (customize-set-variable 'inhibit-startup-screen t)
@@ -91,12 +92,6 @@
 
 ;; Don't use italics to indicate types.
 (custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
-
-;; Dim the scroll bars
-(custom-theme-set-faces
- 'user
- `(scroll-bar ((t :foreground ,monokai-comments
-                  :background ,monokai-background))))
 
 ;;; Tabs
 (customize-set-variable 'tab-always-indent t)
