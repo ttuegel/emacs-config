@@ -509,7 +509,11 @@ only whitespace."
 (use-package cargo)
 
 ;; notmuch
-(use-package notmuch)
+(use-package notmuch
+  :config
+  (bind-key "d" (lambda () (interactive) (notmuch-show-tag "+deleted"))
+            notmuch-show-mode-map)
+  (customize-set-variable 'notmuch-search-oldest-first nil))
 
 (provide 'init)
 ;;; init.el ends here
