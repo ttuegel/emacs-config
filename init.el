@@ -86,9 +86,8 @@
 
 ;; Use Source Code Pro font by default.
 
-(custom-theme-set-faces
- 'user
- '(default ((t (:family "Source Code Pro" :height 100)))))
+(add-to-list 'default-frame-alist '(font . "Source Code Pro-12"))
+(set-face-attribute 'default t :font "Source Code Pro-12")
 
 ;; Don't use italics to indicate types.
 (custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
