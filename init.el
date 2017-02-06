@@ -235,8 +235,8 @@ only whitespace."
    ("T" . evil-window-move-very-top)
    ("n" . evil-window-right)
    ("N" . evil-window-move-far-right)
-   ("w" . evil-window-new)
-   ("W" . evil-window-vnew)
+   ("-" . evil-window-new)
+   ("|" . evil-window-vnew)
    ("k" . evil-window-delete))
 
   ;; Whitespace
@@ -508,16 +508,43 @@ only whitespace."
 (use-package cargo)
 
 ;; notmuch
+
+(defun ttuegel/notmuch-search-delete (&optional beg end)
+  "Delete the selected thread or region.
+
+This function advances to the next thread when finished."
+  (interactive (notmuch-search-interactive-region))
+  (notmuch-search-tag '("+deleted" "-inbox") beg end)
+  (when (eq beg end)
+    (notmuch-search-next-thread)))
+
+(defun ttuegel/notmuch-show-delete ()
+  "Delete the thread in the current buffer, then show the next thread from search."
+  (interactive)
+  (notmuch-show-tag '("+deleted" "-inbox"))
+  (notmuch-show-next-thread t))
+
+(defun ttuegel/notmuch-search-mute (&optional beg end)
+  "Mute the selected thread or region.
+
+This function advances to the next thread when finished."
+  (interactive (notmuch-search-interactive-region))
+  (notmuch-search-tag '("+muted" "-inbox") beg end)
+  (when (eq beg end)
+    (notmuch-search-next-thread)))
+
+(defun ttuegel/notmuch-show-mute ()
+  "Mute the thread in the current buffer, then show the next thread from search."
+  (interactive)
+  (notmuch-show-tag '("+muted" "-inbox"))
+  (notmuch-show-next-thread t))
+
 (use-package notmuch
   :config
-  (bind-key "k" (lambda ()
-                  (interactive)
-                  (notmuch-show-tag '("+deleted" "-inbox")))
-            notmuch-show-mode-map)
-  (bind-key "k" (lambda ()
-                  (interactive)
-                  (notmuch-search-tag '("+deleted" "-inbox")))
-            notmuch-search-mode-map)
+  (bind-key "k" #'ttuegel/notmuch-search-delete notmuch-search-mode-map)
+  (bind-key "u" #'ttuegel/notmuch-search-mute notmuch-search-mode-map)
+  (bind-key "k" #'ttuegel/notmuch-show-delete notmuch-show-mode-map)
+  (bind-key "u" #'ttuegel/notmuch-show-mute notmuch-show-mode-map)
   (customize-set-variable 'notmuch-search-oldest-first nil))
 
 (provide 'init)
