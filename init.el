@@ -511,8 +511,14 @@ only whitespace."
 ;; notmuch
 (use-package notmuch
   :config
-  (bind-key "d" (lambda () (interactive) (notmuch-show-tag "+deleted"))
+  (bind-key "k" (lambda ()
+                  (interactive)
+                  (notmuch-show-tag '("+deleted" "-inbox")))
             notmuch-show-mode-map)
+  (bind-key "k" (lambda ()
+                  (interactive)
+                  (notmuch-search-tag '("+deleted" "-inbox")))
+            notmuch-search-mode-map)
   (customize-set-variable 'notmuch-search-oldest-first nil))
 
 (provide 'init)
