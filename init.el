@@ -521,7 +521,7 @@ This function advances to the next thread when finished."
 (defun ttuegel/notmuch-show-delete ()
   "Delete the thread in the current buffer, then show the next thread from search."
   (interactive)
-  (notmuch-show-tag '("+deleted" "-inbox"))
+  (notmuch-show-tag-all '("+deleted" "-inbox"))
   (notmuch-show-next-thread t))
 
 (defun ttuegel/notmuch-search-mute (&optional beg end)
@@ -536,8 +536,27 @@ This function advances to the next thread when finished."
 (defun ttuegel/notmuch-show-mute ()
   "Mute the thread in the current buffer, then show the next thread from search."
   (interactive)
-  (notmuch-show-tag '("+muted" "-inbox"))
+  (notmuch-show-tag-all '("+muted" "-inbox"))
   (notmuch-show-next-thread t))
+
+(defun ttuegel/set-mail-host ()
+  (interactive)
+  (save-excursion
+    (save-restriction
+      (message-narrow-to-headers-or-head)
+      (let ((from (mail-extract-address-components
+                   (message-fetch-field "From"))))
+        (if from
+            (let* ((addr (split-string (cadr from) "@"))
+                   (host (cadr addr)))
+              (if host
+                  (setq-local mail-host-address host)
+                (error "Could not get mail host from address %s" addr)))
+          (error "Could not get sender address"))))))
+
+(defadvice message-send (before ttuegel/set-mail-host-advice activate)
+  (interactive)
+  (ttuegel/set-mail-host))
 
 (use-package notmuch
   :config
@@ -545,7 +564,14 @@ This function advances to the next thread when finished."
   (bind-key "u" #'ttuegel/notmuch-search-mute notmuch-search-mode-map)
   (bind-key "k" #'ttuegel/notmuch-show-delete notmuch-show-mode-map)
   (bind-key "u" #'ttuegel/notmuch-show-mute notmuch-show-mode-map)
-  (customize-set-variable 'notmuch-search-oldest-first nil))
+  (customize-set-variable 'notmuch-search-oldest-first nil)
+  (customize-set-variable 'mm-text-html-renderer 'w3m)
+  (customize-set-variable 'message-sendmail-envelope-from 'header)
+  (customize-set-variable 'message-kill-buffer-on-exit t)
+  (setq send-mail-function #'sendmail-send-it)
+  (setq sendmail-program "msmtp"))
+
+(use-package w3m)
 
 (provide 'init)
 ;;; init.el ends here
