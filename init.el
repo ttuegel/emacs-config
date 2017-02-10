@@ -2,29 +2,15 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'package)
-(setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")
-        ("gnu" . "http://elpa.gnu.org/packages/")))
-(setq package-archive-priorities
-      '(("melpa-stable" . 1)))
 (package-initialize)
 
-(add-to-list 'load-path "~/el/biblio.el")
 (add-to-list 'load-path "~/el/bibtex-fetch")
-(add-to-list 'load-path "~/.emacs.d/use-package")
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
-(eval-when-compile
-  (require 'use-package))
-
-(setq use-package-always-ensure t)
+(eval-when-compile (require 'use-package))
 
 (use-package diminish :demand)
 (use-package bind-key :demand)
-
-(add-to-list 'load-path "~/.emacs.d/lisp")
 
 ;;; Emacs settings
 
@@ -417,7 +403,6 @@ only whitespace."
 (setq bibtex-completion-pdf-open-function #'helm-open-file-with-default-tool)
 
 (use-package helm-bibtex)
-(require 'biblio)
 (require 'bibtex-normalize)
 (require 'bibtex-fetch)
 
@@ -496,9 +481,6 @@ only whitespace."
 (use-package org
   :config
   (customize-set-variable 'org-catch-invisible-edits 'show))
-
-;; company
-(use-package company)
 
 ;; rust
 (use-package rust-mode
