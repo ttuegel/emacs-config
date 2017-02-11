@@ -555,5 +555,9 @@ This function advances to the next thread when finished."
 
 (use-package w3m)
 
+;; c-mode
+
+(add-hook 'c-mode-common-hook #'c-guess)
+
 (provide 'init)
 ;;; init.el ends here
