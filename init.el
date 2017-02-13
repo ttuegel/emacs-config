@@ -540,18 +540,19 @@ This function advances to the next thread when finished."
   (interactive)
   (ttuegel/set-mail-host))
 
+(customize-set-variable 'mm-text-html-renderer 'w3m)
+(customize-set-variable 'message-sendmail-envelope-from 'header)
+(customize-set-variable 'message-kill-buffer-on-exit t)
+(setq send-mail-function #'sendmail-send-it)
+(setq sendmail-program "msmtp")
+
 (use-package notmuch
   :config
   (bind-key "k" #'ttuegel/notmuch-search-delete notmuch-search-mode-map)
   (bind-key "u" #'ttuegel/notmuch-search-mute notmuch-search-mode-map)
   (bind-key "k" #'ttuegel/notmuch-show-delete notmuch-show-mode-map)
   (bind-key "u" #'ttuegel/notmuch-show-mute notmuch-show-mode-map)
-  (customize-set-variable 'notmuch-search-oldest-first nil)
-  (customize-set-variable 'mm-text-html-renderer 'w3m)
-  (customize-set-variable 'message-sendmail-envelope-from 'header)
-  (customize-set-variable 'message-kill-buffer-on-exit t)
-  (setq send-mail-function #'sendmail-send-it)
-  (setq sendmail-program "msmtp"))
+  (customize-set-variable 'notmuch-search-oldest-first nil))
 
 (use-package w3m)
 
