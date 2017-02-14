@@ -560,5 +560,13 @@ This function advances to the next thread when finished."
 
 (add-hook 'c-mode-common-hook #'c-guess)
 
+;; sh-mode for es
+(let ((es-syntax-table
+       (sh-mode-syntax-table
+        sh-mode-syntax-table
+        ?\` "'")))
+  (add-to-list 'sh-mode-syntax-table-input
+               `(es ,es-syntax-table)))
+
 (provide 'init)
 ;;; init.el ends here
