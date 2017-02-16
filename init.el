@@ -561,7 +561,7 @@ This function advances to the next thread when finished."
 (add-hook 'c-mode-common-hook #'c-guess)
 
 ;; sh-mode for es
-(use-package sh-mode
+(use-package sh-script
   :config
   (let ((es-syntax-table
          (sh-mode-syntax-table
