@@ -552,7 +552,11 @@ This function advances to the next thread when finished."
   (bind-key "u" #'ttuegel/notmuch-search-mute notmuch-search-mode-map)
   (bind-key "k" #'ttuegel/notmuch-show-delete notmuch-show-mode-map)
   (bind-key "u" #'ttuegel/notmuch-show-mute notmuch-show-mode-map)
-  (customize-set-variable 'notmuch-search-oldest-first nil))
+  (customize-set-variable 'notmuch-search-oldest-first nil)
+  (setq notmuch-fcc-dirs
+        '(("ttuegel@mailbox.org" . "mailbox/INBOX +sent")
+          ("ttuegel@gmail.com" . "\"gmail/[Gmail].All Mail\" +sent")
+          ("tuegel2@illinois.edu" . "illinois/INBOX +sent"))))
 
 (use-package w3m)
 
