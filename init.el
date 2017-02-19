@@ -119,32 +119,13 @@ only whitespace."
 
 ;;; Mode line
 
-(defun ttuegel/mode-line-buffer-modified ()
-  "Mode line indicator that the buffer is modified"
-  (if (buffer-modified-p) "[*]" "   "))
-
-(defun ttuegel/mode-line-position ()
-  "Mode line position indicator"
-  (let ((unpadded (format " (%4s, %2s) "
-                          (format-mode-line "%l")
-                          (format-mode-line "%c"))))
-    (format "%15s" unpadded)))
-
-(customize-set-variable
- 'mode-line-format
- '("%e"
-   mode-line-front-space
-   mode-line-remote
-   mode-line-frame-identification
-   mode-line-buffer-identification
-   "   "
-   (:eval (ttuegel/mode-line-buffer-modified))
-   (:eval (ttuegel/mode-line-position))
-   mode-line-modes
-   (vc-mode vc-mode)
-   "  "
-   mode-line-misc-info
-   mode-line-end-spaces))
+(use-package spaceline :demand
+  :init (progn
+          (require 'spaceline-config)
+          (setq spaceline-highlight-face-func
+                #'spaceline-highlight-face-evil-state)
+          (spaceline-helm-mode)
+          (spaceline-emacs-theme)))
 
 ;;; Search
 
