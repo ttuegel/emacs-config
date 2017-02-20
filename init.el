@@ -26,14 +26,14 @@
 (prefer-coding-system 'utf-8)
 
 ;; Turn off that damn bell!
-(customize-set-variable 'visible-bell t)
+(setq visible-bell t)
 
 ;; Don't piddle backup files everywhere like an un-housebroken puppy.
-(customize-set-variable 'auto-save-default nil)
-(customize-set-variable 'make-backup-files nil)
+(setq auto-save-default nil)
+(setq make-backup-files nil)
 
 ;; Blinking should be reserved for eyelids and indicators that require immediate attention.
-(customize-set-variable 'blink-cursor-mode nil)
+(setq blink-cursor-mode nil)
 
 ;; Make the cursor white by default.
 (add-to-list 'default-frame-alist '(cursor-color . "white"))
@@ -45,11 +45,11 @@
 (add-to-list 'default-frame-alist '(horizontal-scroll-bars . nil))
 
 ;; Thank you, but I know what program this is.
-(customize-set-variable 'inhibit-startup-screen t)
+(setq inhibit-startup-screen t)
 
 ;; Don't update the X selection from the kill-ring.
 ;; Like Vim, Evil keeps the X selection in the `"' register.
-(customize-set-variable 'x-select-enable-clipboard nil)
+(setq x-select-enable-clipboard nil)
 
 ;; Ask `y or n' rather than `yes or no'
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -59,18 +59,16 @@
 (setq split-width-threshold 144)
 
 ;; Make buffer names more unique
-(customize-set-variable 'uniquify-buffer-name-style 'forward)
+(setq uniquify-buffer-name-style 'forward)
 
 ;; Set color scheme
-(customize-set-variable 'custom-safe-themes t)
+(setq custom-safe-themes t)
 (use-package monokai-theme :demand
   :config
   (load-theme 'monokai))
 
 ;; Ignore common extensions.
-(customize-set-variable
- 'completion-ignored-extensions
- '(".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".hi" ".elc"))
+(add-to-list 'completion-ignored-extensions ".elc")
 
 ;;; Fonts
 
@@ -83,16 +81,16 @@
 (custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
 
 ;;; Tabs
-(customize-set-variable 'tab-always-indent t)
-(customize-set-variable 'tab-stop-list (number-sequence 2 120 2))
-(customize-set-variable 'tab-width 2)
-(customize-set-variable 'indent-tabs-mode nil)
+(setq-default tab-always-indent t)
+(setq-default tab-stop-list (number-sequence 2 120 2))
+(setq-default tab-width 2)
+(setq indent-tabs-mode nil)
 
 ;;; Fill column
-(customize-set-variable 'fill-column 80)
+(setq-default fill-column 80)
 
 ;;; Whitespace
-(customize-set-variable 'whitespace-style '(face trailing tabs))
+(setq whitespace-style '(face trailing tabs))
 (global-whitespace-mode t)
 (diminish 'global-whitespace-mode)
 
@@ -200,7 +198,7 @@ only whitespace."
    ("C-M-t" . evil-scroll-page-up)
    ("C-M-h" . evil-scroll-page-down))
 
-  (customize-set-variable 'evil-toggle-key "C-,")
+  (setq evil-toggle-key "C-,")
 
   ;; Windows
   (bind-key "w" evil-window-map ctl-x-map)
@@ -242,7 +240,7 @@ only whitespace."
   (ttuegel/set-evil-tag evil-operator-state-tag " O " (:background "#AE81FF"))
   (ttuegel/set-evil-tag evil-replace-state-tag " R " (:background "#FD5FF0"))
 
-  (customize-set-variable 'evil-mode-line-format '(before . mode-line-front-space))
+  (setq evil-mode-line-format '(before . mode-line-front-space))
 
   (bind-key* "C-/" 'evil-normal-state)
 
@@ -328,7 +326,7 @@ only whitespace."
               ("f" . avy-goto-char)
               ("F" . avy-goto-line))
   :config
-  (customize-set-variable 'avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
+  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
 ;;; Optional Packages
 
@@ -453,10 +451,10 @@ only whitespace."
 
 (use-package haskell-mode
   :config
-  (customize-set-variable 'haskell-literate-default 'tex)
-  (customize-set-variable 'haskell-auto-import-loaded-modules nil)
-  (customize-set-variable 'haskell-process-log t)
-  (customize-set-variable 'haskell-process-suggest-remove-import-lines nil)
+  (setq haskell-literate-default 'tex)
+  (setq haskell-auto-import-loaded-modules nil)
+  (setq haskell-process-log t)
+  (setq haskell-process-suggest-remove-import-lines nil)
 
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode))
 
@@ -472,7 +470,7 @@ only whitespace."
 ;; org-mode
 (use-package org
   :config
-  (customize-set-variable 'org-catch-invisible-edits 'show))
+  (setq org-catch-invisible-edits 'show))
 
 ;; rust
 (use-package rust-mode
@@ -532,9 +530,9 @@ This function advances to the next thread when finished."
   (interactive)
   (ttuegel/set-mail-host))
 
-(customize-set-variable 'mm-text-html-renderer 'w3m)
-(customize-set-variable 'message-sendmail-envelope-from 'header)
-(customize-set-variable 'message-kill-buffer-on-exit t)
+(setq mm-text-html-renderer 'w3m)
+(setq message-sendmail-envelope-from 'header)
+(setq message-kill-buffer-on-exit t)
 (setq send-mail-function #'sendmail-send-it)
 (setq sendmail-program "msmtp")
 
@@ -544,7 +542,7 @@ This function advances to the next thread when finished."
   (bind-key "u" #'ttuegel/notmuch-search-mute notmuch-search-mode-map)
   (bind-key "k" #'ttuegel/notmuch-show-delete notmuch-show-mode-map)
   (bind-key "u" #'ttuegel/notmuch-show-mute notmuch-show-mode-map)
-  (customize-set-variable 'notmuch-search-oldest-first nil)
+  (setq notmuch-search-oldest-first nil)
   (setq notmuch-fcc-dirs
         '(("ttuegel@mailbox.org" . "mailbox/INBOX +sent")
           ("ttuegel@gmail.com" . "\"gmail/[Gmail].All Mail\" +sent")
