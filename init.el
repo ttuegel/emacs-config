@@ -54,6 +54,10 @@
 ;; Ask `y or n' rather than `yes or no'
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; Prefer horizontally-split windows
+(setq split-height-threshold nil)
+(setq split-width-threshold 144)
+
 ;; Make buffer names more unique
 (customize-set-variable 'uniquify-buffer-name-style 'forward)
 
