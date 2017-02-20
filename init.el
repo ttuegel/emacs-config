@@ -123,6 +123,11 @@ only whitespace."
 
 ;;; Mode line
 
+(use-package winum
+  :config
+  (setq winum-keymap (make-sparse-keymap)))
+(winum-mode)
+
 (use-package spaceline :demand
   :init (progn
           (require 'spaceline-config)
