@@ -128,6 +128,9 @@ only whitespace."
   (setq winum-keymap (make-sparse-keymap)))
 (winum-mode)
 
+(use-package eyebrowse)
+(eyebrowse-mode t)
+
 (use-package spaceline :demand
   :init (progn
           (require 'spaceline-config)
