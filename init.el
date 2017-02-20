@@ -352,20 +352,19 @@ only whitespace."
   :commands latex-mode
   :mode ("\\.\\(tex\\|sty\\|cls\\)\\'" . latex-mode)
   :config
-  (customize-set-variable
-   'safe-local-variable-names
-   '((TeX-command-extra-options . "-shell-escape")))
-  (customize-set-variable 'font-latex-fontify-script nil)
-  (customize-set-variable 'font-latex-fontify-sectioning 'color)
-  (customize-set-variable
-   'font-latex-math-environments
+  (setq safe-local-variable-names
+        '((TeX-command-extra-options . "-shell-escape")))
+  (setq font-latex-fontify-script nil)
+  (setq font-latex-fontify-sectioning 'color)
+  (setq
+   font-latex-math-environments
    '("display" "displaymath" "equation" "eqnarray" "gather" "multline" "align"
      "alignat" "xalignat" "dmath" "math"))
-  (customize-set-variable 'TeX-auto-save t)
-  (customize-set-variable 'TeX-parse-self t)
-  (customize-set-variable 'TeX-save-query nil)
-  (customize-set-variable 'TeX-source-correlate-mode t)
-  (customize-set-variable 'reftex-plug-into-AUCTeX t)
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq TeX-save-query nil)
+  (setq TeX-source-correlate-mode t)
+  (setq reftex-plug-into-AUCTeX t)
 
   ;; Use a proper URL with Okular
   (setq TeX-view-program-list
@@ -377,8 +376,8 @@ only whitespace."
            (lambda nil
              (expand-file-name
               (funcall file (TeX-output-extension) t))))))
-  (customize-set-variable
-   'TeX-view-program-selection
+  (setq
+   TeX-view-program-selection
    '(((output-dvi has-no-display-manager) "dvi2tty")
      (output-dvi "xdvi")
      (output-pdf "Okular")
@@ -408,7 +407,7 @@ only whitespace."
 
 (use-package flycheck
   :config
-  (customize-set-variable 'flycheck-disabled-checkers '(haskell-hlint)))
+  (setq flycheck-disabled-checkers '(haskell-hlint)))
 
 ;; Nix
 
