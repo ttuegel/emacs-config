@@ -279,7 +279,7 @@ only whitespace."
   (unbind-key "d" evil-normal-state-map)
   (unbind-key "D" evil-normal-state-map)
 
-  (customize-set-variable 'evil-shift-width tab-width))
+  (setq-default 'evil-shift-width tab-width))
 (evil-mode t)
 
 (use-package evil-surround :demand)
