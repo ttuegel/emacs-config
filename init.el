@@ -91,7 +91,7 @@
 (setq-default tab-always-indent t)
 (setq-default tab-stop-list (number-sequence 2 120 2))
 (setq-default tab-width 2)
-(setq indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 
 ;;; Fill column
 (setq-default fill-column 80)
@@ -386,8 +386,8 @@ only whitespace."
 (use-package bibtex-normalize
 	:load-path "~/.emacs.d/lisp")
 
-(use-package bibtex-fetch
-	:load-path "~/el/bibtex-fetch")
+;(use-package bibtex-fetch
+;	:load-path "~/el/bibtex-fetch")
 
 ;;; Markdown
 (use-package markdown-mode)
