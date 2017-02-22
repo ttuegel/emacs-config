@@ -505,6 +505,10 @@ only whitespace."
           ("ttuegel@gmail.com" . "\"gmail/[Gmail].All Mail\" +sent")
           ("tuegel2@illinois.edu" . "illinois/INBOX +sent")))
 
+  (setq notmuch-saved-searches
+        '((:name "inbox" :query "tag:inbox and not tag:foss")
+          (:name "foss" :query "tag:inbox and tag:foss")))
+
   (let ((map notmuch-search-mode-map))
     (unbind-key "n" map) ; notmuch-search-next-thread
     (unbind-key "p" map) ; notmuch-search-previous-thread
