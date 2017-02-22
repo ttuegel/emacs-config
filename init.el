@@ -13,9 +13,9 @@
 (setq use-package-always-demand t)
 
 (use-package auto-compile
-	:config
-	(auto-compile-on-load-mode)
-	(auto-compile-on-save-mode))
+  :config
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode))
 
 ;;; Emacs settings
 
@@ -71,8 +71,8 @@
 ;; Set color scheme
 (setq custom-safe-themes t)
 (use-package monokai-theme
-	:config
-	(load-theme 'monokai))
+  :config
+  (load-theme 'monokai))
 
 ;; Ignore common extensions.
 (add-to-list 'completion-ignored-extensions ".elc")
@@ -123,42 +123,43 @@ only whitespace."
 ;;; Parentheses
 (show-paren-mode t)
 (use-package rainbow-delimiters
-	:config
-	(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode))
+  :config
+  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode))
 
 ;;; Automatic indentation
 (electric-indent-mode t)
 
 ;;; Window numbers
 (use-package winum
-	:init
-	(setq winum-keymap (make-sparse-keymap)) ; Please don't mess with my maps
-	:config
-	(winum-mode))
+  :init
+  (setq winum-keymap (make-sparse-keymap)) ; Please don't mess with my maps
+  :config
+  (winum-mode))
 
 ;;; Window layouts
 (use-package eyebrowse
-	:config
-	(eyebrowse-mode t))
+  :config
+  (eyebrowse-mode t))
 
 ;;; Mode line
 (use-package spaceline-config
-	:config
-	(setq spaceline-highlight-face-func
-				#'spaceline-highlight-face-evil-state) ; Color modeline by Evil state
-	(spaceline-helm-mode)
-	(spaceline-emacs-theme))
+  :config
+  (setq spaceline-highlight-face-func
+        #'spaceline-highlight-face-evil-state) ; Color modeline by Evil state
+  (spaceline-helm-mode)
+  (spaceline-emacs-theme))
 
 ;;; Search
-(defvar ttuegel/search-map (make-sparse-keymap))
-(bind-key* "C-f" ttuegel/search-map)
+(define-prefix-command 'ttuegel/search-map)
+(unbind-key "C-s" global-map)
+(bind-key "C-f" ttuegel/search-map global-map)
 (bind-keys
  :map ttuegel/search-map
  ("f" . (lambda () (interactive) (isearch-forward t)))
  ("F" . (lambda () (interactive) (isearch-backward t))))
 
 ;;; Buffers
-(defvar ttuegel/buffer-map (make-sparse-keymap))
+(define-prefix-command 'ttuegel/buffer-map)
 (bind-key* "C-b" ttuegel/buffer-map)
 (bind-keys
  :map ttuegel/buffer-map
@@ -172,7 +173,7 @@ only whitespace."
 
 ;;; Errors
 
-(defvar ttuegel/error-map (make-sparse-keymap))
+(define-prefix-command 'ttuegel/error-map)
 (bind-key* "C-e" ttuegel/error-map)
 (bind-keys
  :map ttuegel/error-map
@@ -192,215 +193,213 @@ only whitespace."
 
 ;;; Be Evil
 (use-package evil
-	:init
-	(setq evil-toggle-key "C-,")
+  :init
+  (setq evil-toggle-key "C-,")
 
-	:config
-	(bind-key* "C-/" 'evil-normal-state)
+  :config
+  (bind-key* "C-/" 'evil-normal-state)
 
-	;; Emacs-mode equivalent of Vim motion keys
-	(bind-keys
-	 ("C-t" . 'previous-line)
-	 ("C-h" . 'next-line)
-	 ("C-d" . 'backward-char)
-	 ("C-n" . 'forward-char)
+  ;; Emacs-mode equivalent of Vim motion keys
+  (bind-keys
+   ("C-t" . 'previous-line)
+   ("C-h" . 'next-line)
+   ("C-d" . 'backward-char)
+   ("C-n" . 'forward-char)
 
-	 ("C-T" . evil-scroll-up)
-	 ("C-H" . evil-scroll-down)
-	 ("C-D" . beginning-of-visual-line)
-	 ("C-N" . end-of-visual-line)
+   ("C-T" . evil-scroll-up)
+   ("C-H" . evil-scroll-down)
+   ("C-D" . beginning-of-visual-line)
+   ("C-N" . end-of-visual-line)
 
-	 ("C-M-t" . evil-scroll-page-up)
-	 ("C-M-h" . evil-scroll-page-down))
+   ("C-M-t" . evil-scroll-page-up)
+   ("C-M-h" . evil-scroll-page-down))
 
-	;; Windows
-	(bind-key* "C-w" evil-window-map)
-	(bind-keys
-	 :map evil-window-map
-	 ("d" . evil-window-left)
-	 ("D" . evil-window-move-far-left)
-	 ("h" . evil-window-down)
-	 ("H" . evil-window-move-very-bottom)
-	 ("t" . evil-window-up)
-	 ("T" . evil-window-move-very-top)
-	 ("n" . evil-window-right)
-	 ("N" . evil-window-move-far-right)
-	 ("-" . evil-window-new)
-	 ("|" . evil-window-vnew)
-	 ("k" . evil-window-delete))
+  ;; Windows
+  (bind-key* "C-w" evil-window-map)
+  (bind-keys
+   :map evil-window-map
+   ("d" . evil-window-left)
+   ("D" . evil-window-move-far-left)
+   ("h" . evil-window-down)
+   ("H" . evil-window-move-very-bottom)
+   ("t" . evil-window-up)
+   ("T" . evil-window-move-very-top)
+   ("n" . evil-window-right)
+   ("N" . evil-window-move-far-right)
+   ("-" . evil-window-new)
+   ("|" . evil-window-vnew)
+   ("k" . evil-window-delete))
 
-	;; Whitespace hygiene
-	(defadvice evil-normal-state
-			(after indent-whitespace-hygiene-after-evil-normal-state activate)
-		(ttuegel/indent-whitespace-hygiene))
+  ;; Whitespace hygiene
+  (defadvice evil-normal-state
+      (after indent-whitespace-hygiene-after-evil-normal-state activate)
+    (ttuegel/indent-whitespace-hygiene))
 
-	;; Evil motion keys for Dvorak
-	(let ((map evil-motion-state-map))
+  ;; Evil motion keys for Dvorak
+  (let ((map evil-motion-state-map))
 
-		(unbind-key "k" map) ; evil-previous-visual-line
-		(unbind-key "j" map) ; evil-next-visual-line
-		(unbind-key "h" map) ; evil-backward-char
-		(unbind-key "l" map) ; evil-forward-char
-		(unbind-key "C-d" map) ; evil-scroll-down
-		(unbind-key "$" map) ; evil-end-of-line
-		(unbind-key "C-f" map) ; evil-scroll-page-down
-		(unbind-key "C-b" map) ; evil-scroll-page-up
+    (unbind-key "k" map) ; evil-previous-visual-line
+    (unbind-key "j" map) ; evil-next-visual-line
+    (unbind-key "h" map) ; evil-backward-char
+    (unbind-key "l" map) ; evil-forward-char
+    (unbind-key "C-d" map) ; evil-scroll-down
+    (unbind-key "$" map) ; evil-end-of-line
+    (unbind-key "C-f" map) ; evil-scroll-page-down
+    (unbind-key "C-b" map) ; evil-scroll-page-up
 
-		(bind-key "t" #'evil-previous-visual-line map)
-		(bind-key "h" #'evil-next-visual-line map)
-		(bind-key "d" #'evil-backward-char map)
-		(bind-key "n" #'evil-forward-char map)
-		(bind-key "H" #'evil-scroll-down map)
-		(bind-key "T" #'evil-scroll-up map)
-		(bind-key "D" #'ttuegel/beginning-of-line)
-		(bind-key "N" #'end-of-line)
-		(bind-key "M-h" #'evil-scroll-page-down map)
-		(bind-key "M-t" #'evil-scroll-page-up map))
+    (bind-key "t" #'evil-previous-visual-line map)
+    (bind-key "h" #'evil-next-visual-line map)
+    (bind-key "d" #'evil-backward-char map)
+    (bind-key "n" #'evil-forward-char map)
+    (bind-key "H" #'evil-scroll-down map)
+    (bind-key "T" #'evil-scroll-up map)
+    (bind-key "D" #'ttuegel/beginning-of-line map)
+    (bind-key "N" #'end-of-visual-line map)
+    (bind-key "M-h" #'evil-scroll-page-down map)
+    (bind-key "M-t" #'evil-scroll-page-up map))
 
-	(let ((map evil-normal-state-map))
-		(unbind-key "d" map) ; evil-delete
-		(unbind-key "D" map) ; evil-delete-line
+  (let ((map evil-normal-state-map))
+    (unbind-key "d" map) ; evil-delete
+    (unbind-key "D" map) ; evil-delete-line
 
-		(bind-key "k" #'evil-delete map)
-		(bind-key "D" #'evil-delete-line))
+    (bind-keys :map map
+               ("k" . evil-delete)
+               ("K" . evil-delete-line)))
 
-	(setq-default evil-shift-width tab-width)
+  (setq-default evil-shift-width tab-width)
 
-	(evil-mode t))
+  (evil-mode t))
 
 (use-package evil-surround
-	:config
-	(global-evil-surround-mode 1))
+  :config
+  (global-evil-surround-mode 1))
 
 (use-package evil-indent-textobject)
 
 ;;; Undo Tree
 (use-package undo-tree
-	:bind (:map evil-normal-state-map
-							("u" . undo-tree-undo)
-							("U" . undo-tree-redo))
-	:diminish undo-tree-mode
-	:config
-	(global-undo-tree-mode 1))
+  :bind (:map evil-normal-state-map
+              ("u" . undo-tree-undo)
+              ("U" . undo-tree-redo))
+  :diminish undo-tree-mode
+  :config
+  (global-undo-tree-mode 1))
 
 ;;; Helm
 (use-package helm-config
-	:diminish helm-mode
-	:config
-	(require 'helm-files)
+  :diminish helm-mode
+  :config
+  (require 'helm-files)
 
-	;; Skip boring files in `helm-find-files'
-	(setq helm-ff-skip-boring-files t)
-	;; Open Helm in the current window
-	(setq helm-split-window-default-side 'same)
+  ;; Skip boring files in `helm-find-files'
+  (setq helm-ff-skip-boring-files t)
+  ;; Open Helm in the current window
+  (setq helm-split-window-default-side 'same)
 
-	(bind-key "M-h" helm-command-map)
-	(bind-key "C-f" 'helm-find-files helm-command-map)
+  (bind-key "M-h" helm-command-map)
+  (bind-key "C-f" 'helm-find-files helm-command-map)
 
-	(bind-key "M-z" 'helm-M-x)
-	(bind-key "C-f" 'helm-find-files ctl-x-map)
+  (bind-key "M-z" 'helm-M-x)
+  (bind-key "C-f" 'helm-find-files ctl-x-map)
 
-	(bind-key "C-h" 'helm-next-line helm-map)
-	(bind-key "C-t" 'helm-previous-line helm-map)
-	(bind-key "C-n" 'helm-execute-persistent-action helm-map)
+  (bind-key "C-h" 'helm-next-line helm-map)
+  (bind-key "C-t" 'helm-previous-line helm-map)
+  (bind-key "C-n" 'helm-execute-persistent-action helm-map)
 
-	;; `C-d' goes up one level in `helm-find-files' and friends
-	(bind-key "C-d" 'helm-find-files-up-one-level helm-read-file-map)
-	(bind-key "C-d" 'helm-find-files-up-one-level helm-find-files-map)
+  ;; `C-d' goes up one level in `helm-find-files' and friends
+  (bind-key "C-d" 'helm-find-files-up-one-level helm-read-file-map)
+  (bind-key "C-d" 'helm-find-files-up-one-level helm-find-files-map)
 
-	(helm-mode 1))
+  (helm-mode 1))
 
 ;;; Avy
 (use-package avy
-	:bind (:map evil-motion-state-map
-							("f" . avy-goto-char)
-							("F" . avy-goto-line))
-	:config
-	(setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
+  :bind (:map evil-motion-state-map
+              ("f" . avy-goto-char)
+              ("F" . avy-goto-line))
+  :config
+  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
 ;;; Git
-(defvar ttuegel/vc-map (make-sparse-keymap))
-(bind-key "M-g" ttuegel/vc-map)
+(define-prefix-command 'ttuegel/vc-map)
+(bind-key "C-s" ttuegel/vc-map global-map)
 
 (use-package magit
-	:bind (:map ttuegel/vc-map
-							("s" . magit-status)))
+  :bind (:map ttuegel/vc-map
+              ("s" . magit-status)))
 (diminish 'auto-revert-mode)
 
 (use-package git-timemachine
-	:bind (:map ttuegel/vc-map
-							("t" . git-timemachine-toggle)))
+  :bind (:map ttuegel/vc-map
+              ("t" . git-timemachine-toggle)))
 
 ;;; TeX
 (use-package tex
-	:config
-		(setq TeX-auto-save t)
-		(setq TeX-parse-self t)
-		(setq TeX-save-query nil)
-		(setq TeX-source-correlate-mode t)
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq TeX-save-query nil)
+  (setq TeX-source-correlate-mode t)
 
-		;; Use a proper URL with Okular
-		(add-to-list
-		 'TeX-view-program-list
-		 '("Okular" ("okular --unique file:%o"
-								 (mode-io-correlate "#src:%n%a")) "okular"))
+  (add-hook 'LaTeX-mode-hook (lambda () (TeX-PDF-mode t)))
+  (add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1)))
 
-		;; Use absolute filename for "%o" expansion
-		(add-to-list
-		 'TeX-expand-list
-		 '("%o" (lambda nil
-							(expand-file-name
-							 (funcall file (TeX-output-extension) t)))))
+  ;; Use a proper URL with Okular
+  (add-to-list
+   'TeX-view-program-list
+   '("Okular" ("okular --unique file:%o"
+               (mode-io-correlate "#src:%n%a")) "okular"))
 
-		(setq
-		 TeX-view-program-selection
-		 '(((output-dvi has-no-display-manager) "dvi2tty")
-			 (output-dvi "xdvi")
-			 (output-pdf "Okular")
-			 (output-html "xdg-open"))))
+  ;; Use absolute filename for "%o" expansion
+  (add-to-list
+   'TeX-expand-list
+   '("%o" (lambda nil
+            (expand-file-name
+             (funcall file (TeX-output-extension) t)))))
+
+  (setq
+   TeX-view-program-selection
+   '(((output-dvi has-no-display-manager) "dvi2tty")
+     (output-dvi "xdvi")
+     (output-pdf "Okular")
+     (output-html "xdg-open"))))
 
 (use-package font-latex
-	:config
-	;; Disable Unicode fontification
-	(setq font-latex-fontify-script nil)
-	(setq font-latex-fontify-sectioning 'color)
-	(add-to-list 'font-latex-math-environments "dmath"))
-
-(add-hook 'LaTeX-mode-hook (lambda () (TeX-PDF-mode t)))
-(add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1)))
+  :config
+  ;; Disable Unicode fontification
+  (setq font-latex-fontify-script nil)
+  (setq font-latex-fontify-sectioning 'color)
+  (add-to-list 'font-latex-math-environments "dmath"))
 
 (use-package reftex
-	:after tex
-	:config
-	(setq reftex-plug-into-AUCTeX t)
-	(setq reftex-default-bibliography "~/bib/default.bib")
-	(add-hook 'TeX-mode-hook #'reftex-mode))
+  :after tex
+  :config
+  (setq reftex-plug-into-AUCTeX t)
+  (setq reftex-default-bibliography "~/bib/default.bib")
+  (add-hook 'TeX-mode-hook #'reftex-mode))
 
 (use-package helm-bibtex
-	:config
-	(setq bibtex-completion-bibliography "~/bib/default.bib")
-	(setq bibtex-completion-library-path "~/bib/files/")
-	(setq bibtex-completion-pdf-open-function
-				#'helm-open-file-with-default-tool))
+  :config
+  (setq bibtex-completion-bibliography "~/bib/default.bib")
+  (setq bibtex-completion-library-path "~/bib/files/")
+  (setq bibtex-completion-pdf-open-function
+        #'helm-open-file-with-default-tool))
 
-(use-package bibtex-normalize
-	:load-path "~/.emacs.d/lisp")
-
-;(use-package bibtex-fetch
-;	:load-path "~/el/bibtex-fetch")
+(use-package bibtex-fetch
+  :load-path "~/el/bibtex-fetch")
 
 ;;; Markdown
 (use-package markdown-mode)
 
 ;;; Flycheck
 (use-package flycheck
-	:config
-	(add-to-list 'flycheck-disabled-checkers 'haskell-hlint))
+  :config
+  (add-to-list 'flycheck-disabled-checkers 'haskell-hlint))
 
 ;;; Nix
 (use-package nix-mode
-	:config
-	(add-hook 'nix-mode-hook #'rainbow-delimiters-mode))
+  :config
+  (add-hook 'nix-mode-hook #'rainbow-delimiters-mode))
 
 ;;; Ledger
 (use-package ledger-mode)
@@ -410,53 +409,53 @@ only whitespace."
 
 ;;; Company
 (use-package company
-	:diminish company-mode
-	:bind (:map company-active-map
-							("C-h" . company-select-next)
-							("C-t" . company-select-previous)
-							("C-n" . company-complete-common)
-							("C-j" . company-complete-selection)
-							("C-g" . company-abort))
-	:config
-	(global-company-mode))
+  :diminish company-mode
+  :bind (:map company-active-map
+              ("C-h" . company-select-next)
+              ("C-t" . company-select-previous)
+              ("C-n" . company-complete-common)
+              ("C-j" . company-complete-selection)
+              ("C-g" . company-abort))
+  :config
+  (global-company-mode))
 
 ;;; Emacs Lisp
 
 ;;; Haskell
 (use-package haskell-mode
-	:config
-	(setq haskell-literate-default 'tex)
-	(setq haskell-auto-import-loaded-modules nil)
-	(setq haskell-process-log t)
-	(setq haskell-process-suggest-remove-import-lines nil)
-	(eval-after-load 'rainbow-delimiters
-		'(add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)))
+  :config
+  (setq haskell-literate-default 'tex)
+  (setq haskell-auto-import-loaded-modules nil)
+  (setq haskell-process-log t)
+  (setq haskell-process-suggest-remove-import-lines nil)
+  (eval-after-load 'rainbow-delimiters
+    '(add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)))
 
 (use-package dante
-	:after haskell-mode
-	:config
-	(add-hook 'haskell-mode-hook #'dante-mode)
-	(eval-after-load 'flycheck
-		'(add-hook 'haskell-mode-hook #'flycheck-mode)))
+  :after haskell-mode
+  :config
+  (add-hook 'haskell-mode-hook #'dante-mode)
+  (eval-after-load 'flycheck
+    '(add-hook 'haskell-mode-hook #'flycheck-mode)))
 
 ;;; XML
 (add-to-list 'auto-mode-alist '("\\.rng\\'" . xml-mode))
 
 ;;; Org
 (use-package org
-	:config
-	(setq org-catch-invisible-edits 'show))
+  :config
+  (setq org-catch-invisible-edits 'show))
 
 ;;; rust
 (use-package rust-mode)
 
 (use-package cargo
-	:after rust-mode)
+  :after rust-mode)
 
 (use-package flycheck-rust
-	:after rust-mode flycheck
-	:config
-	(add-hook 'rust-mode-hook #'flycheck-mode))
+  :after rust-mode flycheck
+  :config
+  (add-hook 'rust-mode-hook #'flycheck-mode))
 
 ;;; Mail
 
@@ -479,64 +478,81 @@ only whitespace."
   (interactive)
   (ttuegel/set-mail-host))
 
-(setq mm-text-html-renderer 'w3m)
-(setq message-sendmail-envelope-from 'header)
-(setq message-kill-buffer-on-exit t)
-(setq send-mail-function #'sendmail-send-it)
-(setq sendmail-program "msmtp")
+(use-package w3m)
+
+(use-package message
+  :after w3m
+  :config
+  (setq mm-text-html-renderer 'w3m)
+  (setq message-sendmail-envelope-from 'header)
+  (setq message-kill-buffer-on-exit t))
+
+(use-package sendmail
+  :config
+  (setq send-mail-function #'sendmail-send-it)
+  (setq sendmail-program "msmtp"))
 
 ;;; Notmuch
 (use-package notmuch
-	:config
-	(setq notmuch-search-oldest-first nil)
-	(setq notmuch-fcc-dirs
-				'(("ttuegel@mailbox.org" . "mailbox/INBOX +sent")
-					("ttuegel@gmail.com" . "\"gmail/[Gmail].All Mail\" +sent")
-					("tuegel2@illinois.edu" . "illinois/INBOX +sent")))
+  :config
+  (setq notmuch-search-oldest-first nil)
+  (setq notmuch-fcc-dirs
+        '(("ttuegel@mailbox.org" . "mailbox/INBOX +sent")
+          ("ttuegel@gmail.com" . "\"gmail/[Gmail].All Mail\" +sent")
+          ("tuegel2@illinois.edu" . "illinois/INBOX +sent")))
 
-	(defun ttuegel/notmuch-search-delete (&optional beg end)
-		"Delete the selected thread or region.
+  (let ((map notmuch-search-mode-map))
+    (unbind-key "n" map) ; notmuch-search-next-thread
+    (unbind-key "p" map) ; notmuch-search-previous-thread
+    (unbind-key "l" map) ; notmuch-search-filter
+    (bind-keys :map map
+               ("h" . notmuch-search-next-thread)
+               ("t" . notmuch-search-previous-thread)
+               ("f" . notmuch-search-filter)))
 
-This function advances to the next thread when finished."
-		(interactive (notmuch-search-interactive-region))
-		(notmuch-search-tag '("+deleted" "-inbox") beg end)
-		(when (eq beg end)
-			(notmuch-search-next-thread)))
-	(bind-key "k" #'ttuegel/notmuch-search-delete notmuch-search-mode-map)
-
-	(defun ttuegel/notmuch-show-delete ()
-		"Delete the thread in the current buffer, then show the next thread from search."
-		(interactive)
-		(notmuch-show-tag-all '("+deleted" "-inbox"))
-		(notmuch-show-next-thread t))
-	(bind-key "k" #'ttuegel/notmuch-show-delete notmuch-show-mode-map)
-
-	(defun ttuegel/notmuch-search-mute (&optional beg end)
-		"Mute the selected thread or region.
+  (defun ttuegel/notmuch-search-delete (&optional beg end)
+    "Delete the selected thread or region.
 
 This function advances to the next thread when finished."
-		(interactive (notmuch-search-interactive-region))
-		(notmuch-search-tag '("+muted" "-inbox") beg end)
-		(when (eq beg end)
-			(notmuch-search-next-thread)))
-	(bind-key "u" #'ttuegel/notmuch-search-mute notmuch-search-mode-map)
+    (interactive (notmuch-search-interactive-region))
+    (notmuch-search-tag '("+deleted" "-inbox") beg end)
+    (when (eq beg end)
+      (notmuch-search-next-thread)))
+  (bind-key "k" #'ttuegel/notmuch-search-delete notmuch-search-mode-map)
 
-	(defun ttuegel/notmuch-show-mute ()
-		"Mute the thread in the current buffer, then show the next thread from search."
-		(interactive)
-		(notmuch-show-tag-all '("+muted" "-inbox"))
-		(notmuch-show-next-thread t))
-	(bind-key "u" #'ttuegel/notmuch-show-mute notmuch-show-mode-map))
+  (defun ttuegel/notmuch-show-delete ()
+    "Delete the thread in the current buffer, then show the next thread from search."
+    (interactive)
+    (notmuch-show-tag-all '("+deleted" "-inbox"))
+    (notmuch-show-next-thread t))
+  (bind-key "k" #'ttuegel/notmuch-show-delete notmuch-show-mode-map)
 
-(use-package w3m)
+  (defun ttuegel/notmuch-search-mute (&optional beg end)
+    "Mute the selected thread or region.
+
+This function advances to the next thread when finished."
+    (interactive (notmuch-search-interactive-region))
+    (notmuch-search-tag '("+muted" "-inbox") beg end)
+    (when (eq beg end)
+      (notmuch-search-next-thread)))
+  (bind-key "u" #'ttuegel/notmuch-search-mute notmuch-search-mode-map)
+
+  (defun ttuegel/notmuch-show-mute ()
+    "Mute the thread in the current buffer, then show the next thread from search."
+    (interactive)
+    (notmuch-show-tag-all '("+muted" "-inbox"))
+    (notmuch-show-next-thread t))
+  (bind-key "u" #'ttuegel/notmuch-show-mute notmuch-show-mode-map))
 
 ;;; C
 (add-hook 'c-mode-common-hook #'c-guess)
 
 ;;; Es
-(eval-after-load 'sh-script
-  '(let ((es-syntax-table (sh-mode-syntax-table sh-mode-syntax-table ?\` "'")))
-		 (add-to-list 'sh-mode-syntax-table-input `(es ,es-syntax-table))))
+(use-package sh-script
+  :config
+  (let ((es-syntax-table
+         (sh-mode-syntax-table sh-mode-syntax-table ?\` "'")))
+    (add-to-list 'sh-mode-syntax-table-input `(es ,es-syntax-table))))
 
 (provide 'init)
 ;;; init.el ends here
