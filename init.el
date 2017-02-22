@@ -327,7 +327,11 @@ only whitespace."
 (use-package magit
   :bind (:map ttuegel/vc-map
               ("s" . magit-status)))
-(diminish 'auto-revert-mode)
+
+(use-package autorevert
+  :demand nil
+  :config
+  (diminish 'auto-revert-mode))
 
 (use-package git-timemachine
   :bind (:map ttuegel/vc-map
