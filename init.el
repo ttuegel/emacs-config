@@ -501,9 +501,9 @@ only whitespace."
   :config
   (setq notmuch-search-oldest-first nil)
   (setq notmuch-fcc-dirs
-        '(("ttuegel@mailbox.org" . "mailbox/INBOX +sent")
-          ("ttuegel@gmail.com" . "\"gmail/[Gmail].All Mail\" +sent")
-          ("tuegel2@illinois.edu" . "illinois/INBOX +sent")))
+        '(("ttuegel@mailbox.org" . "mailbox/INBOX +sent +mailbox")
+          ("ttuegel@gmail.com" . "\"gmail/[Gmail].All Mail\" +sent +gmail")
+          ("tuegel2@illinois.edu" . "illinois/INBOX +sent +illinois")))
 
   (setq notmuch-saved-searches
         '((:name "inbox" :query "tag:inbox and not tag:foss")
