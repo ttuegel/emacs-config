@@ -41,9 +41,6 @@
 ;; Blinking should be reserved for eyelids and indicators that require immediate attention.
 (blink-cursor-mode -1)
 
-;; Make the cursor white by default.
-(add-to-list 'default-frame-alist '(cursor-color . "white"))
-
 ;; What is this, Microsoft Word?
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -69,10 +66,19 @@
 (setq uniquify-buffer-name-style 'forward)
 
 ;; Set color scheme
-(setq custom-safe-themes t)
-(use-package monokai-theme
+(use-package solarized-theme
+  :load-path "~/el/solarized-emacs"
+  :init
+  (setq custom-safe-themes t)
+  (setq solarized-use-variable-pitch nil)
+  (setq solarized-high-contrast-mode-line t)
+  (setq solarized-height-minus-1 1.0)
+  (setq solarized-height-plus-1 1.0)
+  (setq solarized-height-plus-2 1.0)
+  (setq solarized-height-plus-3 1.0)
+  (setq solarized-height-plus-4 1.0)
   :config
-  (load-theme 'monokai))
+  (load-theme 'solarized-light))
 
 ;; Ignore common extensions.
 (add-to-list 'completion-ignored-extensions ".elc")
