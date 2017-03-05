@@ -396,7 +396,7 @@ only whitespace."
         #'helm-open-file-with-default-tool))
 
 (use-package bibtex-fetch
-  :load-path "~/el/bibtex-fetch")
+  :load-path "~/.emacs.d/bibtex-fetch")
 
 ;;; Markdown
 (use-package markdown-mode)

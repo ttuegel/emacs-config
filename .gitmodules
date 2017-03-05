@@ -4,3 +4,6 @@
 [submodule "solarized-emacs"]
 	path = solarized-emacs
 	url = https://github.com/ttuegel/solarized-emacs.git
+[submodule "bibtex-fetch"]
+	path = bibtex-fetch
+	url = https://github.com/ttuegel/bibtex-fetch.git
