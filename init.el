@@ -67,7 +67,7 @@
 
 ;; Set color scheme
 (use-package solarized-theme
-  :load-path "~/el/solarized-emacs"
+  :load-path "~/.emacs.d/solarized-emacs"
   :init
   (setq custom-safe-themes t)
   (setq solarized-use-variable-pitch nil)
