@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
+;; Load the .el if it's newer than the .elc
 (setq load-prefer-newer t)
 
 (package-initialize)
@@ -24,7 +25,7 @@
   '(defun customize-save-variable
        (variable value &optional comment) value))
 
-(bind-key "C-z" ctl-x-map)
+(bind-key "C-s" ctl-x-map)
 
 ;; Use UTF-8 everywhere. It's 2017, how is this not default?
 (set-terminal-coding-system 'utf-8)
@@ -57,7 +58,7 @@
 ;; Ask `y or n' rather than `yes or no'
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; It's 2017, everything display is wide, and vertically-split windows
+;; It's 2017, every display is wide, and vertically-split windows
 ;; are unreadable.
 (setq split-height-threshold nil)
 (setq split-width-threshold 144)
@@ -157,7 +158,6 @@ only whitespace."
 
 ;;; Search
 (define-prefix-command 'ttuegel/search-map)
-(unbind-key "C-s" global-map)
 (bind-key "C-f" ttuegel/search-map global-map)
 (bind-keys
  :map ttuegel/search-map
@@ -203,7 +203,7 @@ only whitespace."
   (setq evil-toggle-key "C-,")
 
   :config
-  (bind-key* "C-/" 'evil-normal-state)
+  (bind-key* "C--" 'evil-normal-state)
 
   ;; Emacs-mode equivalent of Vim motion keys
   (bind-keys
@@ -305,7 +305,7 @@ only whitespace."
   (bind-key "M-h" helm-command-map)
   (bind-key "C-f" 'helm-find-files helm-command-map)
 
-  (bind-key "M-z" 'helm-M-x)
+  (bind-key "M-s" 'helm-M-x)
   (bind-key "C-f" 'helm-find-files ctl-x-map)
 
   (bind-key "C-h" 'helm-next-line helm-map)
@@ -328,11 +328,11 @@ only whitespace."
 
 ;;; Git
 (define-prefix-command 'ttuegel/vc-map)
-(bind-key "C-s" ttuegel/vc-map global-map)
+(bind-key "C-z" ttuegel/vc-map global-map)
 
 (use-package magit
   :bind (:map ttuegel/vc-map
-              ("s" . magit-status)))
+              ("C-z" . magit-status)))
 
 (use-package autorevert
   :demand nil
