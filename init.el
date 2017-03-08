@@ -197,6 +197,8 @@ only whitespace."
       (let ((after (point)))
         (when (eq before after) (beginning-of-line))))))
 
+(unbind-key "M-z" global-map)
+
 ;;; Be Evil
 (use-package evil
   :init
