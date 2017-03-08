@@ -570,5 +570,8 @@ This function advances to the next thread when finished."
          (sh-mode-syntax-table sh-mode-syntax-table ?\` "'")))
     (add-to-list 'sh-mode-syntax-table-input `(es ,es-syntax-table))))
 
+;;; Maxima
+(use-package imaxima)
+
 (provide 'init)
 ;;; init.el ends here
