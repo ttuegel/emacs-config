@@ -274,6 +274,8 @@ only whitespace."
 
   (setq-default evil-shift-width tab-width)
 
+  (evil-set-initial-state 'comint-mode 'emacs)
+
   (evil-mode t))
 
 (use-package evil-surround
