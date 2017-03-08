@@ -171,7 +171,7 @@ only whitespace."
  :map ttuegel/buffer-map
  ("C-b" . helm-buffers-list)
  ("k" . kill-buffer)
- ("K" . kill-other-buffers)
+ ("C-k" . kill-this-buffer)
  ("n" . switch-to-next-buffer)
  ("p" . switch-to-prev-buffer)
  ("R" . (lambda () (interactive) (revert-buffer nil t)))
