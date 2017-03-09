@@ -575,6 +575,8 @@ This function advances to the next thread when finished."
     (add-to-list 'sh-mode-syntax-table-input `(es ,es-syntax-table))))
 
 ;;; Maxima
+(use-package maxima
+  :mode ("\\.mac\\'" . maxima-mode))
 (use-package imaxima)
 
 (provide 'init)
