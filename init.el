@@ -517,9 +517,7 @@ only whitespace."
 
   (setq notmuch-saved-searches
         '((:name "inbox" :query "tag:inbox and not tag:foss")
-          (:name "todo" :query "tag:todo and not tag:foss")
-          (:name "foss" :query "tag:inbox and tag:foss")
-          (:name "foss todo" :query "tag:todo and tag:foss")))
+          (:name "todo" :query "tag:todo and not tag:foss")))
 
   (let ((map notmuch-search-mode-map))
     (unbind-key "n" map) ; notmuch-search-next-thread
@@ -576,7 +574,10 @@ This function advances to the next thread when finished."
 
 ;;; Maxima
 (use-package maxima
-  :mode ("\\.mac\\'" . maxima-mode))
+  :mode ("\\.mac\\'" . maxima-mode)
+  :config
+  (evil-set-initial-state 'inferior-maxima-mode 'emacs))
+
 (use-package imaxima)
 
 (provide 'init)
