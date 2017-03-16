@@ -575,7 +575,9 @@ This function advances to the next thread when finished."
   :config
   (evil-set-initial-state 'inferior-maxima-mode 'emacs))
 
-(use-package imaxima)
+(use-package imaxima
+  :config
+  (setq imaxima-equation-color "#657b83"))
 
 (provide 'init)
 ;;; init.el ends here
