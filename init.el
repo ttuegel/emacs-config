@@ -492,12 +492,9 @@ only whitespace."
   (interactive)
   (ttuegel/set-mail-host))
 
-(use-package w3m)
-
 (use-package message
-  :after w3m
   :config
-  (setq mm-text-html-renderer 'w3m)
+  (setq mm-text-html-renderer 'shr)
   (setq message-sendmail-envelope-from 'header)
   (setq message-kill-buffer-on-exit t))
 
