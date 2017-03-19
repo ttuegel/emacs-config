@@ -450,6 +450,10 @@ only whitespace."
 (use-package dante
   :after haskell-mode
   :config
+
+  (let ((methods `((bare  . ,(lambda (_) '("cabal" "repl"))))))
+    (setq dante-repl-command-line-methods-alist methods))
+
   (add-hook 'haskell-mode-hook #'dante-mode)
   (eval-after-load 'flycheck
     '(add-hook 'haskell-mode-hook #'flycheck-mode)))
