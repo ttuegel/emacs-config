@@ -523,7 +523,7 @@ only whitespace."
   (setq notmuch-saved-searches
         '((:name "inbox" :query "tag:inbox and not tag:foss")
           (:name "foss" :query "tag:inbox and tag:foss")
-          (:name "trash" :query "(tag:notice or tag:ad) and not tag:inbox")))
+          (:name "trash" :query "(tag:notice or tag:ad) and not (tag:inbox or tag:sent or tag:replied)")))
 
   (let ((map notmuch-search-mode-map))
     (unbind-key "n" map) ; notmuch-search-next-thread
