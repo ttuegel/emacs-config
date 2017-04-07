@@ -597,5 +597,15 @@ This function advances to the next thread when finished."
   :config
   (setq imaxima-equation-color "#657b83"))
 
+;;; unfill-region
+
+(defun unfill-region (beg end)
+  "Unfill the region, joining text paragraphs into a single
+logical line.  This is useful, e.g., for use with
+`visual-line-mode'."
+  (interactive "*r")
+  (let ((fill-column (point-max)))
+    (fill-region beg end)))
+
 (provide 'init)
 ;;; init.el ends here
