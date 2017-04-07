@@ -150,6 +150,8 @@ only whitespace."
   :config
   (eyebrowse-mode t))
 
+(use-package visual-fill-column)
+
 ;;; Mode line
 (use-package spaceline-config
   :config
@@ -469,7 +471,9 @@ only whitespace."
 (use-package org
   :config
   (setq org-catch-invisible-edits 'show)
-  (add-hook 'org-mode-hook #'turn-off-electric-indent-local-mode))
+  (add-hook 'org-mode-hook #'turn-off-electric-indent-local-mode)
+  (add-hook 'org-mode-hook #'turn-on-visual-line-mode)
+  (add-hook 'org-mode-hook #'turn-on-visual-line-mode))
 
 ;;; rust
 (use-package rust-mode)
