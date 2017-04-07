@@ -461,10 +461,15 @@ only whitespace."
 ;;; XML
 (add-to-list 'auto-mode-alist '("\\.rng\\'" . xml-mode))
 
+(defun turn-off-electric-indent-local-mode ()
+  (interactive)
+  (electric-indent-local-mode -1))
+
 ;;; Org
 (use-package org
   :config
-  (setq org-catch-invisible-edits 'show))
+  (setq org-catch-invisible-edits 'show)
+  (add-hook 'org-mode-hook #'turn-off-electric-indent-local-mode))
 
 ;;; rust
 (use-package rust-mode)
