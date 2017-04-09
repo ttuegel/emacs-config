@@ -610,5 +610,8 @@ logical line.  This is useful, e.g., for use with
 (use-package pdftotext
   :load-path "~/.emacs.d/lisp")
 
+(use-package secret
+  :load-path "~/el/secret-el")
+
 (provide 'init)
 ;;; init.el ends here
