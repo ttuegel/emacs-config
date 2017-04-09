@@ -607,5 +607,8 @@ logical line.  This is useful, e.g., for use with
   (let ((fill-column (point-max)))
     (fill-region beg end)))
 
+(use-package pdftotext
+  :load-path "~/.emacs.d/lisp")
+
 (provide 'init)
 ;;; init.el ends here
