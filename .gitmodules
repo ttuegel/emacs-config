@@ -7,3 +7,6 @@
 [submodule "bibtex-fetch"]
 	path = bibtex-fetch
 	url = https://github.com/ttuegel/bibtex-fetch.git
+[submodule "nix-mode"]
+	path = nix-mode
+	url = https://github.com/matthewbauer/nix-mode
