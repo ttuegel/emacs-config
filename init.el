@@ -470,15 +470,7 @@ only whitespace."
 
 ;;; Org
 
-(defun org-bibtex-open-document ()
-  "Run `bibtex-open-document' if point is in a BibTeX source block."
-  (interactive)
-  (pcase (org-babel-get-src-block-info)
-    (`("bibtex" . ,_) (bibtex-open-document))
-    (_ (error "No BibTeX block at point"))))
-
 (use-package org
-  :bind (("C-c o" . org-bibtex-open-document))
   :config
   (setq org-catch-invisible-edits 'show)
   (add-hook 'org-mode-hook #'turn-off-electric-indent-local-mode)
