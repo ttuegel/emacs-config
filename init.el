@@ -406,6 +406,10 @@ only whitespace."
 (use-package bibtex-fetch
   :load-path "~/.emacs.d/bibtex-fetch")
 
+(use-package bibtex
+  :config
+  (add-hook 'bibtex-mode-hook #'turn-on-bibtex-fetch-mode))
+
 ;;; Markdown
 (use-package markdown-mode)
 
@@ -473,9 +477,10 @@ only whitespace."
 (use-package org
   :config
   (setq org-catch-invisible-edits 'show)
+  (add-hook 'org-mode-hook #'turn-on-org-bibtex-fetch-mode)
   (add-hook 'org-mode-hook #'turn-off-electric-indent-local-mode)
   (add-hook 'org-mode-hook #'turn-on-visual-line-mode)
-  (add-hook 'org-mode-hook #'turn-on-visual-line-mode))
+  (add-hook 'org-mode-hook #'turn-on-visual-fill-column-mode))
 
 ;;; rust
 (use-package rust-mode)
