@@ -620,5 +620,13 @@ logical line.  This is useful, e.g., for use with
 (use-package secret
   :load-path "~/el/secret-el")
 
+;;; Scheme
+
+(use-package scheme
+  :config
+  (put 'unless 'scheme-indent-function 1)
+  (put 'match 'scheme-indent-function 1)
+  (put 'with-directory 'scheme-indent-function 1))
+
 (provide 'init)
 ;;; init.el ends here
