@@ -399,14 +399,20 @@ only whitespace."
 (use-package helm-bibtex
   :config
   (setq bibtex-completion-bibliography "~/bib/default.bib")
-  (setq bibtex-completion-library-path "~/bib/files/")
+  (setq bibtex-completion-library-path "~/bib/doc/")
   (setq bibtex-completion-pdf-open-function
         #'helm-open-file-with-default-tool))
+
+(use-package org-ref
+  :config
+  (setq org-ref-bibliography-notes "~/bib/default.org")
+  (setq org-ref-default-bibliography '("~/bib/default.org"))
+  (setq org-ref-pdf-directory "~/bib/doc"))
 
 (use-package bibtex-fetch
   :load-path "~/.emacs.d/bibtex-fetch"
   :config
-  (add-to-list 'safe-local-variable-values '(bibtex-fetch-document-path . "~/bib/doc")))
+  (put 'bibtex-fetch-document-path 'safe-local-variable #'stringp))
 
 (use-package bibtex
   :config
