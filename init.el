@@ -470,6 +470,8 @@ only whitespace."
   (let ((methods `((bare  . ,(lambda (_) '("cabal" "repl"))))))
     (setq dante-repl-command-line-methods-alist methods))
 
+  (put 'dante-target 'safe-local-variable #'stringp)
+
   (add-hook 'haskell-mode-hook #'dante-mode)
   (eval-after-load 'flycheck
     '(add-hook 'haskell-mode-hook #'flycheck-mode)))
