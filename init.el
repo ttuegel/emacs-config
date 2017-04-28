@@ -456,6 +456,7 @@ only whitespace."
 
 (use-package dante
   :after haskell-mode
+  :load-path "~/dante"
   :config
 
   (let ((methods `((bare  . ,(lambda (_) '("cabal" "repl"))))))
