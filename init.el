@@ -412,11 +412,7 @@ only whitespace."
 (use-package bibtex-fetch
   :load-path "~/.emacs.d/bibtex-fetch"
   :config
-  (put 'bibtex-fetch-document-path 'safe-local-variable #'stringp))
-
-(use-package bibtex
-  :config
-  (add-hook 'bibtex-mode-hook #'turn-on-bibtex-fetch-mode))
+  (put 'bibtex-fetch/document-path 'safe-local-variable #'stringp))
 
 ;;; Markdown
 (use-package markdown-mode)
@@ -486,9 +482,18 @@ only whitespace."
 ;;; Org
 
 (use-package org
+  :bind (:map org-mode-map
+              ("C-c b" . bibtex-fetch/org-insert-entry-from-clipboard))
   :config
   (setq org-catch-invisible-edits 'show)
-  (add-hook 'org-mode-hook #'turn-on-org-bibtex-fetch-mode)
+  (setq org-blank-before-new-entry
+        '((heading . t) (plain-list-item t)))
+  (setq org-file-apps
+        '((auto-mode . emacs)
+          (system . "xdg-open %s")
+          ("\\.x?html?\\'" . system)
+          ("\\.pdf\\'" . system)))
+
   (add-hook 'org-mode-hook #'turn-off-electric-indent-local-mode)
   (add-hook 'org-mode-hook #'turn-on-visual-line-mode)
   (add-hook 'org-mode-hook #'turn-on-visual-fill-column-mode))
