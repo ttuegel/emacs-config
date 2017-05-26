@@ -403,12 +403,6 @@ only whitespace."
   (setq bibtex-completion-pdf-open-function
         #'helm-open-file-with-default-tool))
 
-(use-package org-ref
-  :config
-  (setq org-ref-bibliography-notes "~/bib/default.org")
-  (setq org-ref-default-bibliography '("~/bib/default.org"))
-  (setq org-ref-pdf-directory "~/bib/doc"))
-
 (use-package bibtex-fetch
   :load-path "~/.emacs.d/bibtex-fetch"
   :config
