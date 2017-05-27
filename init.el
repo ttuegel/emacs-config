@@ -536,65 +536,6 @@ only whitespace."
   (setq send-mail-function #'sendmail-send-it)
   (setq sendmail-program "msmtp"))
 
-;;; Notmuch
-(use-package notmuch
-  :config
-  (setq notmuch-command "~/.local/bin/notmuch")
-
-  (setq notmuch-search-oldest-first nil)
-  (setq notmuch-fcc-dirs
-        '(("ttuegel@mailbox.org" . "mailbox/INBOX +sent +mailbox")
-          ("ttuegel@gmail.com" . "\"gmail/[Gmail].All Mail\" +sent +gmail")
-          ("tuegel2@illinois.edu" . "illinois/INBOX +sent +illinois")))
-
-  (setq notmuch-saved-searches
-        '((:name "inbox" :query "tag:inbox and not tag:foss")
-          (:name "foss" :query "tag:inbox and tag:foss")
-          (:name "trash" :query "(tag:notice or tag:ad) and not (tag:inbox or tag:sent or tag:replied)")))
-
-  (let ((map notmuch-search-mode-map))
-    (unbind-key "n" map) ; notmuch-search-next-thread
-    (unbind-key "p" map) ; notmuch-search-previous-thread
-    (unbind-key "l" map) ; notmuch-search-filter
-    (bind-keys :map map
-               ("h" . notmuch-search-next-thread)
-               ("t" . notmuch-search-previous-thread)
-               ("f" . notmuch-search-filter)))
-
-  (defun ttuegel/notmuch-search-delete (&optional beg end)
-    "Delete the selected thread or region.
-
-This function advances to the next thread when finished."
-    (interactive (notmuch-search-interactive-region))
-    (notmuch-search-tag '("+deleted" "-inbox") beg end)
-    (when (eq beg end)
-      (notmuch-search-next-thread)))
-  (bind-key "k" #'ttuegel/notmuch-search-delete notmuch-search-mode-map)
-
-  (defun ttuegel/notmuch-show-delete ()
-    "Delete the thread in the current buffer, then show the next thread from search."
-    (interactive)
-    (notmuch-show-tag-all '("+deleted" "-inbox"))
-    (notmuch-show-next-thread t))
-  (bind-key "k" #'ttuegel/notmuch-show-delete notmuch-show-mode-map)
-
-  (defun ttuegel/notmuch-search-mute (&optional beg end)
-    "Mute the selected thread or region.
-
-This function advances to the next thread when finished."
-    (interactive (notmuch-search-interactive-region))
-    (notmuch-search-tag '("+muted" "-inbox") beg end)
-    (when (eq beg end)
-      (notmuch-search-next-thread)))
-  (bind-key "u" #'ttuegel/notmuch-search-mute notmuch-search-mode-map)
-
-  (defun ttuegel/notmuch-show-mute ()
-    "Mute the thread in the current buffer, then show the next thread from search."
-    (interactive)
-    (notmuch-show-tag-all '("+muted" "-inbox"))
-    (notmuch-show-next-thread t))
-  (bind-key "u" #'ttuegel/notmuch-show-mute notmuch-show-mode-map))
-
 ;;; C
 (add-hook 'c-mode-common-hook #'c-guess)
 
