@@ -419,7 +419,7 @@ only whitespace."
 
 ;;; Nix
 (use-package nix-mode
-  :load-path "~/.emacs.d/nix-mode"
+  :load-path "./nix-mode"
   :config
   (add-hook 'nix-mode-hook #'rainbow-delimiters-mode))
 
