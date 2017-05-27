@@ -13,3 +13,6 @@
 [submodule "evil"]
 	path = evil
 	url = https://github.com/emacs-evil/evil
+[submodule "dante"]
+	path = dante
+	url = https://github.com/jyp/dante.git
