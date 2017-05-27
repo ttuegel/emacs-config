@@ -405,7 +405,7 @@ only whitespace."
         #'helm-open-file-with-default-tool))
 
 (use-package bibtex-fetch
-  :load-path "~/.emacs.d/bibtex-fetch"
+  :load-path "./bibtex-fetch"
   :config
   (put 'bibtex-fetch/document-path 'safe-local-variable #'stringp))
 
