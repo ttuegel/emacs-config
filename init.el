@@ -205,6 +205,7 @@ only whitespace."
 
 ;;; Be Evil
 (use-package evil
+  :load-path "./evil"
   :init
   (setq evil-toggle-key "C-,")
 

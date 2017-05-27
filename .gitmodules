@@ -10,3 +10,6 @@
 [submodule "nix-mode"]
 	path = nix-mode
 	url = https://github.com/matthewbauer/nix-mode
+[submodule "evil"]
+	path = evil
+	url = https://github.com/emacs-evil/evil
