@@ -626,7 +626,7 @@ logical line.  This is useful, e.g., for use with
     (fill-region beg end)))
 
 (use-package pdftotext
-  :load-path "~/.emacs.d/lisp")
+  :load-path "./lisp")
 
 (use-package secret
   :load-path "~/el/secret-el")
