@@ -458,7 +458,7 @@ only whitespace."
   :load-path "./dante"
   :config
 
-  (let ((methods `((bare  . ,(lambda (_) '("cabal" "repl"))))))
+  (let ((methods `((bare  . ,(lambda (_) '("cabal" "repl" dante-target))))))
     (setq dante-repl-command-line-methods-alist methods))
 
   (put 'dante-target 'safe-local-variable #'stringp)
