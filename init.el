@@ -539,8 +539,6 @@ only whitespace."
 ;;; Notmuch
 (use-package notmuch
   :config
-  (setq notmuch-command "~/.local/bin/notmuch")
-
   (setq notmuch-search-oldest-first nil)
   (setq notmuch-fcc-dirs
         '(("ttuegel@mailbox.org" . "mailbox/INBOX +sent +mailbox")
