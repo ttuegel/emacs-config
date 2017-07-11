@@ -581,7 +581,7 @@ This function advances to the next thread when finished."
 
 This function advances to the next thread when finished."
     (interactive (notmuch-search-interactive-region))
-    (notmuch-search-tag '("+muted" "-inbox") beg end)
+    (notmuch-search-tag '("+mute-thread" "-inbox") beg end)
     (when (eq beg end)
       (notmuch-search-next-thread)))
   (bind-key "u" #'ttuegel/notmuch-search-mute notmuch-search-mode-map)
@@ -589,9 +589,16 @@ This function advances to the next thread when finished."
   (defun ttuegel/notmuch-show-mute ()
     "Mute the thread in the current buffer, then show the next thread from search."
     (interactive)
-    (notmuch-show-tag-all '("+muted" "-inbox"))
+    (notmuch-show-tag-message '("+mute" "-inbox"))
     (notmuch-show-next-thread t))
-  (bind-key "u" #'ttuegel/notmuch-show-mute notmuch-show-mode-map))
+  (bind-key "u" #'ttuegel/notmuch-show-mute-thread notmuch-show-mode-map)
+
+  (defun ttuegel/notmuch-show-mute-thread ()
+    "Mute the thread in the current buffer, then show the next thread from search."
+    (interactive)
+    (notmuch-show-tag-all '("+mute-thread" "-inbox"))
+    (notmuch-show-next-thread t))
+  (bind-key "U" #'ttuegel/notmuch-show-mute-thread notmuch-show-mode-map))
 
 ;;; C
 (add-hook 'c-mode-common-hook #'c-guess)
