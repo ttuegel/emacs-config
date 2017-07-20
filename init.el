@@ -530,7 +530,8 @@ only whitespace."
   (setq mm-discouraged-alternatives '("text/html" "text/richtext" "image/.*"))
   (setq mm-text-html-renderer nil)
   (setq message-sendmail-envelope-from 'header)
-  (setq message-kill-buffer-on-exit t))
+  (setq message-kill-buffer-on-exit t)
+  (push '(".nb" . "application/vnd.wolfram.nb") mailcap-mime-extensions))
 
 (use-package sendmail
   :config
