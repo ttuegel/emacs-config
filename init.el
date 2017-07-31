@@ -90,8 +90,10 @@
 
 ;; Use Source Code Pro font by default.
 
-(add-to-list 'default-frame-alist '(font . "Hack-11"))
-(set-face-attribute 'default t :font "Hack-11")
+(set-face-attribute 'default t
+                    :family "Iosevka Type"
+                    :height 120
+                    :weight 'normal)
 
 ;; Don't use italics to indicate types.
 (custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
