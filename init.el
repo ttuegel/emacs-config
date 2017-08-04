@@ -532,7 +532,7 @@ only whitespace."
   (setq notmuch-search-oldest-first nil)
   (setq notmuch-fcc-dirs
         '(("ttuegel@mailbox.org" . "mailbox/INBOX +sent +mailbox")
-          ("ttuegel@gmail.com" . "\"gmail/[Gmail].All Mail\" +sent +gmail")
+          ("ttuegel@gmail.com" . "gmail/all_mail +sent +gmail")
           ("tuegel2@illinois.edu" . "illinois/INBOX +sent +illinois")))
 
   (setq notmuch-saved-searches
