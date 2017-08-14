@@ -452,22 +452,8 @@ only whitespace."
   (setq haskell-auto-import-loaded-modules nil)
   (setq haskell-process-log t)
   (setq haskell-process-suggest-remove-import-lines nil)
-  (eval-after-load 'rainbow-delimiters
-    '(add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)))
-
-(use-package dante
-  :after haskell-mode
-  :load-path "./dante"
-  :config
-
-  (let ((methods `((bare  . ,(lambda (_) '("cabal" "repl" dante-target))))))
-    (setq dante-repl-command-line-methods-alist methods))
-
-  (put 'dante-target 'safe-local-variable #'stringp)
-
-  (add-hook 'haskell-mode-hook #'dante-mode)
-  (eval-after-load 'flycheck
-    '(add-hook 'haskell-mode-hook #'flycheck-mode)))
+  (add-hook 'haskell-mode-hook #'flycheck-mode)
+  (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode))
 
 ;;; XML
 (add-to-list 'auto-mode-alist '("\\.rng\\'" . xml-mode))
