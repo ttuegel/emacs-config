@@ -2,8 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(add-to-list 'exec-path "/nix/var/nix/profiles/per-user/ttuegel/profile/bin")
-
 ;; Load the .el if it's newer than the .elc
 (setq load-prefer-newer t)
 
