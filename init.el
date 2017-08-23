@@ -633,5 +633,10 @@ logical line.  This is useful, e.g., for use with
   (put 'with-directory 'scheme-indent-function 1)
   (put 'when 'scheme-indent-function 1))
 
+;;; Idris
+
+(use-package idris-mode)
+(use-package helm-idris)
+
 (provide 'init)
 ;;; init.el ends here
