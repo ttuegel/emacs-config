@@ -86,12 +86,9 @@
 
 ;;; Fonts
 
-;; Use Source Code Pro font by default.
-
-(set-face-attribute 'default t
-                    :family "Iosevka Type"
-                    :height 120
-                    :weight 'normal)
+;; Use Iosevka font by default.
+(set-frame-font (font-spec :family "Iosevka Type" :size 12.0 :weight 'normal))
+(set-face-attribute 'default t :family "Iosevka Type" :height 120 :weight 'normal)
 
 ;; Don't use italics to indicate types.
 (custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
