@@ -521,6 +521,7 @@ only whitespace."
   (setq sendmail-program "msmtp"))
 
 ;;; Notmuch
+
 (use-package notmuch
   :config
   (setq notmuch-search-oldest-first nil)
@@ -530,8 +531,9 @@ only whitespace."
           ("tuegel2@illinois.edu" . "illinois/INBOX +sent +illinois")))
 
   (setq notmuch-saved-searches
-        '((:name "inbox" :query "tag:inbox and not tag:foss")
-          (:name "foss" :query "tag:inbox and tag:foss")
+        '((:name "inbox" :query "tag:inbox and not tag:foss and not tag:ci")
+          (:name "foss" :query "tag:inbox and tag:foss and not tag:ci")
+          (:name "ci" :query "tag:inbox and tag:ci")
           (:name "trash" :query "(tag:notice or tag:ad) and not (tag:inbox or tag:sent or tag:replied)")))
 
   (let ((map notmuch-search-mode-map))
