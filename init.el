@@ -420,6 +420,9 @@ only whitespace."
   :config
   (add-hook 'nix-mode-hook #'rainbow-delimiters-mode))
 
+(use-package nix-buffer
+  :load-path "~/nix-buffer")
+
 ;;; Ledger
 (use-package ledger-mode)
 
