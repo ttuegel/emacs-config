@@ -133,7 +133,7 @@ only whitespace."
   (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode))
 
 ;;; Automatic indentation
-(electric-indent-mode t)
+(electric-indent-mode -1) ; Useless
 
 ;;; Window numbers
 (use-package winum
