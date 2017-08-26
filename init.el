@@ -456,10 +456,6 @@ only whitespace."
 ;;; XML
 (add-to-list 'auto-mode-alist '("\\.rng\\'" . xml-mode))
 
-(defun turn-off-electric-indent-local-mode ()
-  (interactive)
-  (electric-indent-local-mode -1))
-
 ;;; Org
 
 (use-package org
