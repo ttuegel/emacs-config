@@ -152,37 +152,20 @@ only whitespace."
   (spaceline-helm-mode)
   (spaceline-emacs-theme))
 
-;;; Search
-(define-prefix-command 'ttuegel/search-map)
-(bind-key "C-f" ttuegel/search-map global-map)
-(bind-keys
- :map ttuegel/search-map
- ("f" . (lambda () (interactive) (isearch-forward t)))
- ("F" . (lambda () (interactive) (isearch-backward t))))
+;; Search
+(bind-key "C-f" search-map global-map)
 
-;;; Buffers
-(define-prefix-command 'ttuegel/buffer-map)
-(bind-key* "C-b" ttuegel/buffer-map)
-(bind-keys
- :map ttuegel/buffer-map
- ("C-b" . helm-buffers-list)
- ("k" . kill-buffer)
- ("C-k" . kill-this-buffer)
- ("n" . switch-to-next-buffer)
- ("p" . switch-to-prev-buffer)
- ("R" . (lambda () (interactive) (revert-buffer nil t)))
- ("r" . rename-current-buffer-file))
-
-;;; Errors
-
-(define-prefix-command 'ttuegel/error-map)
-(bind-key* "C-e" ttuegel/error-map)
-(bind-keys
- :map ttuegel/error-map
- ("h" . next-error)
- ("t" . previous-error))
-
-;;; Required Packages
+;; Buffers
+(define-prefix-command 'buffer-map)
+(bind-key "b" buffer-map ctl-x-map)
+(bind-keys :map buffer-map
+           ("b" . helm-buffers-list)
+           ("k" . kill-buffer)
+           ("C-k" . kill-this-buffer)
+           ("n" . switch-to-next-buffer)
+           ("p" . switch-to-prev-buffer)
+           ("R" . (lambda () (interactive) (revert-buffer nil t)))
+           ("r" . rename-current-buffer-file))
 
 (defun ttuegel/beginning-of-line ()
   "`beginning-of-line' if `back-to-indentation' does not move the cursor."
