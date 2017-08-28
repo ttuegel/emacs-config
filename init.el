@@ -137,13 +137,6 @@ only whitespace."
 ;;; Automatic indentation
 (electric-indent-mode -1) ; Useless
 
-;;; Window numbers
-(use-package winum
-  :init
-  (setq winum-keymap (make-sparse-keymap)) ; Please don't mess with my maps
-  :config
-  (winum-mode))
-
 ;;; Window layouts
 (use-package eyebrowse
   :config
@@ -151,7 +144,7 @@ only whitespace."
 
 (use-package visual-fill-column)
 
-;;; Mode line
+;; Mode line
 (use-package spaceline-config
   :config
   (setq spaceline-highlight-face-func
