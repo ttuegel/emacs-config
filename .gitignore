@@ -5,3 +5,4 @@ recentf
 *.elc
 /elpa/
 /url/
+/nix-buffer
