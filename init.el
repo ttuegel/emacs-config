@@ -25,7 +25,9 @@
   '(defun customize-save-variable
        (variable value &optional comment) value))
 
-(bind-key "C-s" ctl-x-map)
+;; C-x remap
+(bind-key "C-q" ctl-x-map)
+(bind-key "C-v" #'quoted-insert)
 
 ;; Use UTF-8 everywhere. It's 2017, how is this not default?
 (set-terminal-coding-system 'utf-8)
@@ -208,6 +210,8 @@ only whitespace."
 
   :config
   (bind-key* "C--" 'evil-normal-state)
+  (bind-key "<SPC>" ctl-x-map evil-normal-state-map)
+  (bind-key "<SPC>" ctl-x-map evil-visual-state-map)
 
   ;; Emacs-mode equivalent of Vim motion keys
   (bind-keys
@@ -225,7 +229,7 @@ only whitespace."
    ("C-M-h" . evil-scroll-page-down))
 
   ;; Windows
-  (bind-key* "C-w" evil-window-map)
+  (bind-key "w" evil-window-map ctl-x-map)
   (bind-keys
    :map evil-window-map
    ("d" . evil-window-left)
@@ -308,11 +312,11 @@ only whitespace."
   ;; Open Helm in the current window
   (setq helm-split-window-default-side 'same)
 
-  (bind-key "M-h" helm-command-map)
-  (bind-key "C-f" 'helm-find-files helm-command-map)
-
   (bind-key "M-s" 'helm-M-x)
-  (bind-key "C-f" 'helm-find-files ctl-x-map)
+  (bind-key "f" 'helm-find-files ctl-x-map)
+  (bind-key "M-f" 'helm-multi-files ctl-x-map)
+
+  (bind-key "<SPC>" helm-map ctl-x-map)
 
   (bind-key "C-h" 'helm-next-line helm-map)
   (bind-key "C-t" 'helm-previous-line helm-map)
@@ -333,12 +337,11 @@ only whitespace."
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
 ;;; Git
-(define-prefix-command 'ttuegel/vc-map)
-(bind-key "C-z" ttuegel/vc-map global-map)
+(bind-key "z" vc-prefix-map ctl-x-map)
 
 (use-package magit
-  :bind (:map ttuegel/vc-map
-              ("C-z" . magit-status)))
+  :bind (:map vc-prefix-map
+              ("g" . magit-status)))
 
 (use-package autorevert
   :demand nil
