@@ -28,6 +28,8 @@
 ;; C-x remap
 (bind-key "C-q" ctl-x-map)
 (bind-key "C-v" #'quoted-insert)
+(unbind-key "C-s" ctl-x-map)
+(bind-key "s" #'save-buffer ctl-x-map)
 
 ;; Use UTF-8 everywhere. It's 2017, how is this not default?
 (set-terminal-coding-system 'utf-8)
@@ -134,9 +136,6 @@ only whitespace."
   :config
   (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode))
 
-;;; Automatic indentation
-(electric-indent-mode -1) ; Useless
-
 ;;; Window layouts
 (use-package eyebrowse
   :config
@@ -154,6 +153,9 @@ only whitespace."
 
 ;; Search
 (bind-key "C-f" search-map global-map)
+(bind-key "s" #'isearch-forward-regexp search-map)
+(bind-key "f" #'avy-goto-char search-map)
+(bind-key "F" #'avy-goto-line search-map)
 
 ;; Buffers
 (define-prefix-command 'buffer-map)
@@ -185,9 +187,13 @@ only whitespace."
   (setq evil-toggle-key "C-,")
 
   :config
-  (bind-key* "C--" 'evil-normal-state)
+  (bind-key "C-<SPC>" #'evil-normal-state evil-visual-state-map)
+  (bind-key "C-<SPC>" #'evil-normal-state evil-insert-state-map)
+  (bind-key "C-<SPC>" #'evil-normal-state evil-replace-state-map)
   (bind-key "<SPC>" ctl-x-map evil-normal-state-map)
   (bind-key "<SPC>" ctl-x-map evil-visual-state-map)
+  (bind-key "M-<RET>" #'helm-M-x evil-normal-state-map)
+  (bind-key "M-<RET>" #'helm-M-x evil-visual-state-map)
 
   ;; Emacs-mode equivalent of Vim motion keys
   (bind-keys
@@ -220,11 +226,6 @@ only whitespace."
    ("|" . evil-window-vnew)
    ("k" . evil-window-delete))
 
-  ;; Whitespace hygiene
-  (defadvice evil-normal-state
-      (after indent-whitespace-hygiene-after-evil-normal-state activate)
-    (ttuegel/indent-whitespace-hygiene))
-
   ;; Evil motion keys for Dvorak
   (let ((map evil-motion-state-map))
 
@@ -244,7 +245,7 @@ only whitespace."
     (bind-key "H" #'evil-scroll-down map)
     (bind-key "T" #'evil-scroll-up map)
     (bind-key "D" #'ttuegel/beginning-of-line map)
-    (bind-key "N" #'end-of-visual-line map)
+    (bind-key "N" #'evil-end-of-line map)
     (bind-key "M-h" #'evil-scroll-page-down map)
     (bind-key "M-t" #'evil-scroll-page-up map))
 
@@ -288,9 +289,11 @@ only whitespace."
   ;; Open Helm in the current window
   (setq helm-split-window-default-side 'same)
 
-  (bind-key "M-s" 'helm-M-x)
-  (bind-key "f" 'helm-find-files ctl-x-map)
-  (bind-key "M-f" 'helm-multi-files ctl-x-map)
+  (bind-key "M-<RET>" 'helm-M-x)
+
+  (bind-key "f" #'helm-find-files ctl-x-map)
+  (bind-key "M-f" #'helm-multi-files ctl-x-map)
+  (unbind-key "C-f" ctl-x-map)
 
   (bind-key "<SPC>" helm-map ctl-x-map)
 
@@ -393,10 +396,15 @@ only whitespace."
   :config
   (add-to-list 'flycheck-disabled-checkers 'haskell-hlint))
 
+(use-package flycheck-haskell
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+
 ;;; Nix
 (use-package nix-mode
   :load-path "./nix-mode"
   :config
+  (add-hook 'nix-mode-hook #'turn-off-electric-indent-local-mode)
   (add-hook 'nix-mode-hook #'rainbow-delimiters-mode))
 
 (use-package nix-buffer
@@ -489,7 +497,7 @@ only whitespace."
 (use-package message
   :config
   (setq mm-discouraged-alternatives '("text/html" "text/richtext" "image/.*"))
-  (setq mm-text-html-renderer 'w3m-standalone)
+  (setq mm-text-html-renderer 'shr)
   (setq message-sendmail-envelope-from 'header)
   (setq message-kill-buffer-on-exit t)
   (push '(".nb" . "application/vnd.wolfram.nb") mailcap-mime-extensions))
@@ -498,6 +506,10 @@ only whitespace."
   :config
   (setq send-mail-function #'sendmail-send-it)
   (setq sendmail-program "msmtp"))
+
+(use-package messages-are-flowing
+  :config
+  (add-hook 'message-mode-hook #'messages-are-flowing-use-and-mark-hard-newlines))
 
 ;;; Notmuch
 
