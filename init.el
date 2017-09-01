@@ -400,6 +400,10 @@ only whitespace."
   :config
   (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
+(defun turn-off-electric-indent-local-mode ()
+  "Turn off `electric-indent-mode' in this buffer only."
+  (electric-indent-local-mode -1))
+
 ;;; Nix
 (use-package nix-mode
   :load-path "./nix-mode"
