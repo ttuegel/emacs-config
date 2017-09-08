@@ -338,6 +338,8 @@ only whitespace."
   (setq TeX-parse-self t)
   (setq TeX-save-query nil)
   (setq TeX-source-correlate-mode t)
+  (setq LaTeX-item-indent 0)
+  (setq LaTeX-indent-level 0)
 
   (add-hook 'LaTeX-mode-hook (lambda () (TeX-PDF-mode t)))
   (add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1)))
