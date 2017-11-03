@@ -130,6 +130,9 @@ only whitespace."
     (forward-line 1)
     (back-to-indentation)))
 
+(use-package semantic-indent
+  :load-path "~/semantic-indent")
+
 ;;; Parentheses
 (show-paren-mode t)
 (use-package rainbow-delimiters
@@ -443,6 +446,10 @@ only whitespace."
   (setq haskell-auto-import-loaded-modules nil)
   (setq haskell-process-log t)
   (setq haskell-process-suggest-remove-import-lines nil)
+  (add-hook 'haskell-mode-hook
+            '(progn
+                  (haskell-indent-mode -1)
+                  (semantic-indent-mode t)))
   (add-hook 'haskell-mode-hook #'flycheck-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode))
 
