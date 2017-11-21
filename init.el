@@ -448,9 +448,9 @@ only whitespace."
   (setq haskell-process-log t)
   (setq haskell-process-suggest-remove-import-lines nil)
   (add-hook 'haskell-mode-hook
-            '(progn
-                  (haskell-indent-mode -1)
-                  (semantic-indent-mode t)))
+            (lambda ()
+              (haskell-indent-mode -1)
+              (semantic-indent-mode t)))
   (add-hook 'haskell-mode-hook #'flycheck-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode))
 
