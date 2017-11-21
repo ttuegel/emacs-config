@@ -291,14 +291,15 @@ only whitespace."
   (setq helm-ff-skip-boring-files t)
   ;; Open Helm in the current window
   (setq helm-split-window-default-side 'same)
+  (setq helm-grep-ag-command
+        "rg --color=always --smart-case --no-heading --line-number %s %s %s")
 
   (bind-key "M-<RET>" 'helm-M-x)
 
   (bind-key "f" #'helm-find-files ctl-x-map)
   (bind-key "M-f" #'helm-multi-files ctl-x-map)
+  (bind-key "g" #'helm-do-grep-ag ctl-x-map)
   (unbind-key "C-f" ctl-x-map)
-
-  (bind-key "<SPC>" helm-map ctl-x-map)
 
   (bind-key "C-h" 'helm-next-line helm-map)
   (bind-key "C-t" 'helm-previous-line helm-map)
