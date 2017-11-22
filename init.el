@@ -161,6 +161,8 @@ only whitespace."
 ;;; Search
 (bind-key "C-f" search-map global-map)
 (bind-key "s" #'isearch-forward-regexp search-map)
+(bind-key "C-s" #'isearch-repeat-forward search-map)
+(bind-key "M-s" #'isearch-repeat-backward search-map)
 (bind-key "f" #'avy-goto-char search-map)
 (bind-key "F" #'avy-goto-line search-map)
 
