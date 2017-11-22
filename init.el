@@ -2,18 +2,21 @@
 ;;; Commentary:
 ;;; Code:
 
+;;; File and package loading
+
 ;; Load the .el if it's newer than the .elc
 (setq load-prefer-newer t)
 
 (package-initialize)
 
-(require 'diminish)
-(require 'bind-key)
-
 ;; Auto-compile .el files
 (require 'auto-compile)
 (auto-compile-on-load-mode)
 (auto-compile-on-save-mode)
+
+(require 'diminish)
+(require 'bind-key)
+
 
 ;;; Emacs settings
 
@@ -187,10 +190,6 @@ only whitespace."
 
 ;; Restore `esc-map'
 (bind-key "<ESC>" esc-map)
-(bind-key "M-<RET>" #'helm-M-x)
-(unbind-key "<ESC>" evil-insert-state-map)
-(unbind-key "<ESC>" evil-replace-state-map)
-(unbind-key "<ESC>" evil-visual-state-map)
 
 (bind-key "C-[" #'evil-normal-state evil-visual-state-map)
 (bind-key "C-[" #'evil-normal-state evil-insert-state-map)
@@ -258,10 +257,8 @@ only whitespace."
   (unbind-key "d" map) ; evil-delete
   (unbind-key "D" map) ; evil-delete-line
 
-  (bind-keys
-   :map map
-   ("k" . evil-delete)
-   ("K" . evil-delete-line)))
+  (bind-key "k" #'evil-delete map)
+  (bind-key "K" #'evil-delete-line map))
 
 (setq-default evil-shift-width tab-width)
 
@@ -270,19 +267,21 @@ only whitespace."
 (evil-mode t)
 
 ;; Evil addons
+
 (require 'evil-surround)
 (global-evil-surround-mode 1)
 
 (require 'evil-indent-textobject)
 
 ;;; Undo Tree
+
 (require 'undo-tree)
-(bind-keys
- :map evil-normal-state-map
- ("u" . undo-tree-undo)
- ("U" . undo-tree-redo))
 (diminish 'undo-tree-mode)
 (global-undo-tree-mode 1)
+
+(let ((map evil-normal-state-map))
+  (bind-key "u" #'undo-tree-undo map)
+  (bind-key "U" #'undo-tree-redo map))
 
 
 ;;; Helm
@@ -302,17 +301,21 @@ only whitespace."
 (setq helm-grep-ag-command
       "rg --color=always --smart-case --no-heading --line-number %s %s %s")
 
+;; Rebind `M-x'
 (bind-key "M-<RET>" 'helm-M-x)
 
-(bind-key "f" #'helm-find-files ctl-x-map)
-(unbind-key "C-f" ctl-x-map)
-(bind-key "M-f" #'helm-multi-files ctl-x-map)
-(bind-key "g" #'helm-do-grep-ag ctl-x-map)
+(let ((map ctl-x-map))
+  (unbind-key "C-f" map)
+
+  (bind-key "f" #'helm-find-files ctl-x-map)
+  (bind-key "M-f" #'helm-multi-files ctl-x-map)
+
+  (bind-key "g" #'helm-do-grep-ag ctl-x-map))
 
 ;; Movement keys for `helm-mode'
 (bind-key "C-h" 'helm-next-line helm-map)
 (bind-key "C-t" 'helm-previous-line helm-map)
-(bind-key "C-n" 'helm-execute-persistent-action helm-map)
+(bind-key "C-f" 'helm-execute-persistent-action helm-map)
 
 ;; `C-d' goes up one level in `helm-find-files' and friends
 (bind-key "C-d" 'helm-find-files-up-one-level helm-read-file-map)
@@ -355,6 +358,7 @@ only whitespace."
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
 
+;; Save without asking
 (setq TeX-save-query nil)
 
 ;; Allow viewer to move cursor
@@ -408,7 +412,7 @@ only whitespace."
 (setq bibtex-completion-pdf-open-function
       #'helm-open-file-with-default-tool)
 
-(add-to-list 'load-path "./bibtex-fetch")
+(add-to-list 'load-path "~/.emacs.d/bibtex-fetch")
 (require 'bibtex-fetch)
 (put 'bibtex-fetch/document-path 'safe-local-variable #'stringp)
 
@@ -434,7 +438,7 @@ only whitespace."
   "Turn off `electric-indent-mode' in this buffer only."
   (electric-indent-local-mode -1))
 
-(add-to-list 'load-path "./nix-mode")
+(add-to-list 'load-path "~/.emacs.d/nix-mode")
 (require 'nix-mode)
 (add-hook 'nix-mode-hook #'turn-off-electric-indent-local-mode)
 (add-hook 'nix-mode-hook #'rainbow-delimiters-mode)
@@ -458,18 +462,18 @@ only whitespace."
 (require 'company)
 (diminish 'company-mode)
 
-(bind-keys
- :map company-active-map
- ("C-h" . company-select-next)
- ("C-t" . company-select-previous)
- ("C-n" . company-complete-common)
- ("C-j" . company-complete-selection)
- ("C-g" . company-abort))
+(let ((map company-active-map))
+  (bind-key "C-h" #'company-select-next map)
+  (bind-key "C-t" #'company-select-previous map)
+  (bind-key "C-f" #'company-complete-selection map)
+  (bind-key "M-f" #'company-complete-common map)
+  (bind-key "C-g" #'company-abort map))
 
 (global-company-mode)
 
 
 ;;; Haskell
+
 (require 'haskell-mode)
 
 (setq haskell-literate-default 'tex)
@@ -477,11 +481,15 @@ only whitespace."
 (setq haskell-process-log t)
 (setq haskell-process-suggest-remove-import-lines nil)
 
-;; Use custom indentation mode
-(add-hook 'haskell-mode-hook
-          (lambda ()
-            (haskell-indent-mode -1)
-            (semantic-indent-mode t)))
+(defun turn-off-haskell-indent-mode ()
+  (haskell-indent-mode -1))
+
+(defun turn-on-semantic-indent-mode ()
+  (semantic-indent-mode t))
+
+(add-hook 'haskell-mode-hook #'turn-off-electric-indent-local-mode)
+(add-hook 'haskell-mode-hook #'turn-off-haskell-indent-mode)
+(add-hook 'haskell-mode-hook #'turn-on-semantic-indent-mode)
 
 (add-hook 'haskell-mode-hook #'flycheck-mode)
 (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
@@ -568,6 +576,7 @@ only whitespace."
 (require 'notmuch)
 
 (setq notmuch-search-oldest-first nil)
+
 (setq notmuch-fcc-dirs
       '(("ttuegel@mailbox.org" . "mailbox/INBOX +sent +mailbox")
         ("ttuegel@gmail.com" . "gmail/all_mail +sent +gmail")
@@ -583,11 +592,10 @@ only whitespace."
   (unbind-key "n" map) ; notmuch-search-next-thread
   (unbind-key "p" map) ; notmuch-search-previous-thread
   (unbind-key "l" map) ; notmuch-search-filter
-  (bind-keys
-   :map map
-   ("h" . notmuch-search-next-thread)
-   ("t" . notmuch-search-previous-thread)
-   ("f" . notmuch-search-filter)))
+
+  (bind-key "h" #'notmuch-search-next-thread map)
+  (bind-key "t" #'notmuch-search-previous-thread map)
+  (bind-key "f" #'notmuch-search-filter map))
 
 (defun ttuegel/notmuch-search-delete (&optional beg end)
   "Delete the selected thread or region.
@@ -666,8 +674,14 @@ logical line.  This is useful, e.g., for use with
   (let ((fill-column (point-max)))
     (fill-region beg end)))
 
-(add-to-list 'load-path "./lisp")
+
+;;; pdftotext
+
+(add-to-list 'load-path "~/.emacs.d/lisp")
 (require 'pdftotext)
+
+
+;;; secret
 
 (add-to-list 'load-path "~/el/secret-el")
 (require 'secret)
