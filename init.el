@@ -17,6 +17,11 @@
 (require 'diminish)
 (require 'bind-key)
 
+(defun relative (file-name)
+  (if load-file-name
+      (expand-file-name file-name (file-name-directory load-file-name))
+    (expand-file-name file-name)))
+
 
 ;;; Emacs settings
 
@@ -83,7 +88,7 @@
 (setq solarized-height-plus-4 1.0)
 (setq custom-safe-themes t)
 
-(add-to-list 'load-path "~/.emacs.d/solarized-emacs")
+(add-to-list 'load-path (relative "./solarized-emacs"))
 (require 'solarized-theme)
 (load-theme 'solarized-light)
 
@@ -412,7 +417,7 @@ only whitespace."
 (setq bibtex-completion-pdf-open-function
       #'helm-open-file-with-default-tool)
 
-(add-to-list 'load-path "~/.emacs.d/bibtex-fetch")
+(add-to-list 'load-path (relative "./bibtex-fetch"))
 (require 'bibtex-fetch)
 (put 'bibtex-fetch/document-path 'safe-local-variable #'stringp)
 
@@ -438,7 +443,7 @@ only whitespace."
   "Turn off `electric-indent-mode' in this buffer only."
   (electric-indent-local-mode -1))
 
-(add-to-list 'load-path "~/.emacs.d/nix-mode")
+(add-to-list 'load-path (relative "./nix-mode"))
 (require 'nix-mode)
 (add-hook 'nix-mode-hook #'turn-off-electric-indent-local-mode)
 (add-hook 'nix-mode-hook #'rainbow-delimiters-mode)
@@ -677,7 +682,7 @@ logical line.  This is useful, e.g., for use with
 
 ;;; pdftotext
 
-(add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'load-path (relative "./lisp"))
 (require 'pdftotext)
 
 
