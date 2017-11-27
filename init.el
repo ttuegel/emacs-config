@@ -327,6 +327,7 @@ only whitespace."
 (bind-key "C-h" 'helm-next-line helm-map)
 (bind-key "C-t" 'helm-previous-line helm-map)
 (bind-key "C-f" 'helm-execute-persistent-action helm-map)
+(unbind-key "C-n" helm-map)
 
 ;; `C-d' goes up one level in `helm-find-files' and friends
 (bind-key "C-d" 'helm-find-files-up-one-level helm-read-file-map)
