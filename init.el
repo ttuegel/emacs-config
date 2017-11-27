@@ -290,6 +290,10 @@ only whitespace."
   (bind-key "u" #'undo-tree-undo map)
   (bind-key "U" #'undo-tree-redo map))
 
+(let ((map undo-tree-map))
+  (unbind-key "C-_" map)
+  (unbind-key "M-_" map))
+
 
 ;;; Helm
 
