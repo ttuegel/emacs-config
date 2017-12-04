@@ -104,19 +104,27 @@
 ;; Don't use italics to indicate types.
 (custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
 
-;;; Tabs
+;;; Fill column
+(setq-default fill-column 80)
+
+
+;;; Whitespace
+
+(setq whitespace-style '(face trailing tabs))
+(global-whitespace-mode t)
+(diminish 'global-whitespace-mode)
+
+
+;;; Indentation
+
+;; Tab stops
+
 (setq-default tab-always-indent t)
 (setq-default tab-stop-list (number-sequence 2 120 2))
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
-;;; Fill column
-(setq-default fill-column 80)
-
-;;; Whitespace
-(setq whitespace-style '(face trailing tabs))
-(global-whitespace-mode t)
-(diminish 'global-whitespace-mode)
+;; Hygiene
 
 (defun ttuegel/indent-whitespace-hygiene ()
   "Remove whitespace from the current line if it is only whitespace."
@@ -137,28 +145,78 @@ only whitespace."
     (forward-line 1)
     (back-to-indentation)))
 
+
 (add-to-list 'load-path "~/semantic-indent")
 (require 'semantic-indent)
 
-;;; Parentheses
+
+;;; Delimiters
+
 (show-paren-mode t)
 (require 'rainbow-delimiters)
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 
+
+;;; Helm
+
+(require 'helm-config)
+(require 'helm-files)
+
+;; Skip boring files in `helm-find-files'
+
+(setq helm-ff-skip-boring-files t)
+
+;; Open Helm in the current window
+(setq helm-split-window-default-side 'same)
+
+;; Use `rg' in place of `ag'
+(setq helm-grep-ag-command
+      "rg --color=always --smart-case --no-heading --line-number %s %s %s")
+
+;; Rebind `M-x'
+(bind-key "M-<RET>" 'helm-M-x)
+
+(let ((map ctl-x-map))
+  (unbind-key "C-f" map)
+
+  (bind-key "f" #'helm-find-files ctl-x-map)
+  (bind-key "M-f" #'helm-multi-files ctl-x-map)
+
+  (bind-key "g" #'helm-do-grep-ag ctl-x-map))
+
+;; Movement keys for `helm-mode'
+(bind-key "C-h" 'helm-next-line helm-map)
+(bind-key "C-t" 'helm-previous-line helm-map)
+(bind-key "C-f" 'helm-execute-persistent-action helm-map)
+(unbind-key "C-n" helm-map)
+
+;; `C-d' goes up one level in `helm-find-files' and friends
+(bind-key "C-d" 'helm-find-files-up-one-level helm-read-file-map)
+(bind-key "C-d" 'helm-find-files-up-one-level helm-find-files-map)
+
+(helm-mode 1)
+(diminish 'helm-mode)
+
+
 ;;; Window layouts
+
 (require 'eyebrowse)
 (eyebrowse-mode t)
 
 (require 'visual-fill-column)
 
+
 ;;; Mode line
+
 (require 'spaceline-config)
 ;; Color modeline by Evil state
 (setq spaceline-highlight-face-func #'spaceline-highlight-face-evil-state)
 (spaceline-helm-mode)
 (spaceline-emacs-theme)
 
+
 ;;; Search
+
 (bind-key "C-f" search-map global-map)
 (bind-key "s" #'isearch-forward-regexp search-map)
 (bind-key "C-s" #'isearch-repeat-forward search-map)
@@ -166,7 +224,9 @@ only whitespace."
 (bind-key "f" #'avy-goto-char search-map)
 (bind-key "F" #'avy-goto-line search-map)
 
+
 ;;; Buffers
+
 (define-prefix-command 'buffer-map)
 (bind-key "b" buffer-map ctl-x-map)
 (bind-keys
@@ -187,6 +247,7 @@ only whitespace."
       (back-to-indentation)
       (let ((after (point)))
         (when (eq before after) (beginning-of-line))))))
+
 
 ;;; Be Evil
 
@@ -293,47 +354,6 @@ only whitespace."
 (let ((map undo-tree-map))
   (unbind-key "C-_" map)
   (unbind-key "M-_" map))
-
-
-;;; Helm
-
-(require 'helm-config)
-(require 'helm-files)
-(diminish 'helm-mode)
-
-;; Skip boring files in `helm-find-files'
-
-(setq helm-ff-skip-boring-files t)
-
-;; Open Helm in the current window
-(setq helm-split-window-default-side 'same)
-
-;; Use `rg' in place of `ag'
-(setq helm-grep-ag-command
-      "rg --color=always --smart-case --no-heading --line-number %s %s %s")
-
-;; Rebind `M-x'
-(bind-key "M-<RET>" 'helm-M-x)
-
-(let ((map ctl-x-map))
-  (unbind-key "C-f" map)
-
-  (bind-key "f" #'helm-find-files ctl-x-map)
-  (bind-key "M-f" #'helm-multi-files ctl-x-map)
-
-  (bind-key "g" #'helm-do-grep-ag ctl-x-map))
-
-;; Movement keys for `helm-mode'
-(bind-key "C-h" 'helm-next-line helm-map)
-(bind-key "C-t" 'helm-previous-line helm-map)
-(bind-key "C-f" 'helm-execute-persistent-action helm-map)
-(unbind-key "C-n" helm-map)
-
-;; `C-d' goes up one level in `helm-find-files' and friends
-(bind-key "C-d" 'helm-find-files-up-one-level helm-read-file-map)
-(bind-key "C-d" 'helm-find-files-up-one-level helm-find-files-map)
-
-(helm-mode 1)
 
 
 ;;; Avy
