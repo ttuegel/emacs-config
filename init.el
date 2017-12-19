@@ -390,6 +390,7 @@ only whitespace."
 (require 'git-timemachine)
 (bind-key "t" #'git-timemachine-toggle vc-prefix-map)
 
+
 ;;; TeX
 
 (require 'tex)
@@ -456,6 +457,11 @@ only whitespace."
 (add-to-list 'load-path (relative "./bibtex-fetch"))
 (require 'bibtex-fetch)
 (put 'bibtex-fetch/document-path 'safe-local-variable #'stringp)
+
+;; Completion
+(require 'company-math)
+(push 'company-math-symbols-latex company-backends)
+(push 'company-latex-commands company-backends)
 
 
 ;;; Markdown
