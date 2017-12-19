@@ -202,6 +202,10 @@ only whitespace."
 (helm-mode 1)
 (diminish 'helm-mode)
 
+;; Describe key bindings
+(require 'helm-descbinds)
+(helm-descbinds-mode)
+
 
 ;;; Window layouts
 
