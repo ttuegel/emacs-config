@@ -17,6 +17,11 @@
 (require 'diminish)
 (require 'bind-key)
 
+;; Show available keys after incomplete commands
+(require 'which-key)
+(which-key-mode)
+(diminish 'which-key-mode)
+
 (defun relative (file-name)
   (if load-file-name
       (expand-file-name file-name (file-name-directory load-file-name))
