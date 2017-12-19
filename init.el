@@ -541,6 +541,11 @@ only whitespace."
 (add-hook 'haskell-mode-hook #'flycheck-mode)
 (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
 
+;; Completion
+(require 'company-ghci)
+(push 'company-ghci company-backends)
+(add-hook 'haskell-mode-hook #'company-mode)
+(add-hook 'haskell-interactive-mode-hook #'company-mode)
 
 ;;; XML
 
