@@ -89,6 +89,8 @@
 (require 'base16-theme)
 (load-theme 'base16-chalk t)
 
+(custom-theme-set-faces 'user '(cursor ((t :inverse-video t))))
+
 ;; Ignore common extensions.
 (add-to-list 'completion-ignored-extensions ".elc")
 
