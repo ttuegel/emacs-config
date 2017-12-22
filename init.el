@@ -201,6 +201,14 @@ only whitespace."
 (helm-descbinds-mode)
 
 
+;;; Project management
+
+(require 'projectile)
+(require 'helm-projectile)
+(projectile-mode)
+(diminish 'projectile-mode)
+
+
 ;;; Window layouts
 
 (require 'eyebrowse)
