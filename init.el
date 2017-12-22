@@ -212,10 +212,15 @@ only whitespace."
 ;;; Mode line
 
 (require 'spaceline-config)
+
 ;; Color modeline by Evil state
 (setq spaceline-highlight-face-func #'spaceline-highlight-face-evil-state)
+
 (spaceline-helm-mode)
 (spaceline-emacs-theme)
+
+(spaceline-toggle-buffer-size-off)
+(spaceline-toggle-buffer-encoding-abbrev-off)
 
 
 ;;; Search
