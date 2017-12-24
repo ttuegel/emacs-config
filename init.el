@@ -173,7 +173,7 @@ only whitespace."
       "rg --color=always --smart-case --no-heading --line-number %s %s %s")
 
 ;; Rebind `M-x'
-(bind-key* "M-<SPC>" 'helm-M-x)
+(bind-key "M-<SPC>" 'helm-M-x)
 
 (let ((map ctl-x-map))
   (unbind-key "C-f" map)
