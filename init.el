@@ -173,7 +173,7 @@ only whitespace."
       "rg --color=always --smart-case --no-heading --line-number %s %s %s")
 
 ;; Rebind `M-x'
-(bind-key* "M-SPC" 'helm-M-x)
+(bind-key* "M-<SPC>" 'helm-M-x)
 
 (let ((map ctl-x-map))
   (unbind-key "C-f" map)
@@ -417,6 +417,10 @@ only whitespace."
 (setq LaTeX-item-indent 0)
 (setq LaTeX-indent-level 0)
 
+;; Don't offer to label environments
+;; (I give semantic labels to important environments only.)
+(setq-default LaTeX-label-alist nil)
+
 ;; Build PDFs by default
 (add-hook 'LaTeX-mode-hook (lambda () (TeX-PDF-mode t)))
 
@@ -516,12 +520,14 @@ only whitespace."
 (require 'company)
 (diminish 'company-mode)
 
-(let ((map company-active-map))
-  (bind-key "C-h" #'company-select-next map)
-  (bind-key "C-t" #'company-select-previous map)
-  (bind-key "C-f" #'company-complete-selection map)
-  (bind-key "M-f" #'company-complete-common map)
-  (bind-key "C-g" #'company-abort map))
+(setf company-active-map (make-sparse-keymap))
+(bind-keys
+ :map company-active-map
+ ("C-h" . company-select-next)
+ ("C-t" . company-select-previous)
+ ("C-f" . company-complete-selection)
+ ("M-f" . company-complete-common)
+ ("C-g" . company-abort))
 
 (global-company-mode)
 
