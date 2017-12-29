@@ -541,6 +541,9 @@ only whitespace."
 (setq haskell-process-log t)
 (setq haskell-process-suggest-remove-import-lines nil)
 
+(push "\\.dyn_hi$" helm-boring-file-regexp-list)
+(push "\\.dyn_o$" helm-boring-file-regexp-list)
+
 (defun turn-off-haskell-indent-mode ()
   (haskell-indent-mode -1))
 
