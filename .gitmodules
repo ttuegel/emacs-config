@@ -16,3 +16,6 @@
 [submodule "dante"]
 	path = dante
 	url = https://github.com/jyp/dante.git
+[submodule "base16-emacs"]
+	path = base16-emacs
+	url = https://github.com/ttuegel/base16-emacs.git
