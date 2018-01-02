@@ -41,7 +41,7 @@
 (unbind-key "C-s" ctl-x-map)
 (bind-key "s" #'save-buffer ctl-x-map)
 
-;; Use UTF-8 everywhere. It's 2017, how is this not default?
+;; Use UTF-8 everywhere. It's 2018, how is this not default?
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
