@@ -420,7 +420,8 @@ only whitespace."
 
 ;; Don't offer to label environments
 ;; (I give semantic labels to important environments only.)
-(setq-default LaTeX-label-alist nil)
+(add-hook 'LaTeX-mode-hook
+          (lambda () (setq LaTeX-label-alist nil)))
 
 ;; Build PDFs by default
 (add-hook 'LaTeX-mode-hook (lambda () (TeX-PDF-mode t)))
