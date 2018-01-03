@@ -22,10 +22,31 @@
 (which-key-mode)
 (diminish 'which-key-mode)
 
+
+;;; Definitions
+
 (defun relative (file-name)
   (if load-file-name
       (expand-file-name file-name (file-name-directory load-file-name))
     (expand-file-name file-name)))
+
+(defun ttuegel/call-process (outfile program &rest args)
+  (let ((out (if outfile `(:file ,outfile) 0)))
+    (apply #'call-process program nil out nil args)))
+
+(defun ttuegel/cabal2nix ()
+  "Regenerate Nix expressions from Cabal packages in the current directory."
+  (let ((cabal2nix (executable-find "cabal2nix")))
+    (when cabal2nix
+      (dolist (cabal-file-name (file-expand-wildcards "*.cabal"))
+        (let* ((project-name (file-name-base cabal-file-name))
+               (nix-file-name (format "%s.nix" project-name)))
+          (when (file-exists-p nix-file-name)
+            (ttuegel/call-process nix-file-name cabal2nix cabal-file-name)))))))
+
+(defun ttuegel/hpack ()
+  (let ((hpack (executable-find "hpack")))
+    (when hpack (ttuegel/call-process nil hpack "--silent"))))
 
 
 ;;; Emacs settings
@@ -517,6 +538,16 @@ only whitespace."
 
 (require 'yaml-mode)
 
+(defun ttuegel/after-save-hpack ()
+  "Run `hpack' after saving `package.yaml'."
+  (when (equal (file-name-nondirectory buffer-file-name) "package.yaml")
+    (ttuegel/hpack)))
+
+(defun ttuegel/yaml-mode-hook ()
+  (push #'ttuegel/after-save-hpack after-save-hook))
+
+(push #'ttuegel/yaml-mode-hook yaml-mode-hook)
+
 
 ;;; Company
 
@@ -547,18 +578,23 @@ only whitespace."
 (push "\\.dyn_hi$" helm-boring-file-regexp-list)
 (push "\\.dyn_o$" helm-boring-file-regexp-list)
 
-(defun turn-off-haskell-indent-mode ()
-  (haskell-indent-mode -1))
+(defun ttuegel/haskell-mode-hook ()
+  (turn-off-electric-indent-local-mode)
+  (haskell-indent-mode -1)
+  (semantic-indent-mode t)
+  (flycheck-mode)
+  (rainbow-delimiters-mode))
 
-(defun turn-on-semantic-indent-mode ()
-  (semantic-indent-mode t))
+(push #'ttuegel/haskell-mode-hook haskell-mode-hook)
 
-(add-hook 'haskell-mode-hook #'turn-off-electric-indent-local-mode)
-(add-hook 'haskell-mode-hook #'turn-off-haskell-indent-mode)
-(add-hook 'haskell-mode-hook #'turn-on-semantic-indent-mode)
+(defun ttuegel/after-save-cabal2nix ()
+  (when (string-match-p "\\.cabal" buffer-file-name)
+    (ttuegel/cabal2nix)))
 
-(add-hook 'haskell-mode-hook #'flycheck-mode)
-(add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+(defun ttuegel/haskell-cabal-mode-hook ()
+  (push #'ttuegel/after-save-cabal2nix after-save-hook))
+
+(push #'ttuegel/haskell-cabal-mode-hook haskell-cabal-mode-hook)
 
 ;; Completion
 (require 'company-ghci)
