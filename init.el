@@ -603,6 +603,14 @@ only whitespace."
 (add-hook 'haskell-mode-hook #'company-mode)
 (add-hook 'haskell-interactive-mode-hook #'company-mode)
 
+
+;;; Dhall
+
+(require 'dhall-mode)
+
+(push '("\\.dhall\\'" . dhall-mode) auto-mode-alist)
+
+
 ;;; XML
 
 (add-to-list 'auto-mode-alist '("\\.rng\\'" . xml-mode))
