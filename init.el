@@ -35,14 +35,14 @@
     (apply #'call-process program nil out nil args)))
 
 (defun ttuegel/cabal2nix ()
-  "Regenerate Nix expressions from Cabal packages in the current directory."
-  (let ((cabal2nix (executable-find "cabal2nix")))
-    (when cabal2nix
-      (dolist (cabal-file-name (file-expand-wildcards "*.cabal"))
-        (let* ((project-name (file-name-base cabal-file-name))
-               (nix-file-name (format "%s.nix" project-name)))
-          (when (file-exists-p nix-file-name)
-            (ttuegel/call-process nix-file-name cabal2nix cabal-file-name)))))))
+  "Regenerate Nix expression from a Cabal package in the current directory."
+  (let ((cabal2nix (executable-find "cabal2nix"))
+        (cabal-file-names (file-expand-wildcards "*.cabal")))
+    (when (and cabal2nix cabal-file-names)
+      (let* ((project-name (file-name-base (car cabal-file-names)))
+             (nix-file-name (format "%s.nix" project-name)))
+        (when (file-exists-p nix-file-name)
+          (ttuegel/call-process nix-file-name cabal2nix "./."))))))
 
 (defun ttuegel/hpack ()
   (let ((hpack (executable-find "hpack")))
