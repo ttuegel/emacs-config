@@ -541,7 +541,8 @@ only whitespace."
 (defun ttuegel/after-save-hpack ()
   "Run `hpack' after saving `package.yaml'."
   (when (equal (file-name-nondirectory buffer-file-name) "package.yaml")
-    (ttuegel/hpack)))
+    (ttuegel/hpack)
+    (ttuegel/cabal2nix)))
 
 (defun ttuegel/yaml-mode-hook ()
   (push #'ttuegel/after-save-hpack after-save-hook))
