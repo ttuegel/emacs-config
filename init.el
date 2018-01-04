@@ -610,6 +610,8 @@ only whitespace."
 
 (push '("\\.dhall\\'" . dhall-mode) auto-mode-alist)
 
+(setq dhall-format-at-save nil)
+
 
 ;;; XML
 
