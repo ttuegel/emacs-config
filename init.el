@@ -101,6 +101,20 @@
 ;; Make buffer names more unique
 (setq uniquify-buffer-name-style 'forward)
 
+;;; Colors
+
+(setq custom-safe-themes t)
+
+;; Be easy on the eyes
+
+(push (relative "./base16-emacs") load-path)
+(push (relative "./base16-emacs/build") custom-theme-load-path)
+
+(require 'base16-theme)
+(load-theme 'base16-chalk t)
+
+(custom-theme-set-faces 'user '(cursor ((t :inverse-video t))))
+
 ;; Ignore common extensions.
 (add-to-list 'completion-ignored-extensions ".elc")
 
@@ -111,7 +125,7 @@
 (set-face-attribute 'default nil :family "Iosevka Type" :height 120 :weight 'normal)
 
 ;; Don't use italics to indicate types.
-(custom-set-faces '(font-lock-type-face ((t :slant normal))))
+(custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
 
 ;;; Fill column
 (setq-default fill-column 80)
@@ -366,19 +380,6 @@ only whitespace."
 (global-evil-surround-mode 1)
 
 (require 'evil-indent-textobject)
-
-
-;;; Colors
-
-(setq custom-safe-themes t)
-
-;; Be easy on the eyes
-
-(push (relative "./base16-emacs") load-path)
-(push (relative "./base16-emacs/build") custom-theme-load-path)
-
-(require 'base16-theme)
-(load-theme 'base16-chalk t)
 
 ;;; Undo Tree
 
