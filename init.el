@@ -296,7 +296,6 @@ only whitespace."
 
 (setq evil-toggle-key "C-,")
 
-(add-to-list 'load-path "~/evil")
 (require 'evil)
 
 ;; Restore `esc-map'
