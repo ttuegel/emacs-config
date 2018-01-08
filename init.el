@@ -7,15 +7,15 @@
 ;; Load the .el if it's newer than the .elc
 (setq load-prefer-newer t)
 
-(package-initialize)
+(eval-when-compile (require 'use-package))
+
+(require 'bind-key)
+(require 'diminish)
 
 ;; Auto-compile .el files
 (require 'auto-compile)
 (auto-compile-on-load-mode)
 (auto-compile-on-save-mode)
-
-(require 'diminish)
-(require 'bind-key)
 
 ;; Show available keys after incomplete commands
 (require 'which-key)
