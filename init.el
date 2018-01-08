@@ -107,8 +107,7 @@
 
 ;; Be easy on the eyes
 
-(push (relative "./base16-emacs") load-path)
-(push (relative "./base16-emacs/build") custom-theme-load-path)
+(custom-theme-set-faces 'user '(cursor ((t :inverse-video t))))
 
 (require 'base16-theme)
 (load-theme 'base16-chalk t)
