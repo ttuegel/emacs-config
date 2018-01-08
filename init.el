@@ -103,12 +103,20 @@
 
 ;;; Colors
 
-(setq custom-safe-themes t)
-
 ;; Be easy on the eyes
 
-(require 'base16-theme)
-(load-theme 'base16-chalk t)
+(setq solarized-use-variable-pitch nil)
+(setq solarized-high-contrast-mode-line t)
+(setq solarized-height-minus-1 1.0)
+(setq solarized-height-plus-1 1.0)
+(setq solarized-height-plus-2 1.0)
+(setq solarized-height-plus-3 1.0)
+(setq solarized-height-plus-4 1.0)
+(setq custom-safe-themes t)
+
+(add-to-list 'load-path (relative "./solarized-emacs"))
+(require 'solarized-theme)
+(load-theme 'solarized-light)
 
 ;; Ignore common extensions.
 (add-to-list 'completion-ignored-extensions ".elc")
