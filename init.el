@@ -517,7 +517,7 @@ only whitespace."
 
 (use-package reftex
   :after (tex)
-  :hook (TeX-mode-hook)
+  :hook (TeX-mode)
   :config
   (setq reftex-plug-into-AUCTeX t)
   (setq reftex-default-bibliography "~/bib/default.bib"))
