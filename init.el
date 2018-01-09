@@ -199,8 +199,14 @@ only whitespace."
   :demand
   :diminish
   :config
+  (require 'helm-config)
+
   ;; Open Helm in the current window
   (setq helm-split-window-default-side 'same)
+
+  ;; Use `rg' in place of `ag'
+  (setq helm-grep-ag-command
+        "rg --color=always --smart-case --no-heading --line-number %s %s %s")
 
   ;; Movement keys for `helm-mode'
   (bind-key "C-h" 'helm-next-line helm-map)
@@ -218,14 +224,6 @@ only whitespace."
   ;; `C-d' goes up one level in `helm-find-files' and friends
   (bind-key "C-d" 'helm-find-files-up-one-level helm-read-file-map)
   (bind-key "C-d" 'helm-find-files-up-one-level helm-find-files-map))
-
-(use-package helm-grep
-  :demand :after (helm)
-  :commands helm-do-grep-ag
-  :config
-  ;; Use `rg' in place of `ag'
-  (setq helm-grep-ag-command
-        "rg --color=always --smart-case --no-heading --line-number %s %s %s"))
 
 ;; Rebind `M-x'
 (bind-key "M-<SPC>" #'helm-M-x)
