@@ -197,7 +197,7 @@ only whitespace."
 
 (use-package helm
   :demand
-  :diminish
+  :diminish helm-mode
   :config
   (require 'helm-config)
 
@@ -247,7 +247,10 @@ only whitespace."
 
 ;;; Project management
 
-(use-package projectile :demand :diminish :commands projectile-mode)
+(use-package projectile
+  :demand
+  :diminish projectile-mode
+  :commands projectile-mode)
 (use-package helm-projectile
   :demand :after (helm projectile))
 
@@ -414,7 +417,7 @@ only whitespace."
 (use-package undo-tree
   :demand :after (evil)
   :commands global-undo-tree-mode
-  :diminish
+  :diminish undo-tree
   :config
   (let ((map undo-tree-map))
     (unbind-key "C-_" map)
@@ -452,7 +455,7 @@ only whitespace."
   (bind-key "g" #'magit-status vc-prefix-map))
 
 (use-package autorevert
-  :diminish)
+  :diminish auto-revert-mode)
 
 (use-package git-timemachine
   :commands git-timemachine-toggle
@@ -592,7 +595,7 @@ only whitespace."
 ;;; Company
 
 (use-package company
-  :diminish
+  :diminish company-mode
   :commands global-company-mode
   :config
   (setf company-active-map (make-sparse-keymap))
