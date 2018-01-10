@@ -555,8 +555,6 @@ only whitespace."
 ;;; Flycheck
 
 (use-package flycheck)
-  :config
-  (add-to-list 'flycheck-disabled-checkers 'haskell-hlint)
 
 (use-package flycheck-haskell
   :after (flycheck haskell-mode)
@@ -621,9 +619,12 @@ only whitespace."
     (ttuegel/cabal2nix)))
 
 (use-package haskell-mode
+  :after (flycheck)
   :config
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
+
+  (add-to-list 'flycheck-disabled-checkers 'haskell-hlint)
 
   (add-hook 'haskell-mode-hook
             (lambda ()
