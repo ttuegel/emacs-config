@@ -518,7 +518,8 @@ only whitespace."
 
 (use-package reftex
   :after (tex)
-  :hook (TeX-mode)
+  :init
+  (push #'reftex-mode TeX-mode-hook)
   :config
   (setq reftex-plug-into-AUCTeX t)
   (setq reftex-default-bibliography "~/bib/default.bib"))
@@ -634,9 +635,9 @@ only whitespace."
 ;; Completion
 (use-package company-ghci
   :after (company haskell-mode)
-  :hook
-  (haskell-mode . company-mode)
-  (haskell-interactive-mode . company-mode)
+  :init
+  (push #'company-mode haskell-mode-hook)
+  (push #'company-mode haskell-interactive-mode)
   :config
   (push 'company-ghci company-backends))
 
@@ -679,7 +680,9 @@ only whitespace."
 
 (use-package flycheck-rust
   :after (rust-mode)
-  :hook (rust-mode . flycheck-mode))
+  :init
+  (push #'flycheck-rust-setup flycheck-mode-hook)
+  (push #'flycheck-mode rust-mode-hook))
 
 
 ;;; Mail
