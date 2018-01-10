@@ -198,7 +198,6 @@ only whitespace."
 
 (use-package helm
   :demand
-  :diminish helm-mode
   :config
   (require 'helm-config)
   (require 'helm-files)
@@ -224,6 +223,7 @@ only whitespace."
   (unbind-key "C-n" helm-map))
 
 (helm-mode 1)
+(diminish 'helm-mode)
 
 ;; Rebind `M-x'
 (bind-key "M-<SPC>" #'helm-M-x)
