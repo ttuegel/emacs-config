@@ -610,7 +610,8 @@ only whitespace."
    ("C-f" . company-complete-selection)
    ("M-f" . company-complete-common)
    ("C-g" . company-abort)))
-(global-company-mode)
+
+(run-with-idle-timer 0.5 nil (lambda () (global-company-mode)))
 
 
 ;;; Haskell
