@@ -201,6 +201,7 @@ only whitespace."
   :diminish helm-mode
   :config
   (require 'helm-config)
+  (require 'helm-files)
 
   ;; Open Helm in the current window
   (setq helm-split-window-default-side 'same)
@@ -209,22 +210,20 @@ only whitespace."
   (setq helm-grep-ag-command
         "rg --color=always --smart-case --no-heading --line-number %s %s %s")
 
+  ;; Skip boring files in `helm-find-files'
+  (setq helm-ff-skip-boring-files t)
+
+  ;; `C-d' goes up one level in `helm-find-files' and friends
+  (bind-key "C-d" 'helm-find-files-up-one-level helm-read-file-map)
+  (bind-key "C-d" 'helm-find-files-up-one-level helm-find-files-map)
+
   ;; Movement keys for `helm-mode'
   (bind-key "C-h" 'helm-next-line helm-map)
   (bind-key "C-t" 'helm-previous-line helm-map)
   (bind-key "C-f" 'helm-execute-persistent-action helm-map)
   (unbind-key "C-n" helm-map))
 
-(use-package helm-files
-  :demand :after (helm)
-  :commands helm-find-files
-  :config
-  ;; Skip boring files in `helm-find-files'
-  (setq helm-ff-skip-boring-files t)
-
-  ;; `C-d' goes up one level in `helm-find-files' and friends
-  (bind-key "C-d" 'helm-find-files-up-one-level helm-read-file-map)
-  (bind-key "C-d" 'helm-find-files-up-one-level helm-find-files-map))
+(helm-mode 1)
 
 ;; Rebind `M-x'
 (bind-key "M-<SPC>" #'helm-M-x)
@@ -236,8 +235,6 @@ only whitespace."
   (bind-key "M-f" #'helm-multi-files ctl-x-map)
 
   (bind-key "g" #'helm-do-grep-ag ctl-x-map))
-
-(helm-mode 1)
 
 ;; Describe key bindings
 (use-package helm-descbinds
