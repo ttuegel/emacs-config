@@ -246,11 +246,15 @@ only whitespace."
 ;;; Project management
 
 (use-package projectile
-  :demand
   :diminish projectile-mode
   :commands projectile-mode)
+
 (use-package helm-projectile
-  :demand :after (helm projectile))
+  :after (helm projectile))
+
+(run-with-idle-timer 0.5 nil (lambda ()
+                               (projectile-mode)
+                               (helm-projectile-on)))
 
 
 ;;; Window layouts
