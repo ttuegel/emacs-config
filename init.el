@@ -454,6 +454,7 @@ only whitespace."
 
 (use-package magit
   :init
+  (setq vc-handled-backends (delq 'Git vc-handled-backends))
   (bind-key "g" #'magit-status vc-prefix-map))
 
 (use-package autorevert
