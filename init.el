@@ -641,10 +641,10 @@ only whitespace."
 (use-package company-ghci
   :after (company haskell-mode)
   :init
-  (push #'company-mode haskell-mode-hook)
-  (push #'company-mode haskell-interactive-mode)
-  :config
-  (push 'company-ghci company-backends))
+  (add-to-list 'company-backends #'company-ghci)
+
+  (add-hook 'haskell-mode-hook #'company-mode)
+  (add-hook 'haskell-interactive-mode-hook #'company-mode))
 
 
 ;;; Dhall
