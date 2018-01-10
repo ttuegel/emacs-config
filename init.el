@@ -419,7 +419,6 @@ only whitespace."
 (use-package undo-tree
   :demand :after (evil)
   :commands global-undo-tree-mode
-  :diminish undo-tree
   :config
   (let ((map undo-tree-map))
     (unbind-key "C-_" map)
@@ -430,6 +429,7 @@ only whitespace."
    ("U" . undo-tree-redo)))
 
 (global-undo-tree-mode 1)
+(diminish 'undo-tree-mode)
 
 
 ;;; Avy
