@@ -10,6 +10,7 @@
 (setq load-prefer-newer t)
 
 (eval-when-compile (require 'use-package))
+(setq use-package-always-defer t)
 
 (require 'bind-key)
 (require 'diminish)
