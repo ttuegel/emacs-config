@@ -566,6 +566,7 @@ only whitespace."
 ;;; Nix
 
 (use-package nix-mode
+  :commands nix-mode
   :config
   (add-hook 'nix-mode-hook #'rainbow-delimiters-mode))
 
