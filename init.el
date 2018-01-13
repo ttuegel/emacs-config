@@ -237,9 +237,7 @@ only whitespace."
   (bind-key "g" #'helm-do-grep-ag ctl-x-map))
 
 ;; Describe key bindings
-(use-package helm-descbinds
-  :demand :after (helm)
-  :commands helm-descbinds-mode)
+(use-package helm-descbinds :demand)
 (helm-descbinds-mode)
 
 
@@ -249,8 +247,7 @@ only whitespace."
   :diminish projectile-mode
   :commands projectile-mode)
 
-(use-package helm-projectile
-  :after (helm projectile))
+(use-package helm-projectile)
 
 (run-with-idle-timer 0.5 nil (lambda ()
                                (projectile-mode)
@@ -269,7 +266,7 @@ only whitespace."
 ;;; Mode line
 
 (use-package spaceline-config
-  :demand :after (helm)
+  :demand
   :commands (spaceline-helm-mode spaceline-emacs-theme)
   :config
   ;; Color modeline by Evil state
@@ -406,19 +403,14 @@ only whitespace."
 
 ;; Evil addons
 
-(use-package evil-surround
-  :demand :after (evil)
-  :commands (global-evil-surround-mode))
+(use-package evil-surround :demand)
 (global-evil-surround-mode 1)
 
-(use-package evil-indent-textobject
-  :demand :after (evil))
+(use-package evil-indent-textobject :demand)
 
 ;;; Undo Tree
 
-(use-package undo-tree
-  :demand :after (evil)
-  :commands global-undo-tree-mode
+(use-package undo-tree :demand
   :config
   (let ((map undo-tree-map))
     (unbind-key "C-_" map)
@@ -435,7 +427,7 @@ only whitespace."
 ;;; Avy
 
 (use-package avy
-  :after (evil)
+  :requires (evil)
   :init
   (bind-keys
    :map evil-motion-state-map
@@ -512,7 +504,8 @@ only whitespace."
      (output-html "xdg-open"))))
 
 (use-package font-latex
-  :after (tex)
+  :init
+  (add-hook 'TeX-mode-hook #'font-latex-setup)
   :config
   ;; Disable Unicode fontification
   (setq font-latex-fontify-script nil)
@@ -520,7 +513,6 @@ only whitespace."
   (add-to-list 'font-latex-math-environments "dmath"))
 
 (use-package reftex
-  :after (tex)
   :init
   (push #'reftex-mode TeX-mode-hook)
   :config
@@ -528,7 +520,6 @@ only whitespace."
   (setq reftex-default-bibliography "~/bib/default.bib"))
 
 (use-package helm-bibtex
-  :after (helm tex)
   :config
   (setq bibtex-completion-bibliography "~/bib/default.bib")
   (setq bibtex-completion-library-path "~/bib/doc/")
@@ -536,12 +527,10 @@ only whitespace."
         #'helm-open-file-with-default-tool))
 
 (use-package bibtex-fetch
-  :load-path "./bibtex-fetch"
-  :after (tex))
+  :load-path "./bibtex-fetch")
 
 ;; Completion
 (use-package company-math
-  :after (tex company)
   :init
   (push 'company-math-symbols-latex company-backends)
   (push 'company-latex-commands company-backends))
@@ -556,12 +545,6 @@ only whitespace."
 
 (use-package flycheck)
 
-(use-package flycheck-haskell
-  :after (flycheck haskell-mode)
-  :commands flycheck-haskell-setup
-  :init
-  (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
-
 
 ;;; Nix
 
@@ -571,8 +554,7 @@ only whitespace."
   (add-hook 'nix-mode-hook #'rainbow-delimiters-mode))
 
 (use-package nix-buffer
-  :load-path "~/nix-buffer"
-  :after (nix-mode))
+  :load-path "~/nix-buffer")
 
 
 ;;; Ledger
@@ -619,28 +601,28 @@ only whitespace."
   (when (string-match-p "\\.cabal" buffer-file-name)
     (ttuegel/cabal2nix)))
 
+(defun ttuegel/haskell-cabal-mode-hook ()
+  (add-hook 'after-save-hook #'ttuegel/after-save-cabal2nix))
+
 (use-package haskell-mode
-  :after (flycheck)
   :config
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
 
   (add-to-list 'flycheck-disabled-checkers 'haskell-hlint)
 
-  (add-hook 'haskell-mode-hook
-            (lambda ()
-              (haskell-indent-mode -1)
-              (semantic-indent-mode t)
-              (flycheck-mode)
-              (rainbow-delimiters-mode)))
-  (add-hook 'haskell-cabal-mode-hook
-            (lambda ()
-              (add-hook 'after-save-hook #'ttuegel/after-save-cabal2nix))))
+  (add-hook 'haskell-mode-hook #'flycheck-mode)
+  (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
+
+(use-package flycheck-haskell
+  :commands flycheck-haskell-setup
+  :init
+  (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
 
 ;; Completion
 (use-package company-ghci
-  :after (company haskell-mode)
   :init
   (add-to-list 'company-backends #'company-ghci)
 
@@ -680,15 +662,15 @@ only whitespace."
 
 ;;; rust
 
-(use-package rust-mode)
+(use-package rust-mode
+  :config
+  (add-to-list 'rust-mode-hook #'flycheck-mode))
 
-(use-package cargo :requires (rust-mode))
+(use-package cargo)
 
 (use-package flycheck-rust
-  :after (rust-mode)
   :init
-  (push #'flycheck-rust-setup flycheck-mode-hook)
-  (push #'flycheck-mode rust-mode-hook))
+  (add-to-list 'flycheck-mode-hook #'flycheck-rust-setup))
 
 
 ;;; Mail
@@ -856,7 +838,7 @@ logical line.  This is useful, e.g., for use with
 ;;; Idris
 
 (use-package idris-mode)
-(use-package helm-idris :after (idris-mode))
+(use-package helm-idris)
 
 
 (provide 'init)
