@@ -844,5 +844,10 @@ logical line.  This is useful, e.g., for use with
 (use-package helm-idris)
 
 
+;;; Fish
+
+(use-package fish-mode)
+
+
 (provide 'init)
 ;;; init.el ends here
