@@ -440,6 +440,29 @@ only whitespace."
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
 
+;;; Company
+
+(use-package company
+  :diminish company-mode
+  :commands global-company-mode
+  :config
+  (setf company-active-map (make-sparse-keymap))
+  (bind-keys
+   :map company-active-map
+   ("C-h" . company-select-next)
+   ("C-t" . company-select-previous)
+   ("C-f" . company-complete-selection)
+   ("M-f" . company-complete-common)
+   ("C-g" . company-abort)))
+
+(run-with-idle-timer 0.5 nil (lambda () (global-company-mode)))
+
+
+;;; Flycheck
+
+(use-package flycheck)
+
+
 ;;; Git
 
 (bind-key "z" vc-prefix-map ctl-x-map)
@@ -532,18 +555,14 @@ only whitespace."
 ;; Completion
 (use-package company-math
   :init
-  (push 'company-math-symbols-latex company-backends)
-  (push 'company-latex-commands company-backends))
+  (with-eval-after-load "company"
+    (push 'company-math-symbols-latex company-backends)
+    (push 'company-latex-commands company-backends)))
 
 
 ;;; Markdown
 
 (use-package markdown-mode)
-
-
-;;; Flycheck
-
-(use-package flycheck)
 
 
 ;;; Nix
@@ -580,24 +599,6 @@ only whitespace."
               (add-hook 'after-save-hook #'ttuegel/after-save-hpack))))
 
 
-;;; Company
-
-(use-package company
-  :diminish company-mode
-  :commands global-company-mode
-  :config
-  (setf company-active-map (make-sparse-keymap))
-  (bind-keys
-   :map company-active-map
-   ("C-h" . company-select-next)
-   ("C-t" . company-select-previous)
-   ("C-f" . company-complete-selection)
-   ("M-f" . company-complete-common)
-   ("C-g" . company-abort)))
-
-(run-with-idle-timer 0.5 nil (lambda () (global-company-mode)))
-
-
 ;;; Haskell
 
 (defun ttuegel/after-save-cabal2nix ()
@@ -612,7 +613,8 @@ only whitespace."
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
 
-  (add-to-list 'flycheck-disabled-checkers 'haskell-hlint)
+  (with-eval-after-load "flycheck"
+    (add-to-list 'flycheck-disabled-checkers 'haskell-hlint))
 
   (add-hook 'haskell-mode-hook #'flycheck-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
@@ -621,13 +623,15 @@ only whitespace."
 (use-package flycheck-haskell
   :commands flycheck-haskell-setup
   :init
-  (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+  (with-eval-after-load "flycheck"
+    (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
 
 
 ;; Completion
 (use-package company-ghci
   :init
-  (add-to-list 'company-backends #'company-ghci)
+  (with-eval-after-load "company"
+    (add-to-list 'company-backends #'company-ghci))
 
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-interactive-mode-hook #'company-mode))
@@ -673,7 +677,8 @@ only whitespace."
 
 (use-package flycheck-rust
   :init
-  (add-to-list 'flycheck-mode-hook #'flycheck-rust-setup))
+  (with-eval-after-load "flycheck"
+    (add-to-list 'flycheck-mode-hook #'flycheck-rust-setup)))
 
 
 ;;; Mail
