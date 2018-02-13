@@ -192,6 +192,15 @@
   (setq LaTeX-item-indent 0)
   (setq LaTeX-indent-level 0)
 
+  ;; No automatic equation labels
+  (add-hook 'LaTeX-mode-hook
+            (lambda ()
+              (add-to-list 'LaTeX-label-alist '("equation" . nil))
+              (add-to-list 'LaTeX-label-alist '("eqnarray" . nil))
+              (add-to-list 'LaTeX-label-alist '("dmath" . nil))
+              (add-to-list 'LaTeX-label-alist '("dgroup" . nil))
+              (add-to-list 'LaTeX-label-alist '("dseries" . nil))))
+
   ;; Build PDFs by default
   (add-hook 'LaTeX-mode-hook (lambda () (TeX-PDF-mode t)))
 
