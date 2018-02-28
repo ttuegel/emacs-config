@@ -94,5 +94,9 @@ only whitespace."
 
 (show-paren-mode t)
 
+;; browse-url
+(setq browse-url-browser-function #'browse-url-firefox)
+(setq browse-url-new-window-flag t)
+
 
 (provide 'init-emacs)
