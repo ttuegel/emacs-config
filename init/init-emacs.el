@@ -48,6 +48,7 @@
 (setq-default fill-column 80)
 
 ;; Whitespace
+(require 'whitespace)
 (setq whitespace-style '(face trailing tabs))
 (global-whitespace-mode t)
 (diminish 'global-whitespace-mode)
