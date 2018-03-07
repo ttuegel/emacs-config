@@ -392,6 +392,11 @@
         org-agenda-start-on-weekday nil
         org-reverse-note-order t)
 
+  (bind-key "C-d" #'org-agenda-backward-block org-agenda-mode-map)
+  (bind-key "C-n" #'org-agenda-forward-block org-agenda-mode-map)
+  (bind-key "C-h" #'org-agenda-next-line org-agenda-mode-map)
+  (bind-key "C-t" #'org-agenda-previous-line org-agenda-mode-map)
+
   (setq org-capture-templates
         (quote (("t" "todo" entry (file+headline "~/org/todo.org" "Tasks")
                  "* TODO %?\n  %i\n  %a")
