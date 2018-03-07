@@ -381,9 +381,9 @@
 
   (setq org-default-notes-file "~/org/notes.org"
 
-        org-agenda-files (quote ("~/org/todo.org"
-                                 "~/thesis/TODO.org"
-                                 "~/ent-topo/TODO.org"))
+        org-agenda-files (list org-directory
+                               "~/thesis"
+                               "~/ent-topo")
         org-agenda-ndays 7
         org-deadline-warning-days 14
         org-agenda-show-all-dates t
