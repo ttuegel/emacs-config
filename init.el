@@ -410,6 +410,10 @@
         org-agenda-skip-scheduled-if-done t
         org-agenda-start-on-weekday nil)
 
+  (setq org-agenda-custom-commands
+        (quote
+         (("u" "Unscheduled tasks" tags "-SCHEDULED={.+}/!+TODO"))))
+
   (bind-key "C-d" #'org-agenda-backward-block org-agenda-mode-map)
   (bind-key "C-n" #'org-agenda-forward-block org-agenda-mode-map)
   (bind-key "C-h" #'org-agenda-next-line org-agenda-mode-map)
