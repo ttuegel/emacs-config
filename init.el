@@ -360,15 +360,14 @@
 
 ;;; Org
 
+(define-prefix-command 'org-prefix-map)
+(bind-key "o" #'org-prefix-map ctl-x-map)
+
 (use-package org
-  :init
-  (define-prefix-command 'org-prefix-map)
-
-  (bind-key "o" #'org-prefix-map ctl-x-map)
-  (bind-key "a" #'org-agenda org-prefix-map)
-  (bind-key "c" #'org-capture org-prefix-map)
-
   :config
+  (require 'org-agenda)
+  (require 'org-capture)
+
   (setq org-directory "~/org")
 
   (setq org-todo-keywords
@@ -380,32 +379,7 @@
   (setq org-enforce-todo-dependencies t)
 
   (setq org-default-notes-file "~/org/notes.org"
-
-        org-agenda-files (list org-directory
-                               "~/thesis"
-                               "~/ent-topo")
-        org-agenda-ndays 7
-        org-deadline-warning-days 14
-        org-agenda-show-all-dates t
-        org-agenda-skip-deadline-if-done t
-        org-agenda-skip-scheduled-if-done t
-        org-agenda-start-on-weekday nil
         org-reverse-note-order t)
-
-  (bind-key "C-d" #'org-agenda-backward-block org-agenda-mode-map)
-  (bind-key "C-n" #'org-agenda-forward-block org-agenda-mode-map)
-  (bind-key "C-h" #'org-agenda-next-line org-agenda-mode-map)
-  (bind-key "C-t" #'org-agenda-previous-line org-agenda-mode-map)
-
-  (setq org-capture-templates
-        (quote (("t" "todo" entry (file+headline "~/org/todo.org" "Tasks")
-                 "* TODO %?\n  %i\n  %a")
-                ("j" "journal" entry (file+olp+datetree "~/org/journal.org")
-                 "* %?\n  %U\n  %i\n  %a")
-                ("n" "note" entry (file "~/org/notes.org")
-                 "* %?\n  %U\n  %i\n  %a")
-                ("b" "bibliography" entry (file "~/org/bib.org")
-                 "* UNREAD %:title%?\n\n%a\n\n"))))
 
   (setq org-catch-invisible-edits 'show)
   (setq org-blank-before-new-entry '((heading . t) (plain-list-item t)))
@@ -419,6 +393,42 @@
   (add-hook 'org-mode-hook #'turn-on-visual-fill-column-mode)
 
   (bind-key "C-c b" #'bibtex-fetch/org-insert-entry-from-clipboard org-mode-map))
+
+
+(use-package org-agenda
+  :init
+  (bind-key "a" #'org-agenda org-prefix-map)
+  :config
+  (setq org-agenda-files (list org-directory
+                               "~/thesis"
+                               "~/ent-topo")
+        org-agenda-ndays 7
+        org-deadline-warning-days 0
+        org-agenda-show-all-dates t
+        org-agenda-skip-deadline-if-done t
+        org-agenda-skip-scheduled-if-done t
+        org-agenda-start-on-weekday nil)
+
+  (bind-key "C-d" #'org-agenda-backward-block org-agenda-mode-map)
+  (bind-key "C-n" #'org-agenda-forward-block org-agenda-mode-map)
+  (bind-key "C-h" #'org-agenda-next-line org-agenda-mode-map)
+  (bind-key "C-t" #'org-agenda-previous-line org-agenda-mode-map))
+
+
+(use-package org-capture
+  :commands org-capture
+  :init
+  (bind-key "c" #'org-capture org-prefix-map)
+  :config
+  (setq org-capture-templates
+        (quote (("t" "todo" entry (file+headline "~/org/todo.org" "Tasks")
+                 "* TODO %?\n  %i\n  %a")
+                ("j" "journal" entry (file+olp+datetree "~/org/journal.org")
+                 "* %?\n  %U\n  %i\n  %a")
+                ("n" "note" entry (file "~/org/notes.org")
+                 "* %?\n  %U\n  %i\n  %a")
+                ("b" "bibliography" entry (file "~/org/bib.org")
+                 "* UNREAD %:title%?\n\n%a\n\n")))))
 
 
 ;;; rust
