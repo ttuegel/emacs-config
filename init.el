@@ -371,7 +371,8 @@
   (setq org-directory "~/org")
 
   (setq org-todo-keywords
-        (quote ((type "TODO(t)" "STARTED(s@)" "WAITING(w@/!)" "APPT(a!)"
+        (quote ((type "TODO(t)" "STARTED(s@)" "WAITING(w@/!)"
+                      "APPT(a!)" "MAYBE(m)"
                       "|"
                       "DONE(d!)" "CANCELLED(c@)")
                 (sequence "UNREAD(u)" "|" "READ(r)"))))
