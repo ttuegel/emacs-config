@@ -402,7 +402,8 @@
   :config
   (setq org-agenda-files (list org-directory
                                "~/thesis"
-                               "~/ent-topo")
+                               "~/ent-topo"
+                               "~/job-search/2018-a")
         org-agenda-ndays 7
         org-deadline-warning-days 0
         org-agenda-show-all-dates t
