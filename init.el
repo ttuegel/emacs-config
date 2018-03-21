@@ -90,7 +90,6 @@
 (diminish 'ivy-mode)
 
 (require 'counsel)
-(counsel-mode)
 (diminish 'counsel-mode)
 
 (use-package swiper :commands swiper)
