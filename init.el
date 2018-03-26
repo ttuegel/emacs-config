@@ -414,6 +414,9 @@
         (quote
          (("u" "Unscheduled tasks" tags "-SCHEDULED={.+}/!+TODO"))))
 
+  (unbind-key "H" org-agenda-mode-map)
+  (unbind-key "h" org-agenda-mode-map)
+
   (bind-key "C-d" #'org-agenda-backward-block org-agenda-mode-map)
   (bind-key "C-n" #'org-agenda-forward-block org-agenda-mode-map)
   (bind-key "C-h" #'org-agenda-next-line org-agenda-mode-map)
