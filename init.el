@@ -516,6 +516,9 @@
           (:name "ci" :query "tag:inbox and tag:ci")
           (:name "trash" :query "(tag:notice or tag:ad) and not (tag:inbox or tag:sent or tag:replied)")))
 
+  (bind-key "`" #'notmuch-show-apply-tag-macro notmuch-show-mode-map)
+  (bind-key "`" #'notmuch-search-apply-tag-macro notmuch-search-mode-map)
+
   (let ((map notmuch-search-mode-map))
     (unbind-key "n" map) ; notmuch-search-next-thread
     (unbind-key "p" map) ; notmuch-search-previous-thread
@@ -523,15 +526,7 @@
 
     (bind-key "h" #'notmuch-search-next-thread map)
     (bind-key "t" #'notmuch-search-previous-thread map)
-    (bind-key "f" #'notmuch-search-filter map)
-
-    (bind-key "k" #'ttuegel/notmuch-search-delete notmuch-search-mode-map)
-    (bind-key "u" #'ttuegel/notmuch-search-mute notmuch-search-mode-map))
-
-  (let ((map notmuch-show-mode-map))
-    (bind-key "k" #'ttuegel/notmuch-show-delete map)
-    (bind-key "u" #'ttuegel/notmuch-show-mute-thread map)
-    (bind-key "U" #'ttuegel/notmuch-show-mute-thread map)))
+    (bind-key "f" #'notmuch-search-filter map)))
 
 
 ;;; C
