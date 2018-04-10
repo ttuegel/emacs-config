@@ -420,7 +420,10 @@
   (bind-key "C-d" #'org-agenda-backward-block org-agenda-mode-map)
   (bind-key "C-n" #'org-agenda-forward-block org-agenda-mode-map)
   (bind-key "C-h" #'org-agenda-next-line org-agenda-mode-map)
-  (bind-key "C-t" #'org-agenda-previous-line org-agenda-mode-map))
+  (bind-key "C-t" #'org-agenda-previous-line org-agenda-mode-map)
+
+  (bind-key "M-h" #'org-agenda-drag-line-forward org-agenda-mode-map)
+  (bind-key "M-t" #'org-agenda-drag-line-backward org-agenda-mode-map))
 
 
 (use-package org-capture
