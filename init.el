@@ -152,7 +152,10 @@
 
 ;;; Flycheck
 
-(use-package flycheck :commands flycheck-mode)
+(use-package flycheck
+  :commands flycheck-mode
+  :config
+  (setq flycheck-clang-language-standard "c++17"))
 
 
 ;;; Git
