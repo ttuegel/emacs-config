@@ -538,6 +538,7 @@
 ;;; C
 
 (add-hook 'c-mode-common-hook #'c-guess)
+(add-hook 'c-mode-common-hook #'flycheck-mode)
 
 
 ;;; Maxima
@@ -598,13 +599,6 @@ logical line.  This is useful, e.g., for use with
 ;;; Fish
 
 (use-package fish-mode)
-
-
-;;; C/C++
-
-(use-package c-mode
-  :config
-  (add-hook 'c-mode-hook #'flycheck-mode))
 
 
 (provide 'init)
