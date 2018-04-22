@@ -402,6 +402,8 @@
   :init
   (bind-key "a" #'org-agenda org-prefix-map)
   :config
+  (setq org-agenda-window-setup 'current-window)
+
   (setq org-agenda-files (list org-directory
                                "~/thesis"
                                "~/ent-topo"
