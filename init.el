@@ -438,11 +438,11 @@
   :config
   (setq org-capture-templates
         (quote (("t" "todo" entry (file+headline "~/org/todo.org" "Tasks")
-                 "* TODO %?\n  %i\n  %a")
+                 "* TODO %?\n\n%a\n\n%i")
                 ("j" "journal" entry (file+olp+datetree "~/org/journal.org")
-                 "* %?\n  %U\n  %i\n  %a")
+                 "* %?\n\n%U\n%a\n\n%i")
                 ("n" "note" entry (file "~/org/notes.org")
-                 "* %?\n  %U\n  %i\n  %a")
+                 "* %?\n\n%U\n%a\n\n%i")
                 ("b" "bibliography" entry (file "~/org/bib.org")
                  "* UNREAD %:title%?\n\n%a\n\n")))))
 
