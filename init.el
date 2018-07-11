@@ -395,7 +395,11 @@
   (add-hook 'org-mode-hook #'turn-on-visual-line-mode)
   (add-hook 'org-mode-hook #'turn-on-visual-fill-column-mode)
 
-  (bind-key "C-c b" #'bibtex-fetch/org-insert-entry-from-clipboard org-mode-map))
+  (bind-key "C-c b" #'bibtex-fetch/org-insert-entry-from-clipboard org-mode-map)
+
+  ;; Save clock history across Emacs sessions
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate))
 
 
 (use-package org-agenda
