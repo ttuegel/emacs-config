@@ -15,6 +15,8 @@
 (require 'bind-key)
 (require 'diminish)
 
+(diminish 'eldoc-mode)
+
 ;; Auto-compile .el files
 (require 'auto-compile)
 (auto-compile-on-load-mode)
