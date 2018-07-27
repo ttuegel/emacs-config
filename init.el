@@ -344,6 +344,17 @@
   (with-eval-after-load "flycheck"
     (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
 
+(use-package lsp-mode)
+(use-package lsp-ui
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+(use-package lsp-haskell
+  :config
+  (require 'lsp-mode)
+  (add-hook 'haskell-mode-hook #'lsp-haskell-enable))
+
+
 ;; Completion
 (use-package company-ghci
   :commands company-ghci
