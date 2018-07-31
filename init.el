@@ -559,6 +559,11 @@
 
 (add-hook 'c-mode-common-hook #'c-guess)
 (add-hook 'c-mode-common-hook #'flycheck-mode)
+(add-hook
+ 'c-mode-common-hook
+ (lambda ()
+   (setq-local whitespace-style '(face trailing))
+   (setq-local indent-tabs-mode t)))
 
 
 ;;; Maxima
