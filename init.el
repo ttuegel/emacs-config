@@ -338,13 +338,15 @@
 
 (use-package lsp-mode)
 (use-package lsp-ui
-  :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+  :commands lsp-ui-mode
+  :init
+  (add-hook 'lsp-mode-hook #'lsp-ui-mode))
 
 (use-package lsp-haskell
-  :config
-  (require 'lsp-mode)
-  (add-hook 'haskell-mode-hook #'lsp-haskell-enable))
+  :commands lsp-haskell-enable
+  :init
+  (with-eval-after-load "haskell-mode"
+    (add-hook 'haskell-mode-hook #'lsp-haskell-enable)))
 
 
 ;; Completion
