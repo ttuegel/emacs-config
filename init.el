@@ -330,14 +330,6 @@
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
 
-(use-package hindent
-  :functions hindent-mode
-  :init
-  (with-eval-after-load "haskell-mode"
-    (add-hook 'haskell-mode-hook #'hindent-mode))
-  :config
-  (diminish 'hindent-mode))
-
 (use-package flycheck-haskell
   :commands flycheck-haskell-setup
   :init
