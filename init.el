@@ -141,6 +141,8 @@
   :init
   (add-hook 'emacs-lisp-mode-hook #'company-mode)
   :config
+  (add-to-list 'company-backends #'company-capf)
+  (add-to-list 'company-backends #'company-dabbrev-code)
   (setf company-active-map (make-sparse-keymap))
   (bind-keys
    :map company-active-map
