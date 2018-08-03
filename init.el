@@ -328,8 +328,11 @@
   (with-eval-after-load "flycheck"
     (add-to-list 'flycheck-disabled-checkers 'haskell-hlint))
 
+  (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'flycheck-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
+  (add-hook 'haskell-interactive-mode-hook #'company-mode)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
 
 (use-package flycheck-haskell
@@ -338,28 +341,13 @@
   (with-eval-after-load "flycheck"
     (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
 
-(use-package lsp-mode)
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :init
-  (add-hook 'lsp-mode-hook #'lsp-ui-mode))
-
-(use-package lsp-haskell
-  :commands lsp-haskell-enable
-  :init
-  (with-eval-after-load "haskell-mode"
-    (add-hook 'haskell-mode-hook #'lsp-haskell-enable)))
-
 
 ;; Completion
 (use-package company-ghci
   :commands company-ghci
   :init
   (with-eval-after-load "company"
-    (add-to-list 'company-backends #'company-ghci))
-
-  (add-hook 'haskell-mode-hook #'company-mode)
-  (add-hook 'haskell-interactive-mode-hook #'company-mode))
+    (add-to-list 'company-backends #'company-ghci)))
 
 
 ;;; Dhall
