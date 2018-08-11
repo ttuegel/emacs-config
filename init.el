@@ -486,7 +486,10 @@
   (setq mm-discouraged-alternatives '("image/.*"))
   (setq mm-text-html-renderer 'w3m)
   (setq message-sendmail-envelope-from 'header)
-  (setq message-kill-buffer-on-exit t)
+  (setq message-kill-buffer-on-exit t))
+
+(use-package mailcap
+  :config
   (push '(".nb" . "application/vnd.wolfram.nb") mailcap-mime-extensions))
 
 (use-package sendmail
