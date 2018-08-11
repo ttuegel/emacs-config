@@ -250,12 +250,7 @@
   (setq reftex-plug-into-AUCTeX t)
   (setq reftex-default-bibliography "~/bib/default.bib"))
 
-(use-package bibtex-fetch
-  :demand t
-  :load-path "./bibtex-fetch")
-
 (with-eval-after-load "bibtex"
-  (require 'bibtex-fetch)
   (require 'bibtex-normalize)
   (bibtex-set-dialect 'biblatex))
 
