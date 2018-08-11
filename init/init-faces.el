@@ -3,8 +3,8 @@
 
 ;; Use Iosevka font by default.
 
-(set-frame-font (font-spec :family "Iosevka Type" :size 12.0 :weight 'normal))
-(set-face-attribute 'default nil :family "Iosevka Type" :height 120 :weight 'normal)
+(set-frame-font (font-spec :family "Iosevka Type" :height 120))
+(set-face-attribute 'default nil :family "Iosevka Type" :height 120)
 
 
 ;; Don't use italics to indicate types.

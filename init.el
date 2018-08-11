@@ -15,6 +15,8 @@
 (require 'bind-key)
 (require 'diminish)
 
+(diminish 'eldoc-mode)
+
 ;; Auto-compile .el files
 (require 'auto-compile)
 (auto-compile-on-load-mode)
@@ -139,6 +141,8 @@
   :init
   (add-hook 'emacs-lisp-mode-hook #'company-mode)
   :config
+  (add-to-list 'company-backends #'company-capf)
+  (add-to-list 'company-backends #'company-dabbrev-code)
   (setf company-active-map (make-sparse-keymap))
   (bind-keys
    :map company-active-map
@@ -319,8 +323,11 @@
   (with-eval-after-load "flycheck"
     (add-to-list 'flycheck-disabled-checkers 'haskell-hlint))
 
+  (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'flycheck-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
+  (add-hook 'haskell-interactive-mode-hook #'company-mode)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
 
 (use-package flycheck-haskell
@@ -335,10 +342,7 @@
   :commands company-ghci
   :init
   (with-eval-after-load "company"
-    (add-to-list 'company-backends #'company-ghci))
-
-  (add-hook 'haskell-mode-hook #'company-mode)
-  (add-hook 'haskell-interactive-mode-hook #'company-mode))
+    (add-to-list 'company-backends #'company-ghci)))
 
 
 ;;; Dhall
@@ -390,7 +394,11 @@
   (add-hook 'org-mode-hook #'turn-on-visual-line-mode)
   (add-hook 'org-mode-hook #'turn-on-visual-fill-column-mode)
 
-  (bind-key "C-c b" #'bibtex-fetch/org-insert-entry-from-clipboard org-mode-map))
+  (bind-key "C-c b" #'bibtex-fetch/org-insert-entry-from-clipboard org-mode-map)
+
+  ;; Save clock history across Emacs sessions
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate))
 
 
 (use-package org-agenda
@@ -539,6 +547,11 @@
 
 (add-hook 'c-mode-common-hook #'c-guess)
 (add-hook 'c-mode-common-hook #'flycheck-mode)
+(add-hook
+ 'c-mode-common-hook
+ (lambda ()
+   (setq-local whitespace-style '(face trailing))
+   (setq-local indent-tabs-mode t)))
 
 
 ;;; Maxima
