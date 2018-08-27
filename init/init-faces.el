@@ -23,9 +23,11 @@
 (setq solarized-height-plus-4 1.0)
 (setq custom-safe-themes t)
 
-(add-to-list 'load-path (relative "../solarized-emacs"))
-(require 'solarized-theme)
-(load-theme 'solarized-light)
+(use-package solarized-theme
+  :demand
+  :load-path "./solarized-emacs"
+  :config
+  (load-theme 'solarized-light))
 
 
 (provide 'init-faces)
