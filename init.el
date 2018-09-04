@@ -416,10 +416,7 @@
   :config
   (setq org-agenda-window-setup 'current-window)
 
-  (setq org-agenda-files (list org-directory
-                               "~/thesis"
-                               "~/ent-topo"
-                               "~/job-search/2018-a")
+  (setq org-agenda-files (list org-directory)
         org-agenda-ndays 7
         org-deadline-warning-days 0
         org-agenda-show-all-dates t
