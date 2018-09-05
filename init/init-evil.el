@@ -1,6 +1,7 @@
 (setq-default evil-shift-width tab-width)
 
 (evil-set-initial-state 'comint-mode 'emacs)
+(evil-set-initial-state 'text-mode 'normal)
 
 
 (evil-mode t)
