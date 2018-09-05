@@ -67,6 +67,7 @@
 (require 'init-emacs)
 (require 'init-modeline)
 (require 'init-keymaps)
+(require 'init-evil)
 (require 'init-faces)
 
 
@@ -367,16 +368,6 @@
   :config
   (require 'org-agenda)
   (require 'org-capture)
-
-  (unbind-key "C-e" org-mode-map)
-  (bind-key "C-S-n" #'org-end-of-line org-mode-map)
-  (unbind-key "C-a" org-mode-map)
-  (bind-key "C-S-d" #'org-beginning-of-line org-mode-map)
-  (unbind-key "C-u" org-mode-map)
-  (unbind-key "C-k" org-mode-map)
-  (bind-key "C-S-k" #'org-kill-line org-mode-map)
-  (unbind-key "C-y" org-mode-map)
-  (bind-key "C-p" #'org-yank org-mode-map)
 
   (setq org-directory "~/org")
 
