@@ -11,8 +11,7 @@
 (unbind-key "C-r" evil-normal-state-map)
 (unbind-key "C-x")
 
-(bind-key ":" #'execute-extended-command ctl-x-map)
-
+(bind-key "M-r" #'execute-extended-command)
 
 (bind-key "C-v" #'quoted-insert)
 
