@@ -372,11 +372,8 @@
   (setq org-directory "~/org")
 
   (setq org-todo-keywords
-        (quote ((type "TODO(t)" "STARTED(s@)" "WAITING(w@/!)"
-                      "APPT(a!)" "MAYBE(m)"
-                      "|"
-                      "DONE(d!)" "CANCELLED(c@)")
-                (sequence "UNREAD(u)" "|" "READ(r)"))))
+        (quote ((type "TODO(t)" "STARTED(s@)" "WAITING(w@/!)" "MAYBE(m)"
+                      "|" "DONE(d!)" "CANCELLED(c@)"))))
   ;; Children block parent TODO items
   (setq org-enforce-todo-dependencies t)
 
