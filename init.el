@@ -374,8 +374,12 @@
   (setq org-todo-keywords
         (quote ((type "TODO(t)" "STARTED(s@)" "WAITING(w@/!)" "MAYBE(m)"
                       "|" "DONE(d!)" "CANCELLED(c@)"))))
+
   ;; Children block parent TODO items
   (setq org-enforce-todo-dependencies t)
+
+  ;; Log entries into LOGBOOK drawer
+  (setq org-log-into-drawer t)
 
   (setq org-default-notes-file "~/org/notes.org"
         org-reverse-note-order t)
