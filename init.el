@@ -315,15 +315,6 @@
 (defun ttuegel/haskell-cabal-mode-hook ()
   (add-hook 'after-save-hook #'ttuegel/after-save-cabal2nix))
 
-(use-package lsp-ui
-  :init
-  (add-hook 'lsp-mode-hook #'lsp-ui-mode))
-
-(use-package lsp-haskell
-  :commands lsp-haskell-enable
-  :config
-  (setq lsp-haskell-process-path-hie "hie-wrapper"))
-
 (use-package haskell-mode
   :config
   (setq haskell-literate-default 'tex)
@@ -334,11 +325,16 @@
 
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'flycheck-mode)
-  (add-hook 'haskell-mode-hook #'lsp-haskell-enable)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
   (add-hook 'haskell-interactive-mode-hook #'company-mode)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
+
+(use-package flycheck-haskell
+  :commands flycheck-haskell-setup
+  :init
+  (with-eval-after-load "flycheck"
+    (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
 
 
 ;; Completion
@@ -347,8 +343,6 @@
   :init
   (with-eval-after-load "company"
     (add-to-list 'company-backends #'company-ghci)))
-
-(use-package eglot)
 
 
 ;;; Dhall
