@@ -177,7 +177,9 @@
   :init
   (bind-key "t" #'git-timemachine-toggle vc-prefix-map))
 
-(use-package git-auto-commit-mode)
+(use-package git-auto-commit-mode
+  ;; Use personal fork for `call-process' instead of `shell-command'.
+  :load-path "./git-auto-commit-mode")
 
 
 ;;; TeX
