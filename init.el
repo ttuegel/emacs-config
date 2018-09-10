@@ -302,6 +302,15 @@
               (add-hook 'after-save-hook #'ttuegel/after-save-hpack))))
 
 
+;;; Language Server
+
+(use-package lsp-mode)
+(use-package lsp-haskell
+  :commands lsp-haskell-enable
+  :config
+  (setq lsp-haskell-process-path-hie "/home/ttuegel/stack-hie-wrapper.sh"))
+
+
 ;;; Haskell
 
 (defun ttuegel/after-save-cabal2nix ()
@@ -316,13 +325,11 @@
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
 
-  (with-eval-after-load "flycheck"
-    (add-to-list 'flycheck-disabled-checkers 'haskell-hlint))
-
   (add-hook 'haskell-mode-hook #'company-mode)
-  (add-hook 'haskell-mode-hook #'flycheck-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
+  (add-hook 'haskell-mode-hook #'lsp-haskell-enable)
+  (add-hook 'haskell-mode-hook #'flycheck-mode)
   (add-hook 'haskell-interactive-mode-hook #'company-mode)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
 
