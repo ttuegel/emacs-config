@@ -177,8 +177,7 @@
   :init
   (bind-key "t" #'git-timemachine-toggle vc-prefix-map))
 
-(use-package git-auto-commit-mode
-  :load-path "./git-auto-commit-mode")
+(use-package git-auto-commit-mode)
 
 
 ;;; TeX
@@ -282,9 +281,6 @@
   :config
   (add-hook 'nix-mode-hook #'rainbow-delimiters-mode))
 
-(use-package nix-buffer
-  :load-path "~/nix-buffer")
-
 
 ;;; Ledger
 
@@ -329,12 +325,6 @@
   (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
   (add-hook 'haskell-interactive-mode-hook #'company-mode)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
-
-(use-package flycheck-haskell
-  :commands flycheck-haskell-setup
-  :init
-  (with-eval-after-load "flycheck"
-    (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
 
 
 ;; Completion

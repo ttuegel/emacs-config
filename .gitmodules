@@ -1,21 +1,3 @@
-[submodule ".emacs.d/snippets"]
-	path = snippets
-	url = https://github.com/AndreaCrotti/yasnippet-snippets.git
 [submodule "solarized-emacs"]
 	path = solarized-emacs
 	url = https://github.com/ttuegel/solarized-emacs.git
-[submodule "bibtex-fetch"]
-	path = bibtex-fetch
-	url = https://github.com/ttuegel/bibtex-fetch.git
-[submodule "nix-mode"]
-	path = nix-mode
-	url = https://github.com/matthewbauer/nix-mode
-[submodule "evil"]
-	path = evil
-	url = https://github.com/emacs-evil/evil
-[submodule "dante"]
-	path = dante
-	url = https://github.com/jyp/dante.git
-[submodule "git-auto-commit-mode"]
-	path = git-auto-commit-mode
-	url = https://github.com/ttuegel/git-auto-commit-mode.git
