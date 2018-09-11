@@ -324,8 +324,7 @@
 
 (use-package intero
   :config
-  (with-eval-after-load "company"
-    (add-to-list 'company-backends #'intero-company)))
+  (setq intero-extra-ghc-options '("-Wall")))
 
 (use-package haskell-mode
   :config
