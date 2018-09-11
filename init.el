@@ -615,5 +615,14 @@ logical line.  This is useful, e.g., for use with
 (use-package fish-mode)
 
 
+;;; EditorConfig
+
+(use-package editorconfig
+  :demand
+  :diminish
+  :config
+  (editorconfig-mode 1))
+
+
 (provide 'init)
 ;;; init.el ends here
