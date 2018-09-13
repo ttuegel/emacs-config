@@ -323,8 +323,11 @@
   (add-hook 'after-save-hook #'ttuegel/after-save-cabal2nix))
 
 (use-package intero
+  :commands intero-global-mode
   :config
   (setq intero-extra-ghc-options '("-Wall")))
+
+(intero-global-mode 1)
 
 (use-package haskell-mode
   :config
@@ -333,8 +336,6 @@
 
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
-  (add-hook 'haskell-mode-hook #'intero-mode)
   (add-hook 'haskell-interactive-mode-hook #'company-mode)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
 
