@@ -307,10 +307,17 @@
 ;;; Language Server
 
 (use-package lsp-mode)
+
 (use-package lsp-haskell
   :commands lsp-haskell-enable
   :config
   (setq lsp-haskell-process-path-hie "/home/ttuegel/stack-hie-wrapper.sh"))
+
+(use-package company-lsp
+  :after company
+  :demand
+  :config
+  (push #'company-lsp company-backends))
 
 
 ;;; Haskell
