@@ -102,7 +102,9 @@
 
 (use-package projectile
   :diminish projectile-mode
-  :commands projectile-mode)
+  :commands projectile-mode
+  :config
+  (bind-key "C-c p" #'projectile-command-map projectile-mode-map))
 
 (run-with-idle-timer 0.5 nil (lambda () (projectile-mode)))
 
