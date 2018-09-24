@@ -321,6 +321,10 @@
   :config
   (push #'company-lsp company-backends))
 
+(use-package lsp-java
+  :commands lsp-java-enable
+  :init
+  (add-hook 'java-mode-hook #'lsp-java-enable))
 
 ;;; Haskell
 
