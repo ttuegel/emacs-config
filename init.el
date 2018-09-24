@@ -635,5 +635,22 @@ logical line.  This is useful, e.g., for use with
   (editorconfig-mode 1))
 
 
+;;; Ledger
+
+(use-package ledger-mode
+  :mode ("\\.journal\\'" . ledger-mode))
+
+(use-package evil-ledger
+  :after ledger-mode
+  :diminish
+  :init
+  (add-hook 'ledger-mode-hook #'evil-ledger-mode)
+  :config
+  (dolist (state '(normal motion visual))
+    (evil-define-key* state evil-ledger-mode-map
+      (kbd "gh") 'evil-ledger-forward-xact
+      (kbd "gt") 'evil-ledger-backward-xact)))
+
+
 (provide 'init)
 ;;; init.el ends here
