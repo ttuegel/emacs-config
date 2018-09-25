@@ -342,6 +342,10 @@
 
 (intero-global-mode 1)
 
+(defun turn-off-eldoc-mode ()
+  "Disable `eldoc-mode' in the current buffer."
+  (eldoc-mode -1))
+
 (use-package haskell-mode
   :config
   (setq haskell-literate-default 'tex)
@@ -349,6 +353,7 @@
 
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
   (add-hook 'haskell-interactive-mode-hook #'company-mode)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
 
