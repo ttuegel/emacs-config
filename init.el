@@ -109,11 +109,7 @@
 (run-with-idle-timer 0.5 nil (lambda () (projectile-mode)))
 
 
-;;; Eyebrowse
-
-(require 'eyebrowse)
-(eyebrowse-mode t)
-
+;;; Visual-Fill-Column
 
 (use-package visual-fill-column
   :commands (turn-on-visual-fill-column-mode))
