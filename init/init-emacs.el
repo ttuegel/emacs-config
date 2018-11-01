@@ -49,7 +49,7 @@
 
 ;; Whitespace
 (require 'whitespace)
-(setq-default whitespace-style '(face trailing tabs))
+(setq-default whitespace-style '(face lines trailing tabs))
 (global-whitespace-mode t)
 (diminish 'global-whitespace-mode)
 
