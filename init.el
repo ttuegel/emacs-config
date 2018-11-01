@@ -567,6 +567,14 @@
    (setq-local indent-tabs-mode t)))
 
 
+;; Makefile
+
+(add-hook
+ 'makefile-mode-hook
+ (lambda ()
+   (setq-local whitespace-style '(line face trailing))))
+
+
 ;;; Maxima
 
 (use-package maxima
