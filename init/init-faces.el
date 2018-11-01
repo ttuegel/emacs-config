@@ -1,10 +1,19 @@
 ;;; Faces and colors
 
 
-;; Use Iosevka font by default.
+;; Use system default monospace font in 12 pt height.
 
-(set-frame-font (font-spec :family "Iosevka Type" :height 120))
-(set-face-attribute 'default nil :family "Iosevka Type" :height 120)
+(defun ttuegel/set-font (frame)
+  "Configure font on frame creation"
+  (select-frame frame)
+  (when (display-graphic-p)
+    (set-frame-font "Monospace-12")))
+
+;; Set font in all extant frames.
+(mapc #'ttuegel/set-font (frame-list))
+
+;; Set font in all future frames.
+(add-hook 'after-make-frame-functions #'ttuegel/set-font)
 
 
 ;; Don't use italics to indicate types.
