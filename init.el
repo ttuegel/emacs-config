@@ -563,7 +563,7 @@
 (add-hook
  'c-mode-common-hook
  (lambda ()
-   (setq-local whitespace-style '(face trailing))
+   (setq-local whitespace-style '(line face trailing))
    (setq-local indent-tabs-mode t)))
 
 
