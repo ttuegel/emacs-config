@@ -661,5 +661,11 @@ logical line.  This is useful, e.g., for use with
       (kbd "gt") 'evil-ledger-backward-xact)))
 
 
+;;; Groovy (Jenkinsfile)
+
+(use-package groovy-mode
+  :mode ("Jenkinsfile" . groovy-mode))
+
+
 (provide 'init)
 ;;; init.el ends here
