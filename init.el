@@ -304,12 +304,21 @@
 
 ;;; Language Server
 
-(use-package lsp-mode)
+(use-package lsp-mode
+  :config
+  (setq lsp-enable-eldoc nil))
+
+(use-package lsp-ui
+  :init
+  (add-hook 'lsp-mode-hook #'lsp-ui-mode)
+  :config
+  (setq lsp-ui-sideline-enable nil)
+  (setq lsp-ui-doc-enable nil))
 
 (use-package lsp-haskell
   :commands lsp-haskell-enable
-  :config
-  (setq lsp-haskell-process-path-hie "/home/ttuegel/stack-hie-wrapper.sh"))
+  :init
+  (add-hook 'haskell-mode-hook #'lsp-haskell-enable))
 
 (use-package company-lsp
   :after company
@@ -331,12 +340,13 @@
 (defun ttuegel/haskell-cabal-mode-hook ()
   (add-hook 'after-save-hook #'ttuegel/after-save-cabal2nix))
 
-(use-package intero
-  :commands intero-global-mode
-  :config
-  (setq intero-extra-ghc-options '("-Wall")))
+;; (use-package intero
+;;   :commands intero-global-mode
+;;   :config
+;;   (setq intero-extra-ghc-options '("-Wall"))
+;;   (setq intero-blacklist '("~/ttuegel.github.io")))
 
-(intero-global-mode 1)
+;; (intero-global-mode 1)
 
 (defun turn-off-eldoc-mode ()
   "Disable `eldoc-mode' in the current buffer."
@@ -350,6 +360,7 @@
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
+  (add-hook 'haskell-mode-hook #'flycheck-mode)
   (add-hook 'haskell-interactive-mode-hook #'company-mode)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
 
