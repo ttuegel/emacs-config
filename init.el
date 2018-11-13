@@ -315,10 +315,10 @@
   (setq lsp-ui-sideline-enable nil)
   (setq lsp-ui-doc-enable nil))
 
-(use-package lsp-haskell
-  :commands lsp-haskell-enable
-  :init
-  (add-hook 'haskell-mode-hook #'lsp-haskell-enable))
+;; (use-package lsp-haskell
+;;   :commands lsp-haskell-enable
+;;   :init
+;;   (add-hook 'haskell-mode-hook #'lsp-haskell-enable))
 
 (use-package company-lsp
   :after company
@@ -360,7 +360,7 @@
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
-  (add-hook 'haskell-mode-hook #'flycheck-mode)
+  ;; (add-hook 'haskell-mode-hook #'flycheck-mode)
   (add-hook 'haskell-interactive-mode-hook #'company-mode)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
 
