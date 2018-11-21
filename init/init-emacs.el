@@ -100,4 +100,19 @@ only whitespace."
 (setq browse-url-new-window-flag t)
 
 
+;; Local variables
+(setq safe-local-variable-values
+      '((haskell-stylish-on-save . t)
+        (haskell-indentation-where-pre-offset . 2)
+        (haskell-indentation-where-post-offset . 2)
+        (intero-targets "kore:lib"
+                        "kore:exe:kore-exec"
+                        "kore:exe:kore-format"
+                        "kore:exe:kore-parser"
+                        "kore:exe:prover"
+                        "kore:test:kore-test"
+                        "kore:bench:kore-parser-benchmark")))
+
+
+
 (provide 'init-emacs)
