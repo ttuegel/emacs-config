@@ -678,5 +678,9 @@ logical line.  This is useful, e.g., for use with
   :mode ("Jenkinsfile" . groovy-mode))
 
 
+;;; Direnv
+(use-package direnv)
+
+
 (provide 'init)
 ;;; init.el ends here
