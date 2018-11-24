@@ -465,13 +465,13 @@
   :config
   (setq org-capture-templates
         (quote (("t" "todo" entry (file+headline "~/org/todo.org" "Tasks")
-                 "* TODO %?\n\n%a\n\n%i")
+                 "* TODO %?")
                 ("j" "journal" entry (file+olp+datetree "~/org/journal.org")
-                 "* %?\n\n%U\n%a\n\n%i")
+                 "* %?\n\n%U")
                 ("n" "note" entry (file "~/org/notes.org")
-                 "* %?\n\n%U\n%a\n\n%i")
+                 "* %?\n\n%U")
                 ("b" "bibliography" entry (file "~/org/bib.org")
-                 "* UNREAD %:title%?\n\n%a\n\n")))))
+                 "* UNREAD %:title%?")))))
 
 
 ;;; rust
