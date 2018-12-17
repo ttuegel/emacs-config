@@ -253,10 +253,6 @@
   (setq reftex-plug-into-AUCTeX t)
   (setq reftex-default-bibliography "~/bib/default.bib"))
 
-(with-eval-after-load "bibtex"
-  (require 'bibtex-normalize)
-  (bibtex-set-dialect 'biblatex))
-
 ;; Completion
 
 (use-package company-math
