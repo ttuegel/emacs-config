@@ -36,7 +36,7 @@
     (expand-file-name file-name)))
 
 (defun ttuegel/call-process (outfile program &rest args)
-  (let ((out (if outfile `(:file ,outfile) 0)))
+  (let ((out (if outfile `((:file ,outfile) nil) 0)))
     (apply #'call-process program nil out nil args)))
 
 (defun ttuegel/cabal2nix ()
