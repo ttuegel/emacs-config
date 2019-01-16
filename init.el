@@ -675,6 +675,10 @@ logical line.  This is useful, e.g., for use with
   :mode ("Jenkinsfile" . groovy-mode))
 
 
+;;; Scala
+(use-package scala-mode)
+
+
 ;;; Direnv
 (use-package direnv)
 
