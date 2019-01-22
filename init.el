@@ -349,6 +349,10 @@
   "Disable `eldoc-mode' in the current buffer."
   (eldoc-mode -1))
 
+(use-package hhp
+  :load-path "~/hhp/elisp"
+  :commands hhp-init hhp-debug)
+
 (use-package haskell-mode
   :config
   (setq haskell-literate-default 'tex)
@@ -358,7 +362,8 @@
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
   ;; (add-hook 'haskell-mode-hook #'flycheck-mode)
-  (add-hook 'haskell-interactive-mode-hook #'company-mode)
+  ;; (add-hook 'haskell-interactive-mode-hook #'company-mode)
+  (add-hook 'haskell-mode-hook #'hhp-init)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
 
 
