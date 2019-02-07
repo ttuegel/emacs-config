@@ -36,7 +36,7 @@
 ;; Ask `y or n' rather than `yes or no'
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; It's 2018, every display is wide, and vertically-split windows
+;; It's 2019, every display is wide, and vertically-split windows
 ;; are unreadable.
 (setq split-height-threshold nil)
 (setq split-width-threshold 144)
