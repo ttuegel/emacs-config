@@ -364,7 +364,10 @@
   ;; (add-hook 'haskell-mode-hook #'flycheck-mode)
   ;; (add-hook 'haskell-interactive-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'hhp-init)
-  (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook))
+  (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook)
+  (add-hook 'haskell-mode-hook
+            (lambda ()
+              (setq-local whitespace-style '(face lines trailing tabs)))))
 
 
 ;; Completion
@@ -576,7 +579,7 @@
 (add-hook
  'c-mode-common-hook
  (lambda ()
-   (setq-local whitespace-style '(line face trailing))
+   (setq-local whitespace-style '(lines face trailing))
    (setq-local indent-tabs-mode t)))
 
 
@@ -585,7 +588,7 @@
 (add-hook
  'makefile-mode-hook
  (lambda ()
-   (setq-local whitespace-style '(line face trailing))))
+   (setq-local whitespace-style '(lines face trailing))))
 
 
 ;;; Maxima
