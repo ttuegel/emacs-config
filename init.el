@@ -76,7 +76,7 @@
 
 (require 'rainbow-delimiters)
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
-
+(add-hook 'emacs-lisp-mode-hook #'display-line-numbers-mode)
 
 ;;; Ivy
 
@@ -360,6 +360,7 @@
 
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'haskell-mode-hook #'display-line-numbers-mode)
   (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
   ;; (add-hook 'haskell-mode-hook #'flycheck-mode)
   ;; (add-hook 'haskell-interactive-mode-hook #'company-mode)
