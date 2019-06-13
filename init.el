@@ -300,33 +300,14 @@
 
 ;;; Language Server
 
-(use-package lsp-mode
-  :config
-  (setq lsp-enable-eldoc nil))
+(use-package lsp-mode :commands lsp)
+(use-package lsp-ui :hook (lsp-mode . lsp-ui-mode))
 
-(use-package lsp-ui
-  :init
-  (add-hook 'lsp-mode-hook #'lsp-ui-mode)
-  :config
-  (setq lsp-ui-sideline-enable nil)
-  (setq lsp-ui-doc-enable nil))
+(use-package company-lsp :commands company-lsp)
 
-(use-package lsp-haskell
-  :commands lsp-haskell-enable
-  :init
-  ;; (add-hook 'haskell-mode-hook #'lsp-haskell-enable))
-  )
+(use-package lsp-java :hook (java-mode . lsp))
 
-(use-package company-lsp
-  :after company
-  :demand
-  :config
-  (push #'company-lsp company-backends))
-
-(use-package lsp-java
-  :commands lsp-java-enable
-  :init
-  (add-hook 'java-mode-hook #'lsp-java-enable))
+(use-package lsp-haskell :demand :hook (haskell-mode . lsp))
 
 ;;; Haskell
 
@@ -361,10 +342,10 @@
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'display-line-numbers-mode)
-  (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
-  ;; (add-hook 'haskell-mode-hook #'flycheck-mode)
+  ;; (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
+  (add-hook 'haskell-mode-hook #'flycheck-mode)
   ;; (add-hook 'haskell-interactive-mode-hook #'company-mode)
-  (add-hook 'haskell-mode-hook #'hhp-init)
+  ;; (add-hook 'haskell-mode-hook #'hhp-init)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook)
   (add-hook 'haskell-mode-hook
             (lambda ()
