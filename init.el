@@ -330,9 +330,17 @@
   "Disable `eldoc-mode' in the current buffer."
   (eldoc-mode -1))
 
-(use-package hhp
-  :load-path "~/hhp/elisp"
-  :commands hhp-init hhp-debug)
+;; (use-package hhp
+;;   :load-path "~/hhp/elisp"
+;;   :commands hhp-init hhp-debug)
+
+(use-package dante
+  :after haskell-mode
+  :commands 'dante-mode
+  :init
+  (add-hook 'haskell-mode-hook #'dante-mode)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  )
 
 (use-package haskell-mode
   :config
@@ -343,9 +351,9 @@
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'display-line-numbers-mode)
   ;; (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
-  ;; (add-hook 'haskell-mode-hook #'flycheck-mode)
+  (add-hook 'haskell-mode-hook #'flycheck-mode)
   ;; (add-hook 'haskell-interactive-mode-hook #'company-mode)
-  (add-hook 'haskell-mode-hook #'hhp-init)
+  ;; (add-hook 'haskell-mode-hook #'hhp-init)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook)
   (add-hook 'haskell-mode-hook
             (lambda ()
@@ -406,6 +414,9 @@
           (system . "xdg-open %s")
           ("\\.x?html?\\'" . system)
           ("\\.pdf\\'" . system)))
+
+  (setq org-clock-clocktable-default-properties
+        '(:maxlevel 2 :scope file :block today))
 
   (add-hook 'org-mode-hook #'turn-on-visual-line-mode)
   (add-hook 'org-mode-hook #'turn-on-visual-fill-column-mode)
