@@ -518,6 +518,10 @@
   (setq message-sendmail-envelope-from 'header)
   (setq message-kill-buffer-on-exit t))
 
+(use-package w3m
+  :config
+  (setq w3m-toggle-inline-images-permanently nil))
+
 (use-package mailcap
   :config
   (push '(".nb" . "application/vnd.wolfram.nb") mailcap-mime-extensions))
