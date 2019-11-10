@@ -515,6 +515,7 @@
 
   (setq mm-discouraged-alternatives '("image/.*"))
   (setq mm-text-html-renderer 'w3m)
+  (setq mm-html-inhibit-images t)
   (setq message-sendmail-envelope-from 'header)
   (setq message-kill-buffer-on-exit t))
 
