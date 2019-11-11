@@ -78,7 +78,7 @@
     (beginning-of-line)
     (while
         (re-search-forward "^[[:space:]]+$" (line-end-position) t)
-      (replace-match ""))))
+      (replace-match "\n"))))
 
 (defadvice newline
     (after indent-whitespace-hygiene-after-newline activate)
