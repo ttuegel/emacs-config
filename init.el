@@ -840,13 +840,34 @@ Otherwise return nil."
   (add-hook 'message-mode-hook
             #'messages-are-flowing-use-and-mark-hard-newlines))
 
-
 ;;; Notmuch
+
+(defun notmuch-show-apply-tag-macro (key)
+  (interactive "k")
+  (let
+      ((macro (assoc key notmuch-tag-macro-alist)))
+    (if macro
+        (apply 'notmuch-show-tag-message (cdr macro))
+      (message "Not a tag macro: `%s'" key))))
+
+(defun notmuch-search-apply-tag-macro (key)
+  (interactive "k")
+  (let
+      ((macro (assoc key notmuch-tag-macro-alist)))
+    (if macro
+        (apply 'notmuch-show-tag-message (cdr macro))
+      (message "Not a tag macro: `%s'" key))))
 
 (use-package notmuch
   :config
-  (require 'config-notmuch)
-
+  (setq notmuch-tag-macro-alist
+        (list
+        '("k" "+deleted" "-inbox")
+        '("m" "+mute" "-inbox")
+        '("M" "+mute-thread" "-inbox")
+        '("n" "+notice")
+        '("s" "+spam")
+        '("a" "+ad" "-inbox")))
   (setq notmuch-search-oldest-first nil)
   (setq notmuch-fcc-dirs
         '(("ttuegel@mailbox.org" . "mailbox/INBOX +sent +mailbox")
@@ -869,7 +890,6 @@ Otherwise return nil."
     (bind-key "h" #'notmuch-search-next-thread map)
     (bind-key "t" #'notmuch-search-previous-thread map)
     (bind-key "f" #'notmuch-search-filter map)))
-
 
 ;;; C
 
@@ -906,13 +926,11 @@ Otherwise return nil."
 ;;; unfill-region
 
 (defun unfill-region (beg end)
-  "Unfill the region, joining text paragraphs into a single
-logical line.  This is useful, e.g., for use with
-`visual-line-mode'."
+  "Join text paragraphs into a single logical line.
+This is useful, e.g., for use with function `visual-line-mode'."
   (interactive "*r")
   (let ((fill-column (point-max)))
     (fill-region beg end)))
-
 
 ;;; pdftotext
 
