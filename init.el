@@ -2,12 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
-;;; File and package loading
-
-;(package-initialize)
-
-;; Load the .el if it's newer than the .elc
-(setq load-prefer-newer t)
+;;; use-package
 
 (eval-when-compile (require 'use-package))
 (setq use-package-always-defer t)
@@ -17,12 +12,17 @@
 
 (diminish 'eldoc-mode)
 
-;; Auto-compile .el files
+;;; auto-compile -- automatically compile .el files
+
 (require 'auto-compile)
 (auto-compile-on-load-mode)
 (auto-compile-on-save-mode)
 
-;; Show available keys after incomplete commands
+;; Load the .el if it's newer than the .elc
+(setq load-prefer-newer t)
+
+;;; which-key -- show available keys after incomplete commands
+
 (require 'which-key)
 (which-key-mode)
 (diminish 'which-key-mode)
@@ -62,17 +62,304 @@
       (let ((after (point)))
         (when (eq before after) (beginning-of-line))))))
 
+;;; Emacs
+
+;; Don't EVER touch my init.el!
+(eval-after-load "cus-edit"
+  '(defun customize-save-variable
+       (variable value &optional comment) value))
+
+;; Use UTF-8 everywhere. It's 2018, how is this not default?
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
+;; Turn off that damn bell!
+(setq visible-bell t)
+
+;; Don't piddle backup files everywhere like an un-housebroken puppy.
+(setq auto-save-default nil)
+(setq make-backup-files nil)
+
+;; Blinking should be reserved for eyelids and indicators that require immediate attention.
+(blink-cursor-mode -1)
+
+;; What is this, Microsoft Word?
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
+(add-to-list 'default-frame-alist '(horizontal-scroll-bars . nil))
+
+;; Thank you, but I know what program this is.
+(setq inhibit-startup-screen t)
+
+;; Don't update the X selection from the kill-ring.
+;; Like Vim, Evil keeps the X selection in the `"' register.
+(setq select-enable-clipboard nil)
+
+;; Ask `y or n' rather than `yes or no'
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; It's 2019, every display is wide, and vertically-split windows
+;; are unreadable.
+(setq split-height-threshold nil)
+(setq split-width-threshold 144)
+
+;; Make buffer names more unique
+(setq uniquify-buffer-name-style 'forward)
+
+;; Fill column
+(setq-default fill-column 80)
+
+;; Ignore common extensions.
+(add-to-list 'completion-ignored-extensions ".elc")
+(add-to-list 'completion-ignored-extensions ".hi")
+(add-to-list 'completion-ignored-extensions ".o")
+(add-to-list 'completion-ignored-extensions ".dyn_hi")
+(add-to-list 'completion-ignored-extensions ".dyn_o")
+
+;; Tab stops
+(setq-default tab-always-indent t)
+(setq-default tab-stop-list (number-sequence 2 120 2))
+(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+
+;; Hygiene
+
+(defun ttuegel/indent-whitespace-hygiene ()
+  "Remove whitespace from the current line if it is only whitespace."
+  (save-excursion
+    (beginning-of-line)
+    (while
+        (re-search-forward "^[[:space:]]+$" (line-end-position) t)
+      (replace-match "\n"))))
+
+(defadvice newline
+    (after indent-whitespace-hygiene-after-newline activate)
+  "Stop ill-behaved major-modes from leaving indentation on blank lines.
+After a newline, remove whitespace from the previous line if that line is
+only whitespace."
+  (progn
+    (forward-line -1)
+    (ttuegel/indent-whitespace-hygiene)
+    (forward-line 1)
+    (back-to-indentation)))
+
+;; Local variables
+(setq safe-local-variable-values
+      '((haskell-stylish-on-save . t)
+        (haskell-indentation-where-pre-offset . 2)
+        (haskell-indentation-where-post-offset . 2)))
+
+;;; whitespace
+
+(require 'whitespace)
+(setq-default whitespace-style '(face trailing tabs))
+(global-whitespace-mode t)
+(diminish 'global-whitespace-mode)
+
+;;; electric-indent
+
+(electric-indent-mode -1)
+(add-hook 'emacs-lisp-mode-hook #'electric-indent-local-mode)
+
+;;; show-paren
+
+(show-paren-mode t)
+
+;;; browse-url
+(setq browse-url-browser-function #'browse-url-firefox)
+(setq browse-url-new-window-flag t)
+
+;;; spaceline
+
+(require 'spaceline-config)
+
+;; Evil state colors
+(setq spaceline-highlight-face-func #'spaceline-highlight-face-evil-state)
+
+(spaceline-emacs-theme)
+(spaceline-toggle-buffer-size-off)
+(spaceline-toggle-buffer-encoding-abbrev-off)
 
 (add-to-list 'load-path (relative "./init"))
-(require 'init-emacs)
-(require 'init-modeline)
-(require 'init-keymaps)
-(require 'init-evil)
-(require 'init-faces)
 
+;;; evil
+
+(setq evil-toggle-key "C-,")
+(require 'evil)
+
+(setq-default evil-shift-width tab-width)
+
+(evil-set-initial-state 'comint-mode 'emacs)
+(evil-set-initial-state 'text-mode 'normal)
+(evil-set-initial-state 'git-commit-mode 'normal)
+
+(evil-mode t)
+
+;; C-x
+
+(bind-key "C-r" ctl-x-map)
+(unbind-key "C-r" evil-normal-state-map)
+(unbind-key "C-x")
+
+(bind-key "M-r" #'execute-extended-command)
+
+(bind-key "C-v" #'quoted-insert)
+
+;; Evil normal state
+
+(bind-key "C-b" #'evil-normal-state evil-insert-state-map)
+(bind-key "C-b" #'evil-normal-state evil-replace-state-map)
+(bind-key "C-b" #'evil-normal-state evil-visual-state-map)
+
+;; Windows
+
+(bind-key "w" evil-window-map ctl-x-map)
+
+(bind-keys
+ :map evil-window-map
+ ("d" . evil-window-left)
+ ("D" . evil-window-move-far-left)
+ ("h" . evil-window-down)
+ ("H" . evil-window-move-very-bottom)
+ ("t" . evil-window-up)
+ ("T" . evil-window-move-very-top)
+ ("n" . evil-window-right)
+ ("N" . evil-window-move-far-right)
+ ("-" . evil-window-new)
+ ("|" . evil-window-vnew)
+ ("k" . evil-window-delete))
+
+;; Motion
+
+(let ((map evil-motion-state-map))
+  (unbind-key "k" map) ; evil-previous-visual-line
+  (unbind-key "j" map) ; evil-next-visual-line
+  (unbind-key "h" map) ; evil-backward-char
+  (unbind-key "l" map) ; evil-forward-char
+  (unbind-key "C-d" map) ; evil-scroll-down
+  (unbind-key "$" map) ; evil-end-of-line
+  (unbind-key "C-f" map) ; evil-scroll-page-down
+  (unbind-key "C-b" map) ; evil-scroll-page-up
+
+  (bind-keys
+   :map map
+   ("t" . evil-previous-visual-line)
+   ("h" . evil-next-visual-line)
+   ("d" . evil-backward-char)
+   ("n" . evil-forward-char)
+   ("H" . evil-scroll-down)
+   ("T" . evil-scroll-up)
+   ("D" . beginning-of-visual-line)
+   ("N" . evil-end-of-line)
+   ("M-h" . evil-scroll-page-down)
+   ("M-t" . evil-scroll-page-up)))
+
+(bind-keys
+ ("C-t" . 'previous-line)
+ ("C-h" . 'next-line)
+ ("C-d" . 'backward-char)
+ ("C-n" . 'forward-char)
+
+ ("C-T" . evil-scroll-up)
+ ("C-H" . evil-scroll-down)
+ ("C-D" . beginning-of-visual-line)
+ ("C-N" . end-of-visual-line)
+
+ ("C-M-t" . evil-scroll-page-up)
+ ("C-M-h" . evil-scroll-page-down))
+
+
+(let ((map evil-normal-state-map))
+  (unbind-key "d" map) ; evil-delete
+  (unbind-key "D" map) ; evil-delete-line
+
+  (bind-keys
+   :map map
+   ("k" . evil-delete)
+   ("K" . evil-delete-line)))
+
+;; Buffers
+
+(define-prefix-command 'buffer-map)
+(bind-key "b" buffer-map ctl-x-map)
+(bind-keys
+ :map buffer-map
+ ("b" . switch-to-buffer)
+ ("C-b" . buffer-menu)
+ ("k" . kill-buffer)
+ ("C-k" . kill-this-buffer)
+ ("n" . switch-to-next-buffer)
+ ("p" . switch-to-prev-buffer)
+ ("R" . (lambda () (interactive) (revert-buffer nil t)))
+ ("r" . rename-current-buffer-file))
+
+;;; undo-tree
+
+(require 'undo-tree)
+
+(let ((map undo-tree-map))
+  (unbind-key "C-_" map)
+  (unbind-key "M-_" map))
+
+(bind-keys
+    :map evil-normal-state-map
+    ("u" . undo-tree-undo)
+    ("U" . undo-tree-redo))
+
+(global-undo-tree-mode 1)
+(diminish 'undo-tree-mode)
+
+;;; evil-surround
+
+(require 'evil-surround)
+(global-evil-surround-mode 1)
+
+;;; evil-indent-textobject
+
+(require 'evil-indent-textobject)
+
+;;; faces
+
+;; Use system default monospace font in 12 pt height.
+
+(defun ttuegel/set-font (frame)
+  "Configure font on frame creation"
+  (select-frame frame)
+  (when (display-graphic-p)
+    (set-frame-font "Monospace-12")))
+
+;; Set font in all extant frames.
+(mapc #'ttuegel/set-font (frame-list))
+
+;; Set font in all future frames.
+(add-hook 'after-make-frame-functions #'ttuegel/set-font)
+
+;; Don't use italics to indicate types.
+
+(custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
+
+;; Colors
+
+(setq solarized-use-variable-pitch nil)
+(setq solarized-high-contrast-mode-line t)
+(setq solarized-height-minus-1 1.0)
+(setq solarized-height-plus-1 1.0)
+(setq solarized-height-plus-2 1.0)
+(setq solarized-height-plus-3 1.0)
+(setq solarized-height-plus-4 1.0)
+(setq custom-safe-themes t)
+
+(use-package solarized-theme
+  :demand
+  :load-path "./solarized-emacs"
+  :config
+  (load-theme 'solarized-light))
 
 (add-to-list 'load-path (relative "./config"))
 
+;;; rainbow-delimiters
 
 (require 'rainbow-delimiters)
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
