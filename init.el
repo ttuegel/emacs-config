@@ -334,12 +334,21 @@
 ;;   :load-path "~/hhp/elisp"
 ;;   :commands hhp-init hhp-debug)
 
+(defun ttuegel/string-listp (object)
+  "Return t if OBJECT is a list of strings.
+Otherwise return nil."
+  (and (listp object)
+       (seq-reduce (lambda (accum item) (and accum (stringp item))) object t)
+       )
+  )
+
 (use-package dante
   :after haskell-mode
   :commands 'dante-mode
   :init
   (add-hook 'haskell-mode-hook #'dante-mode)
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (put 'dante-repl-command-line 'safe-local-variable #'ttuegel/string-listp)
   )
 
 (use-package haskell-mode
@@ -357,7 +366,12 @@
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook)
   (add-hook 'haskell-mode-hook
             (lambda ()
-              (setq-local whitespace-style '(face lines trailing tabs)))))
+              (setq-local whitespace-style '(face lines trailing tabs))))
+
+  (put 'haskell-indentation-where-post-offset 'safe-local-variable #'numberp)
+  (put 'haskell-indentation-where-pre-offset 'safe-local-variable #'numberp)
+  (put 'haskell-stylish-on-save 'safe-local-variable #'booleanp)
+  )
 
 
 ;; Completion
