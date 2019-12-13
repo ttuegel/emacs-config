@@ -447,12 +447,21 @@ only whitespace."
 
 
 
-;;; Flycheck
+;;; flycheck
 
 (use-package flycheck
-  :commands flycheck-mode
+  :commands flycheck-mode global-flycheck-mode
   :config
   (setq flycheck-clang-language-standard "c++17"))
+
+;; (global-flycheck-mode t)
+
+
+;;; yasnippet
+
+(use-package yasnippet
+  :config
+  (diminish 'yas-minor-mode))
 
 
 ;;; Git
@@ -588,19 +597,41 @@ only whitespace."
 
 (use-package yaml-mode
   :config
-  (add-hook 'yaml-mode-hook
-            (lambda ()
-              (add-hook 'after-save-hook #'ttuegel/after-save-hpack))))
+  (add-hook
+   'yaml-mode-hook
+   (lambda ()
+     (add-hook 'after-save-hook #'ttuegel/after-save-hpack))
+   )
+  )
 
 
 ;;; Language Server
 
-(use-package lsp-mode :commands lsp)
-(use-package lsp-ui :hook (lsp-mode . lsp-ui-mode))
+(use-package lsp-mode
+  :commands lsp
+  :config
+  (setq lsp-prefer-flymake t)
+  )
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable nil
+        lsp-ui-peek-enable nil
+        lsp-ui-sideline-enable nil
+        lsp-ui-imenu-enable nil
+        lsp-ui-flycheck-enable nil)
+  )
 
 (use-package company-lsp :commands company-lsp)
 
 (use-package lsp-java :hook (java-mode . lsp))
+
+(use-package lsp-haskell
+  :config
+  (setq lsp-haskell-process-path-hie "ghcide")
+  (setq lsp-haskell-process-args-hie '())
+  )
 
 ;; (use-package lsp-haskell :demand :hook (haskell-mode . lsp))
 
@@ -637,25 +668,32 @@ Otherwise return nil."
        )
   )
 
-(use-package dante
-  :after haskell-mode
-  :commands 'dante-mode
-  :init
-  (add-hook 'haskell-mode-hook #'dante-mode)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (put 'dante-repl-command-line 'safe-local-variable #'ttuegel/string-listp)
-  )
+;; (use-package dante
+;;   :after haskell-mode
+;;   :commands 'dante-mode
+;;   :init
+;;   (add-hook 'haskell-mode-hook #'dante-mode)
+;;   (setq flycheck-check-syntax-automatically '(save mode-enabled))
+;;   (put 'dante-repl-command-line 'safe-local-variable #'ttuegel/string-listp)
+;;   )
 
 (use-package haskell-mode
   :config
+  (require 'lsp-haskell)
+
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
+
+  ;; (add-to-list 'flycheck-disabled-checkers 'haskell-hlint)
+  ;; (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
+  ;; (add-to-list 'flycheck-disabled-checkers 'haskell-ghc)
 
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'display-line-numbers-mode)
+  (add-hook 'haskell-mode-hook #'lsp)
   ;; (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
-  (add-hook 'haskell-mode-hook #'flycheck-mode)
+  ;; (add-hook 'haskell-mode-hook #'flycheck-mode)
   ;; (add-hook 'haskell-interactive-mode-hook #'company-mode)
   ;; (add-hook 'haskell-mode-hook #'hhp-init)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook)
