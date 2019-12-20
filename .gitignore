@@ -14,3 +14,4 @@ projectile-bookmarks.eld
 /workspace
 .#bookmarks
 /transient/
+.lsp-session*
