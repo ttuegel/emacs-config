@@ -357,9 +357,13 @@ only whitespace."
 
 ;; Disable overline: it changes the mode-line's height
 ;; Draw a dark box, even on inactive windows.
-(custom-theme-set-faces 'user
-  '(mode-line ((t . (:box (:line-width 1 :color "#687b83" :style unspecified) :overline nil))) t)
-  '(mode-line-inactive ((t . (:box (:line-width 1 :color "#687b83" :style unspecified) :overline nil))) t)
+(let
+    ((spec (list :box '(:line-width 1 :color "#687b83" :style unspecified)
+                 :overline nil)))
+  (custom-theme-set-faces 'user
+    `(mode-line          ((t . ,spec)) t)
+    `(mode-line-inactive ((t . ,spec)) t)
+    )
   )
 
 (add-to-list 'load-path (relative "./config"))
