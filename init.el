@@ -366,8 +366,6 @@ only whitespace."
     )
   )
 
-(add-to-list 'load-path (relative "./config"))
-
 ;;; rainbow-delimiters
 
 (require 'rainbow-delimiters)
