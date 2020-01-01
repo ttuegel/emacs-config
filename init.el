@@ -182,8 +182,6 @@ only whitespace."
 (spaceline-toggle-buffer-size-off)
 (spaceline-toggle-buffer-encoding-abbrev-off)
 
-(add-to-list 'load-path (relative "./init"))
-
 ;;; evil
 
 (setq evil-toggle-key "C-,")
