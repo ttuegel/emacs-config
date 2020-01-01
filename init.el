@@ -355,11 +355,11 @@ only whitespace."
   (load-theme 'solarized-light)
   )
 
-;; mode-line: disable overline: it changes the mode-line's height
-;; mode-line-inactive: draw a dark box, even on inactive windows.
+;; Disable overline: it changes the mode-line's height
+;; Draw a dark box, even on inactive windows.
 (custom-theme-set-faces 'user
-  '(mode-line ((t . (:overline nil))) t)
-  '(mode-line-inactive ((t . (:box t))) t)
+  '(mode-line ((t . (:box (:line-width 1 :color "#687b83" :style unspecified) :overline nil))) t)
+  '(mode-line-inactive ((t . (:box (:line-width 1 :color "#687b83" :style unspecified) :overline nil))) t)
   )
 
 (add-to-list 'load-path (relative "./config"))
