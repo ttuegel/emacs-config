@@ -355,9 +355,11 @@ only whitespace."
   (load-theme 'solarized-light)
   )
 
-;; Draw a dark box around the mode-line, even on inactive windows.
+;; mode-line: disable overline: it changes the mode-line's height
+;; mode-line-inactive: draw a dark box, even on inactive windows.
 (custom-theme-set-faces 'user
-  '(mode-line-inactive ((t . (:box t :overline nil :underline nil))) t)
+  '(mode-line ((t . (:overline nil))) t)
+  '(mode-line-inactive ((t . (:box t))) t)
   )
 
 (add-to-list 'load-path (relative "./config"))
@@ -382,6 +384,7 @@ only whitespace."
 (diminish 'ivy-mode)
 
 (require 'counsel)
+(counsel-mode)
 (diminish 'counsel-mode)
 
 (use-package swiper :commands swiper)
