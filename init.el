@@ -146,10 +146,11 @@ only whitespace."
     (back-to-indentation)))
 
 ;; Local variables
-(setq safe-local-variable-values
-      '((haskell-stylish-on-save . t)
-        (haskell-indentation-where-pre-offset . 2)
-        (haskell-indentation-where-post-offset . 2)))
+
+(put 'dante-repl-command-line 'safe-local-variable #'ttuegel/string-listp)
+(put 'haskell-indentation-where-post-offset 'safe-local-variable #'numberp)
+(put 'haskell-indentation-where-pre-offset 'safe-local-variable #'numberp)
+(put 'haskell-stylish-on-save 'safe-local-variable #'booleanp)
 
 ;;; whitespace
 
@@ -682,7 +683,6 @@ Otherwise return nil."
 ;;   :init
 ;;   (add-hook 'haskell-mode-hook #'dante-mode)
 ;;   (setq flycheck-check-syntax-automatically '(save mode-enabled))
-;;   (put 'dante-repl-command-line 'safe-local-variable #'ttuegel/string-listp)
 ;;   )
 
 (use-package haskell-mode
@@ -692,26 +692,13 @@ Otherwise return nil."
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
 
-  ;; (add-to-list 'flycheck-disabled-checkers 'haskell-hlint)
-  ;; (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
-  ;; (add-to-list 'flycheck-disabled-checkers 'haskell-ghc)
-
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'display-line-numbers-mode)
-  (add-hook 'haskell-mode-hook #'lsp)
-  ;; (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
-  ;; (add-hook 'haskell-mode-hook #'flycheck-mode)
-  ;; (add-hook 'haskell-interactive-mode-hook #'company-mode)
-  ;; (add-hook 'haskell-mode-hook #'hhp-init)
   (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook)
   (add-hook 'haskell-mode-hook
             (lambda ()
               (setq-local whitespace-style '(face lines trailing tabs))))
-
-  (put 'haskell-indentation-where-post-offset 'safe-local-variable #'numberp)
-  (put 'haskell-indentation-where-pre-offset 'safe-local-variable #'numberp)
-  (put 'haskell-stylish-on-save 'safe-local-variable #'booleanp)
   )
 
 
