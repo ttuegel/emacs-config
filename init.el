@@ -608,8 +608,11 @@ only whitespace."
 
 (use-package lsp-mode
   :commands lsp
+  :hook (haskell-mode . lsp)
   :config
-  (setq lsp-prefer-flymake t)
+  (diminish 'lsp-mode)
+  (setq lsp-auto-configure t)
+  (setq lsp-prefer-flymake nil)
   )
 
 (use-package lsp-ui
@@ -622,7 +625,13 @@ only whitespace."
         lsp-ui-flycheck-enable nil)
   )
 
-(use-package company-lsp :commands company-lsp)
+(use-package company-lsp
+  :commands company-lsp
+  :init
+  (with-eval-after-load "company"
+    (add-to-list 'company-backends #'company-lsp)
+    )
+  )
 
 (use-package lsp-java :hook (java-mode . lsp))
 
