@@ -454,8 +454,7 @@ only whitespace."
   :config
   (setq flycheck-clang-language-standard "c++17"))
 
-;; (global-flycheck-mode t)
-
+(add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
 
 ;;; yasnippet
 
