@@ -619,11 +619,11 @@ only whitespace."
 (use-package lsp-ui
   :commands lsp-ui-mode
   :config
-  (setq lsp-ui-doc-enable nil
-        lsp-ui-peek-enable nil
-        lsp-ui-sideline-enable nil
-        lsp-ui-imenu-enable nil
-        lsp-ui-flycheck-enable nil)
+  (setq lsp-ui-doc-enable nil)
+  (setq lsp-ui-peek-enable nil)
+  (setq lsp-ui-sideline-enable nil)
+  (setq lsp-ui-imenu-enable t)
+  (setq lsp-ui-flycheck-enable t)
   )
 
 (use-package company-lsp
