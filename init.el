@@ -399,13 +399,17 @@ only whitespace."
 (use-package projectile
   :diminish projectile-mode
   :commands projectile-mode
+  :init
+  (run-with-idle-timer 0.5 nil (lambda () (projectile-mode)))
   :config
   (setq projectile-completion-system 'ivy)
   (bind-key "C-c p" #'projectile-command-map projectile-mode-map)
   )
 
-(run-with-idle-timer 0.5 nil (lambda () (projectile-mode)))
-
+(use-package counsel-projectile
+  :init
+  (add-hook 'projectile-mode #'counsel-projectile-mode)
+  )
 
 ;;; Visual-Fill-Column
 
