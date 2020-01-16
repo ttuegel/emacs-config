@@ -426,7 +426,8 @@ only whitespace."
 ;;; Visual-Fill-Column
 
 (use-package visual-fill-column
-  :commands (turn-on-visual-fill-column-mode))
+  :commands (turn-on-visual-fill-column-mode)
+  )
 
 
 ;;; Avy
@@ -1058,10 +1059,12 @@ This is useful, e.g., for use with function `visual-line-mode'."
 
 
 ;;; Scala
+
 (use-package scala-mode)
 
 
 ;;; Direnv
+
 (use-package direnv)
 
 
