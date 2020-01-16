@@ -399,8 +399,11 @@ only whitespace."
   (diminish 'counsel-mode)
   )
 
-(use-package swiper :commands swiper)
-(bind-key "C-s" #'swiper)
+(use-package swiper
+  :commands swiper
+  :init
+  (bind-key "C-s" #'swiper)
+  )
 
 
 ;;; Projectile
