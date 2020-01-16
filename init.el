@@ -391,9 +391,13 @@ only whitespace."
       )
   )
 
-(require 'counsel)
-(counsel-mode)
-(diminish 'counsel-mode)
+(use-package counsel
+  :commands counsel-mode
+  :init
+  (counsel-mode)
+  :config
+  (diminish 'counsel-mode)
+  )
 
 (use-package swiper :commands swiper)
 (bind-key "C-s" #'swiper)
