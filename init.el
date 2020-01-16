@@ -375,16 +375,21 @@ only whitespace."
 
 ;;; Ivy
 
-(require 'ivy)
-(bind-keys
-    :map ivy-minibuffer-map
-    ("C-h" . next-line)
-    ("C-t" . previous-line)
-    ("C-d" . backward-char)
-    ("C-n" . forward-char)
-    ("C-f" . ivy-partial-or-done))
-(ivy-mode)
-(diminish 'ivy-mode)
+(use-package ivy
+  :commands ivy-mode
+  :init
+  (ivy-mode)
+  :config
+  (diminish 'ivy-mode)
+  (bind-keys
+      :map ivy-minibuffer-map
+      ("C-h" . next-line)
+      ("C-t" . previous-line)
+      ("C-d" . backward-char)
+      ("C-n" . forward-char)
+      ("C-f" . ivy-partial-or-done)
+      )
+  )
 
 (require 'counsel)
 (counsel-mode)
