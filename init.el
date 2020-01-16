@@ -1068,5 +1068,10 @@ This is useful, e.g., for use with function `visual-line-mode'."
 (use-package direnv)
 
 
+;;; imenu
+
+(bind-key "C-c i" #'imenu)
+
+
 (provide 'init)
 ;;; init.el ends here
