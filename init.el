@@ -659,7 +659,7 @@ only whitespace."
   (setq lsp-haskell-process-args-hie '())
   )
 
-;; (use-package lsp-haskell :demand :hook (haskell-mode . lsp))
+(use-package lsp-treemacs)
 
 ;;; Haskell
 
