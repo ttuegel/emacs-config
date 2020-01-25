@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: module
+# key: module
+# --
+{- |
+Copyright: (c) $1
+License  : $2
+
+ -}
+
+module $3 () where
