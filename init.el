@@ -631,7 +631,8 @@ only whitespace."
   (diminish 'lsp-mode)
   (setq lsp-auto-configure t)
   (setq lsp-prefer-flymake nil)
-  (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.stack-work.*$")
+  (add-to-list 'lsp-file-watch-ignored ".stack-work")
+  (add-to-list 'lsp-file-watch-ignored "dist-newstyle")
   )
 
 (use-package lsp-ui
