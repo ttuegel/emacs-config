@@ -953,13 +953,11 @@ Otherwise return nil."
 
 ;;; C
 
-(add-hook 'c-mode-common-hook #'c-guess)
 (add-hook 'c-mode-common-hook #'flycheck-mode)
 (add-hook
  'c-mode-common-hook
  (lambda ()
-   (setq-local whitespace-style '(lines face trailing))
-   (setq-local indent-tabs-mode t)))
+   (setq-local whitespace-style '(lines face trailing))))
 
 
 ;; Makefile
