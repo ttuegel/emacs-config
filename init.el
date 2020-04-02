@@ -294,6 +294,11 @@ only whitespace."
  ("R" . (lambda () (interactive) (revert-buffer nil t)))
  ("r" . rename-current-buffer-file))
 
+;;; xref
+
+;; evil-mode clobbers the default xref-find-apropos binding
+(unbind-key "M-." evil-normal-state-map)
+
 ;;; undo-tree
 
 (require 'undo-tree)
