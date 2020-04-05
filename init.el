@@ -145,6 +145,12 @@ only whitespace."
     (forward-line 1)
     (back-to-indentation)))
 
+;; Performance
+
+(setq gc-cons-threshold (* 100 1024 1024))
+
+(setq read-process-output-max (* 1024 1024))
+
 ;; Local variables
 
 (put 'dante-repl-command-line 'safe-local-variable #'ttuegel/string-listp)
