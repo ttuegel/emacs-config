@@ -465,6 +465,8 @@ only whitespace."
   :init
   (add-hook 'emacs-lisp-mode-hook #'company-mode)
   :config
+  (setq company-minimum-prefix-length 1)
+  (setq company-idle-delay 0.0)
   (setf company-active-map (make-sparse-keymap))
   (bind-keys
    :map company-active-map
@@ -654,14 +656,6 @@ only whitespace."
   (setq lsp-ui-sideline-enable nil)
   (setq lsp-ui-imenu-enable t)
   (setq lsp-ui-flycheck-enable t)
-  )
-
-(use-package company-lsp
-  :commands company-lsp
-  :init
-  (with-eval-after-load "company"
-    (add-to-list 'company-backends #'company-lsp)
-    )
   )
 
 (use-package lsp-java :hook (java-mode . lsp))
