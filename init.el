@@ -639,13 +639,19 @@ only whitespace."
 
 (use-package lsp-mode
   :commands lsp
-  :hook (haskell-mode . lsp)
+  :hook
+  ((haskell-mode . lsp)
+   (lsp-mode . lsp-enable-which-key-integration)
+   )
   :config
   (diminish 'lsp-mode)
   (setq lsp-auto-configure t)
   (setq lsp-prefer-flymake nil)
+  (setq lsp-prefer-capf t)
   (add-to-list 'lsp-file-watch-ignored ".stack-work")
   (add-to-list 'lsp-file-watch-ignored "dist-newstyle")
+  (setq lsp-diagnostics-modeline-scope :project)
+  (add-hook 'lsp-managed-mode-hook 'lsp-diagnostics-modeline-mode)
   )
 
 (use-package lsp-ui
