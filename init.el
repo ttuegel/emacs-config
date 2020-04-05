@@ -666,7 +666,9 @@ only whitespace."
   (setq lsp-haskell-process-args-hie '())
   )
 
-(use-package lsp-treemacs)
+(use-package lsp-treemacs
+  :commands lsp-treemacs-errors-list
+  )
 
 ;;; Haskell
 
