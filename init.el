@@ -192,7 +192,12 @@ only whitespace."
 ;;; evil
 
 (setq evil-toggle-key "C-,")
-(require 'evil)
+(use-package evil :demand)
+
+;; Allow the cursor to move one character beyond the end of the line,
+;; unlike Vim but as in Emacs. Prevents the cursor from creeping backwards
+;; when pasting under evil-execute-in-normal-state.
+(setq evil-move-beyond-eol t)
 
 (setq-default evil-shift-width tab-width)
 
