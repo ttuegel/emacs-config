@@ -645,7 +645,8 @@ only whitespace."
 (use-package lsp-mode
   :commands lsp
   :hook
-  ((lsp-mode . lsp-enable-which-key-integration)
+  ((haskell-mode . lsp)
+   (lsp-mode . lsp-enable-which-key-integration)
    )
   :config
   (diminish 'lsp-mode)
