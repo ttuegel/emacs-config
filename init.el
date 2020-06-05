@@ -525,6 +525,11 @@ only whitespace."
 
 (use-package tex
   :commands TeX-PDF-mode
+  :defines
+  TeX-save-query
+  LaTeX-item-indent
+  LaTeX-indent-level
+  LaTeX-label-alist
   :config
   ;; Recognize style files multi-file documents
   (setq TeX-auto-save t)
@@ -574,7 +579,8 @@ only whitespace."
    '(((output-dvi has-no-display-manager) "dvi2tty")
      (output-dvi "xdvi")
      (output-pdf "Okular")
-     (output-html "xdg-open"))))
+     (output-html "xdg-open")))
+  )
 
 (use-package font-latex
   :commands font-latex-setup
