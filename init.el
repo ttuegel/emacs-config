@@ -30,11 +30,6 @@
 
 ;;; Definitions
 
-(defun relative (file-name)
-  (if load-file-name
-      (expand-file-name file-name (file-name-directory load-file-name))
-    (expand-file-name file-name)))
-
 (defun ttuegel/call-process (outfile program &rest args)
   (let ((out (if outfile `((:file ,outfile) nil) 0)))
     (apply #'call-process program nil out nil args)))
