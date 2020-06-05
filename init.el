@@ -193,7 +193,7 @@ only whitespace."
 
 ;;; evil
 
-(setq evil-toggle-key "C-,")
+(defvar evil-toggle-key "C-,")
 (use-package evil :demand)
 
 ;; Allow the cursor to move one character beyond the end of the line,
