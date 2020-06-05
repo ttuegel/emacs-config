@@ -695,7 +695,7 @@ only whitespace."
 ;; (intero-global-mode 1)
 
 (defun turn-off-eldoc-mode ()
-  "Disable `eldoc-mode' in the current buffer."
+  "Disable function `eldoc-mode' in the current buffer."
   (eldoc-mode -1))
 
 ;; (use-package hhp
