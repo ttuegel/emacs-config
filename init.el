@@ -680,6 +680,10 @@ only whitespace."
   :commands lsp-treemacs-errors-list
   )
 
+(use-package lsp-ivy
+  :commands lsp-ivy-workspace-symbol
+  )
+
 ;;; Haskell
 
 (defun ttuegel/after-save-cabal2nix ()
