@@ -294,8 +294,9 @@ only whitespace."
 
 ;; Buffers
 
+(defvar buffer-map)
 (define-prefix-command 'buffer-map)
-(bind-key "b" buffer-map ctl-x-map)
+(bind-key "b" #'buffer-map ctl-x-map)
 (bind-keys
  :map buffer-map
  ("b" . switch-to-buffer)
