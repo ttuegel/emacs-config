@@ -686,13 +686,6 @@ only whitespace."
 
 ;;; Haskell
 
-(defun ttuegel/after-save-cabal2nix ()
-  (when (string-match-p "\\.cabal" buffer-file-name)
-    (ttuegel/cabal2nix)))
-
-(defun ttuegel/haskell-cabal-mode-hook ()
-  (add-hook 'after-save-hook #'ttuegel/after-save-cabal2nix))
-
 ;; (use-package intero
 ;;   :commands intero-global-mode
 ;;   :config
@@ -735,7 +728,6 @@ Otherwise return nil."
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'display-line-numbers-mode)
-  (add-hook 'haskell-cabal-mode-hook #'ttuegel/haskell-cabal-mode-hook)
   (add-hook 'haskell-mode-hook
             (lambda ()
               (setq-local whitespace-style '(face lines trailing tabs))))
