@@ -666,6 +666,9 @@ only whitespace."
   (add-to-list 'lsp-file-watch-ignored "dist-newstyle")
   (setq lsp-diagnostics-modeline-scope :project)
   (add-hook 'lsp-managed-mode-hook 'lsp-diagnostics-modeline-mode)
+  ;; Disable live (every keystroke) reporting.
+  ;; Live reporting is much too slow.
+  (setq lsp-flycheck-live-reporting nil)
   )
 
 (use-package lsp-ui
