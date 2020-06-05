@@ -813,6 +813,8 @@ Otherwise return nil."
 
 
 (use-package org-agenda
+  :defines
+  org-agenda-ndays
   :init
   (bind-key "a" #'org-agenda org-prefix-map)
   :config
@@ -839,7 +841,8 @@ Otherwise return nil."
   (bind-key "C-t" #'org-agenda-previous-line org-agenda-mode-map)
 
   (bind-key "M-h" #'org-agenda-drag-line-forward org-agenda-mode-map)
-  (bind-key "M-t" #'org-agenda-drag-line-backward org-agenda-mode-map))
+  (bind-key "M-t" #'org-agenda-drag-line-backward org-agenda-mode-map)
+  )
 
 
 (use-package org-capture
