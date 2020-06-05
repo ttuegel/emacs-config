@@ -46,6 +46,7 @@
           (ttuegel/call-process nix-file-name cabal2nix "./."))))))
 
 (defun ttuegel/hpack ()
+  "Run hpack in the current directory."
   (let ((hpack (executable-find "hpack")))
     (when hpack (ttuegel/call-process nil hpack "--silent"))))
 
