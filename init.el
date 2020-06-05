@@ -909,7 +909,7 @@ Otherwise return nil."
 ;;; unfill-region
 
 (defun unfill-region (beg end)
-  "Join text paragraphs into a single logical line.
+  "Join text paragraphs between BEG and END into a single logical line.
 This is useful, e.g., for use with function `visual-line-mode'."
   (interactive "*r")
   (let ((fill-column (point-max)))
