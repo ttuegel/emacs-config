@@ -767,6 +767,7 @@ Otherwise return nil."
 
 ;;; Org
 
+(defvar org-prefix-map)
 (define-prefix-command 'org-prefix-map)
 (bind-key "o" #'org-prefix-map ctl-x-map)
 
