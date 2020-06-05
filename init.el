@@ -342,7 +342,7 @@ only whitespace."
 ;; Use system default monospace font in 12 pt height.
 
 (defun ttuegel/set-font (frame)
-  "Configure font on frame creation"
+  "Configure font when FRAME is created."
   (select-frame frame)
   (when (display-graphic-p)
     (set-frame-font "Monospace-12")))
