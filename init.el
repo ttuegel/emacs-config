@@ -666,7 +666,6 @@ only whitespace."
   (setq lsp-ui-peek-enable nil)
   (setq lsp-ui-sideline-enable nil)
   (setq lsp-ui-imenu-enable t)
-  (setq lsp-ui-flycheck-enable t)
   )
 
 (use-package lsp-java :hook (java-mode . lsp))
