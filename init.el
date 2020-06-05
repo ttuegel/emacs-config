@@ -770,6 +770,9 @@ Otherwise return nil."
 (bind-key "o" #'org-prefix-map ctl-x-map)
 
 (use-package org
+  :defines
+  org-clock-clocktable-default-properties
+  org-clock-persist
   :config
   (require 'org-agenda)
   (require 'org-capture)
@@ -805,7 +808,8 @@ Otherwise return nil."
 
   ;; Save clock history across Emacs sessions
   (setq org-clock-persist 'history)
-  (org-clock-persistence-insinuate))
+  (org-clock-persistence-insinuate)
+  )
 
 
 (use-package org-agenda
