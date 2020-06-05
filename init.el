@@ -31,6 +31,7 @@
 ;;; Definitions
 
 (defun ttuegel/call-process (outfile program &rest args)
+  "Run PROGRAM with ARGS and save output in OUTFILE."
   (let ((out (if outfile `((:file ,outfile) nil) 0)))
     (apply #'call-process program nil out nil args)))
 
