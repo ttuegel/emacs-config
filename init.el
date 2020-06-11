@@ -707,6 +707,10 @@ only whitespace."
    )
   :config
   (add-to-list 'eglot-server-programs '(haskell-mode . ("ghcide" "--lsp")))
+  ;; Disable eldoc-mode in eglot.
+  ;; eldoc-mode generates hover events after every cursor movement, which is
+  ;; quite slow.
+  (add-hook 'eglot-managed-mode-hook #'turn-off-eldoc-mode)
   )
 
 ;;; Haskell
@@ -753,7 +757,6 @@ Otherwise return nil."
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'display-line-numbers-mode)
-  (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
   (add-hook 'haskell-mode-hook
             (lambda ()
               (setq-local whitespace-style '(face lines trailing tabs))))
