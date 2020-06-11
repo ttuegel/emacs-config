@@ -190,6 +190,7 @@ only whitespace."
 (spaceline-emacs-theme)
 (spaceline-toggle-buffer-size-off)
 (spaceline-toggle-buffer-encoding-abbrev-off)
+(spaceline-toggle-version-control-off)
 
 ;;; evil
 
