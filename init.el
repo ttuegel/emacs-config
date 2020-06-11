@@ -654,8 +654,7 @@ only whitespace."
 (use-package lsp-mode
   :commands lsp
   :hook
-  ((haskell-mode . lsp)
-   (lsp-mode . lsp-enable-which-key-integration)
+  ((lsp-mode . lsp-enable-which-key-integration)
    )
   :config
   (diminish 'lsp-mode)
@@ -698,6 +697,16 @@ only whitespace."
 
 (use-package lsp-ivy
   :commands lsp-ivy-workspace-symbol
+  )
+
+;;; eglot
+
+(use-package eglot
+  :hook
+  ((haskell-mode . eglot-ensure)
+   )
+  :config
+  (add-to-list 'eglot-server-programs '(haskell-mode . ("ghcide" "--lsp")))
   )
 
 ;;; Haskell
@@ -744,6 +753,7 @@ Otherwise return nil."
   (add-hook 'haskell-mode-hook #'company-mode)
   (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'haskell-mode-hook #'display-line-numbers-mode)
+  (add-hook 'haskell-mode-hook #'turn-off-eldoc-mode)
   (add-hook 'haskell-mode-hook
             (lambda ()
               (setq-local whitespace-style '(face lines trailing tabs))))
