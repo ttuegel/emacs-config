@@ -474,8 +474,10 @@ only whitespace."
   :init
   (add-hook 'emacs-lisp-mode-hook #'company-mode)
   :config
+  (bind-keys :map company-mode-map ("C-f" . company-complete))
   (setq company-minimum-prefix-length 1)
-  (setq company-idle-delay 0.0)
+  ;; Disable idle completion. The idle timer is rather slow.
+  (setq company-idle-delay nil)
   (setf company-active-map (make-sparse-keymap))
   (bind-keys
    :map company-active-map
@@ -483,8 +485,8 @@ only whitespace."
    ("C-t" . company-select-previous)
    ("C-f" . company-complete-selection)
    ("M-f" . company-complete-common)
-   ("C-g" . company-abort)))
-
+   ("C-g" . company-abort))
+  )
 
 
 ;;; flycheck
@@ -495,6 +497,7 @@ only whitespace."
   (setq flycheck-clang-language-standard "c++17"))
 
 (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
+
 
 ;;; yasnippet
 
