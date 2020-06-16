@@ -717,6 +717,7 @@ only whitespace."
   :hook
   ((haskell-mode . eglot-ensure)
    )
+  :defines eglot-server-programs
   :config
   (add-to-list 'eglot-server-programs '(haskell-mode . ("ghcide" "--lsp")))
   ;; Disable eldoc-mode in eglot.
