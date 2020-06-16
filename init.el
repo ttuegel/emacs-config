@@ -667,6 +667,7 @@ only whitespace."
   :commands lsp
   :hook
   ((lsp-mode . lsp-enable-which-key-integration)
+   (haskell-mode . lsp)
    )
   :config
   (diminish 'lsp-mode)
@@ -714,9 +715,6 @@ only whitespace."
 ;;; eglot
 
 (use-package eglot
-  :hook
-  ((haskell-mode . eglot-ensure)
-   )
   :defines eglot-server-programs
   :config
   (add-to-list 'eglot-server-programs '(haskell-mode . ("ghcide" "--lsp")))
