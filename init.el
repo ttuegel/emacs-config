@@ -689,6 +689,10 @@ only whitespace."
   ;; Disable the modeline spinner because it is slow.
   (defun lsp--spinner-start ())
   (defun lsp--spinner-stop ())
+
+  ;; Disable hover info in eldoc because it is slow.
+  ;; TODO: Get hover info asynchronously?
+  (setq lsp-eldoc-enable-hover nil)
   )
 
 (use-package lsp-ui
