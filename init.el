@@ -676,8 +676,6 @@ only whitespace."
   (setq lsp-prefer-capf t)
   (add-to-list 'lsp-file-watch-ignored ".stack-work")
   (add-to-list 'lsp-file-watch-ignored "dist-newstyle")
-  (setq lsp-diagnostics-modeline-scope :project)
-  (add-hook 'lsp-managed-mode-hook 'lsp-diagnostics-modeline-mode)
 
   ;; Disable live (every keystroke) reporting because it is slow.
   (setq lsp-flycheck-live-reporting nil)
