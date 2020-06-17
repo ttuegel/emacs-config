@@ -674,8 +674,14 @@ only whitespace."
   (setq lsp-auto-configure t)
   (setq lsp-diagnostic-package :flycheck)
   (setq lsp-prefer-capf t)
+
+  ;; Excess file watches
   (add-to-list 'lsp-file-watch-ignored ".stack-work")
   (add-to-list 'lsp-file-watch-ignored "dist-newstyle")
+  (add-to-list 'lsp-file-watch-ignored "^/nix")
+  (add-to-list 'lsp-file-watch-ignored "/\\.build")
+  (add-to-list 'lsp-file-watch-ignored "/\\.kprove")
+  (add-to-list 'lsp-file-watch-ignored "/\\.krun")
 
   ;; Disable live (every keystroke) reporting because it is slow.
   (setq lsp-flycheck-live-reporting nil)
