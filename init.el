@@ -686,10 +686,6 @@ only whitespace."
   ;; Disable live (every keystroke) reporting because it is slow.
   (setq lsp-flycheck-live-reporting nil)
 
-  ;; Disable the modeline spinner because it is slow.
-  (defun lsp--spinner-start ())
-  (defun lsp--spinner-stop ())
-
   ;; Disable hover info in eldoc because it is slow.
   ;; TODO: Get hover info asynchronously?
   (setq lsp-eldoc-enable-hover nil)
@@ -1037,6 +1033,15 @@ This is useful, e.g., for use with function `visual-line-mode'."
 ;;; imenu
 
 (bind-key "C-c i" #'imenu)
+
+
+;;; spinner
+
+;; Disable the spinner.
+(with-eval-after-load "spinner"
+  (defun spinner-start (&optional type-or-object fps delay) nil)
+  (defun spinner-stop (&optional spinner) nil)
+  )
 
 
 (provide 'init)
