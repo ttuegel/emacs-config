@@ -62,14 +62,10 @@ let
 
     # Haskell
     haskell-mode
-    flycheck-haskell
-    company-ghci  # provide completions from inferior ghci
     dhall-mode
-    hindent
-    intero
-    dante
+    lsp-haskell
 
-    lsp-mode lsp-ui lsp-haskell lsp-ivy lsp-java lsp-treemacs
+    lsp-mode lsp-ui lsp-ivy lsp-java lsp-treemacs
     eglot
     yasnippet
 
