@@ -17,3 +17,4 @@ projectile-bookmarks.eld
 .lsp-session*
 /.cache/
 flycheck_*
+/result*
