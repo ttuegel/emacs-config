@@ -58,7 +58,6 @@ let
     flycheck
 
     markdown-mode
-    pkgs.ledger
     yaml-mode
 
     # Haskell
