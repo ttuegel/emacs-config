@@ -86,7 +86,6 @@ let
 
     editorconfig
     fish-mode
-    w3m
 
     groovy-mode
     scala-mode
