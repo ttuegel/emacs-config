@@ -930,19 +930,6 @@ Otherwise return nil."
    (setq-local whitespace-style '(lines face trailing))))
 
 
-;;; Maxima
-
-(use-package maxima
-  :mode ("\\.mac\\'" . maxima-mode)
-  :config
-  (evil-set-initial-state 'inferior-maxima-mode 'emacs))
-
-
-(use-package imaxima
-  :config
-  (setq imaxima-equation-color "#657b83"))
-
-
 ;;; unfill-region
 
 (defun unfill-region (beg end)
