@@ -88,9 +88,6 @@ let
     fish-mode
     w3m
 
-    # Ledger
-    ledger-mode flycheck-ledger evil-ledger
-
     groovy-mode
     scala-mode
   ]);
