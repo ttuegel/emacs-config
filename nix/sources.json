@@ -1,16 +1,27 @@
 {
+    "emacs": {
+        "branch": "master",
+        "description": "Mirror of GNU Emacs",
+        "homepage": "http://www.gnu.org/software/emacs/",
+        "owner": "emacs-mirror",
+        "repo": "emacs",
+        "rev": "ae348f328643e55ea2d2e8fd42ff034d08855cae",
+        "sha256": "0m1cm8ydim5hr7r3c0q0pjqlv8byhhhq76zjnb8w73jbb848vh3c",
+        "type": "tarball",
+        "url": "https://github.com/emacs-mirror/emacs/archive/ae348f328643e55ea2d2e8fd42ff034d08855cae.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "emacs-overlay": {
         "branch": "master",
         "description": "Bleeding edge emacs overlay [maintainer=@adisbladis] ",
         "homepage": "",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "65fe7cbfceaccbfd049281567938247fcfb27bae",
-        "sha256": "02kb4zqipan41r1pr910vmnfm5kz4abay7pkpr0anlljjpgb2215",
+        "rev": "115dfdc34f5918a222285754aa7d1ce86f449c01",
+        "sha256": "0rm84lz8w0mipl83ck5dvhi6ahyaj7765ffyc15gnrg92pjvzkwi",
         "type": "tarball",
-        "url": "https://github.com/nix-community/emacs-overlay/archive/65fe7cbfceaccbfd049281567938247fcfb27bae.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
-        "version": "115dfdc34f5918a222285754aa7d1ce86f449c01"
+        "url": "https://github.com/nix-community/emacs-overlay/archive/115dfdc34f5918a222285754aa7d1ce86f449c01.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
         "branch": "master",

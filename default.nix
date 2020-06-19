@@ -11,8 +11,14 @@ let nixpkgs = import nixpkgs_.path { overlays = [ emacs-overlay ]; }; in
 
 let inherit (nixpkgs) pkgs; in
 
+let sourcesJSON = pkgs.lib.importJSON ./nix/sources.json; in
+
 let
-  inherit (pkgs) emacsPackagesFor emacsGit;
+  inherit (pkgs) emacsPackagesFor;
+  emacsGit = pkgs.emacsGit.overrideAttrs (old: {
+    name = "emacs-git-${sourcesJSON.emacs.rev}";
+    src = sources."emacs";
+  });
   emacsPackages = emacsPackagesFor emacsGit;
   emacs = emacsPackages.emacsWithPackages (epkgs: with epkgs; [
     use-package
