@@ -81,9 +81,6 @@ let
     # Nix
     nix-mode nix-buffer
 
-    # Maxima
-    pkgs.maxima
-
     # Idris
     idris-mode
 
