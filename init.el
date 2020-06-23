@@ -683,9 +683,6 @@ only whitespace."
   (add-to-list 'lsp-file-watch-ignored "/\\.kprove")
   (add-to-list 'lsp-file-watch-ignored "/\\.krun")
 
-  ;; Disable live (every keystroke) reporting because it is slow.
-  (setq lsp-flycheck-live-reporting nil)
-
   ;; Disable hover info in eldoc because it is slow.
   ;; TODO: Get hover info asynchronously?
   (setq lsp-eldoc-enable-hover nil)
