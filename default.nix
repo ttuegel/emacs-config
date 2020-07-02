@@ -16,7 +16,7 @@ let sourcesJSON = pkgs.lib.importJSON ./nix/sources.json; in
 let
   inherit (pkgs) emacsPackagesFor;
   emacsGit = pkgs.emacsGit.overrideAttrs (old: {
-    name = "emacs-git-${sourcesJSON.emacs.rev}";
+    name = "emacs-28.0.50-${builtins.substring 0 7 sourcesJSON.emacs.rev}";
     src = sources."emacs";
   });
   emacsPackages = emacsPackagesFor emacsGit;
