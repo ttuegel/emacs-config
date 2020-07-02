@@ -1,16 +1,4 @@
 {
-    "emacs": {
-        "branch": "master",
-        "description": "Mirror of GNU Emacs",
-        "homepage": "http://www.gnu.org/software/emacs/",
-        "owner": "emacs-mirror",
-        "repo": "emacs",
-        "rev": "bc8089a3fa11161428c51439fd3b26fd6583345d",
-        "sha256": "1dh3hfwk48z7p9kj1iwy1ywq088qypfz5fxqmc35rdwpx7r4hbc4",
-        "type": "tarball",
-        "url": "https://github.com/emacs-mirror/emacs/archive/bc8089a3fa11161428c51439fd3b26fd6583345d.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "emacs-overlay": {
         "branch": "master",
         "description": "Bleeding edge emacs overlay [maintainer=@adisbladis] ",
