@@ -778,14 +778,6 @@ Otherwise return nil."
   )
 
 
-;; Completion
-(use-package company-ghci
-  :commands company-ghci
-  :init
-  (with-eval-after-load "company"
-    (add-to-list 'company-backends #'company-ghci)))
-
-
 ;;; Dhall
 
 (use-package dhall-mode
