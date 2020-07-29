@@ -675,13 +675,8 @@ only whitespace."
   (setq lsp-diagnostic-package :flycheck)
   (setq lsp-prefer-capf t)
 
-  ;; Excess file watches
-  (add-to-list 'lsp-file-watch-ignored ".stack-work")
-  (add-to-list 'lsp-file-watch-ignored "dist-newstyle")
-  (add-to-list 'lsp-file-watch-ignored "^/nix")
-  (add-to-list 'lsp-file-watch-ignored "/\\.build")
-  (add-to-list 'lsp-file-watch-ignored "/\\.kprove")
-  (add-to-list 'lsp-file-watch-ignored "/\\.krun")
+  ;; Disable file watchers
+  (setq lsp-enable-file-watchers nil)
 
   ;; Disable hover info in eldoc because it is slow.
   ;; TODO: Get hover info asynchronously?
@@ -773,14 +768,6 @@ Otherwise return nil."
             (lambda ()
               (setq-local whitespace-style '(face lines trailing tabs))))
   )
-
-
-;; Completion
-(use-package company-ghci
-  :commands company-ghci
-  :init
-  (with-eval-after-load "company"
-    (add-to-list 'company-backends #'company-ghci)))
 
 
 ;;; Dhall
