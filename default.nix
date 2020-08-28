@@ -18,11 +18,7 @@ let
 in
 
 let
-  inherit (pkgs) emacsPackagesFor;
-  emacsGit = pkgs.emacsGit.overrideAttrs (old: {
-    name = "emacs-28.0.50";
-    src = pkgs.fetchzip lock.emacs;
-  });
+  inherit (pkgs) emacsGit emacsPackagesFor;
   emacsPackages = emacsPackagesFor emacsGit;
   emacs = emacsPackages.emacsWithPackages (epkgs: with epkgs; [
     use-package
