@@ -696,8 +696,8 @@ only whitespace."
 
 (use-package lsp-haskell
   :config
-  (setq lsp-haskell-process-path-hie "ghcide")
-  (setq lsp-haskell-process-args-hie '())
+  (setq lsp-haskell-server-path "ghcide")
+  (setq lsp-haskell-server-args '())
   )
 
 (use-package lsp-treemacs
