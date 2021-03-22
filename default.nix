@@ -55,9 +55,9 @@ let
     magit
 
     # LaTeX
-    auctex
-    cdlatex
-    company-math
+    # auctex
+    # cdlatex
+    # company-math
 
     auto-compile
     direnv
@@ -67,13 +67,13 @@ let
     yaml-mode
 
     # Haskell
-    haskell-mode
-    dhall-mode
-    lsp-haskell
+    #haskell-mode
+    #dhall-mode
+    #lsp-haskell
 
-    lsp-mode lsp-ui lsp-ivy lsp-java lsp-treemacs
-    eglot
-    yasnippet
+    #lsp-mode lsp-ui lsp-ivy lsp-java lsp-treemacs
+    #eglot
+    #yasnippet
 
     # Org
     org
