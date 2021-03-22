@@ -19,3 +19,4 @@ projectile-bookmarks.eld
 flycheck_*
 /result*
 .dap-breakpoints
+projects
