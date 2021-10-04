@@ -160,13 +160,6 @@ only whitespace."
 (put 'haskell-indentation-where-pre-offset 'safe-local-variable #'numberp)
 (put 'haskell-stylish-on-save 'safe-local-variable #'booleanp)
 
-;;; whitespace
-
-(require 'whitespace)
-(setq-default whitespace-style '(face trailing tabs))
-(global-whitespace-mode t)
-(diminish 'global-whitespace-mode)
-
 ;;; electric-indent
 
 (electric-indent-mode -1)
