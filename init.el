@@ -930,13 +930,6 @@ This is useful, e.g., for use with function `visual-line-mode'."
   :demand)
 
 
-;;; secret
-
-(use-package secret
-  :load-path "~/el/secret-el"
-  :demand)
-
-
 ;;; Scheme
 
 (use-package scheme
