@@ -100,11 +100,12 @@
 ;; Stop `split-window-sensibly' from gerrymandering.
 (defun window-splittable-p (window &optional horizontal)
   "Return non-nil if `split-window-sensibly' may split WINDOW.  Optional argument HORIZONTAL nil or omitted means check whether `split-window-sensibly' may split WINDOW vertically.  HORIZONTAL non-nil means check whether WINDOW may be split horizontally."
-  (let ((width-px (window-size window t t))
-        (height-px (window-size window nil t)))
-    (if horizontal
-      (>= width-px height-px)
-    (< width-px height-px))))
+  (let* ((width-px (window-size window t t))
+         (height-px (window-size window nil t))
+         (is-wider (>= width-px height-px))
+         (width-cells (window-size window t))
+         (is-wide-enough (>= width-cells 168)))
+    (if horizontal (and is-wider is-wide-enough) (not is-wider))))
 
 ;; Make buffer names more unique
 (setq uniquify-buffer-name-style 'forward)
