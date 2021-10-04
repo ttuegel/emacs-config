@@ -97,10 +97,14 @@
 ;; Ask `y or n' rather than `yes or no'
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; It's 2020, every display is wide, and vertically-split windows
-;; are unreadable.
-(setq split-height-threshold nil)
-(setq split-width-threshold 144)
+;; Stop `split-window-sensibly' from gerrymandering.
+(defun window-splittable-p (window &optional horizontal)
+  "Return non-nil if `split-window-sensibly' may split WINDOW.  Optional argument HORIZONTAL nil or omitted means check whether `split-window-sensibly' may split WINDOW vertically.  HORIZONTAL non-nil means check whether WINDOW may be split horizontally."
+  (let ((width-px (window-size window t t))
+        (height-px (window-size window nil t)))
+    (if horizontal
+      (>= width-px height-px)
+    (< width-px height-px))))
 
 ;; Make buffer names more unique
 (setq uniquify-buffer-name-style 'forward)
