@@ -627,11 +627,6 @@ only whitespace."
   (add-hook 'nix-mode-hook #'rainbow-delimiters-mode))
 
 
-;;; Ledger
-
-(use-package ledger-mode)
-
-
 ;;; YAML
 
 (defun ttuegel/after-save-hpack ()
@@ -948,23 +943,6 @@ This is useful, e.g., for use with function `visual-line-mode'."
   :diminish
   :config
   (editorconfig-mode 1))
-
-
-;;; Ledger
-
-(use-package ledger-mode
-  :mode ("\\.journal\\'" . ledger-mode))
-
-(use-package evil-ledger
-  :after ledger-mode
-  :diminish
-  :init
-  (add-hook 'ledger-mode-hook #'evil-ledger-mode)
-  :config
-  (dolist (state '(normal motion visual))
-    (evil-define-key* state evil-ledger-mode-map
-      (kbd "gh") 'evil-ledger-forward-xact
-      (kbd "gt") 'evil-ledger-backward-xact)))
 
 
 ;;; Groovy (Jenkinsfile)
