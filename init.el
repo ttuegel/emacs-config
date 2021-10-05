@@ -694,21 +694,9 @@ only whitespace."
 
 ;;; Haskell
 
-;; (use-package intero
-;;   :commands intero-global-mode
-;;   :config
-;;   (setq intero-extra-ghc-options '("-Wall"))
-;;   (setq intero-blacklist '("~/ttuegel.github.io")))
-
-;; (intero-global-mode 1)
-
 (defun turn-off-eldoc-mode ()
   "Disable function `eldoc-mode' in the current buffer."
   (eldoc-mode -1))
-
-;; (use-package hhp
-;;   :load-path "~/hhp/elisp"
-;;   :commands hhp-init hhp-debug)
 
 (defun ttuegel/string-listp (object)
   "Return t if OBJECT is a list of strings.
@@ -717,14 +705,6 @@ Otherwise return nil."
        (seq-reduce (lambda (accum item) (and accum (stringp item))) object t)
        )
   )
-
-;; (use-package dante
-;;   :after haskell-mode
-;;   :commands 'dante-mode
-;;   :init
-;;   (add-hook 'haskell-mode-hook #'dante-mode)
-;;   (setq flycheck-check-syntax-automatically '(save mode-enabled))
-;;   )
 
 (use-package haskell-mode
   :config
