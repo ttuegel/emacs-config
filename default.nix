@@ -18,8 +18,8 @@ let
 in
 
 let
-  inherit (pkgs) emacsGit emacsPackagesFor;
-  emacsPackages = emacsPackagesFor emacsGit;
+  inherit (pkgs) emacsGcc emacsPackagesFor;
+  emacsPackages = emacsPackagesFor emacsGcc;
   emacs = emacsPackages.emacsWithPackages (epkgs: with epkgs; [
     use-package
 
