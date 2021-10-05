@@ -497,15 +497,6 @@ only whitespace."
 (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
 
 
-;;; flymake
-
-(use-package flymake
-  :defines flymake-run-in-place
-  :config
-  (setq flymake-run-in-place nil)
-  )
-
-
 ;;; yasnippet
 
 (use-package yasnippet
