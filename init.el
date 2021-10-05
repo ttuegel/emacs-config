@@ -692,18 +692,6 @@ only whitespace."
   :commands lsp-ivy-workspace-symbol
   )
 
-;;; eglot
-
-(use-package eglot
-  :defines eglot-server-programs
-  :config
-  (add-to-list 'eglot-server-programs '(haskell-mode . ("ghcide" "--lsp")))
-  ;; Disable eldoc-mode in eglot.
-  ;; eldoc-mode generates hover events after every cursor movement, which is
-  ;; quite slow.
-  (add-hook 'eglot-managed-mode-hook #'turn-off-eldoc-mode)
-  )
-
 ;;; Haskell
 
 ;; (use-package intero

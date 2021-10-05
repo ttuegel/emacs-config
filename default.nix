@@ -72,7 +72,6 @@ let
     lsp-haskell
 
     lsp-mode lsp-ui lsp-ivy lsp-java lsp-treemacs
-    #eglot
     yasnippet
 
     # Org
