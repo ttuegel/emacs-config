@@ -122,7 +122,7 @@
 
 ;; Tab stops
 (setq-default tab-always-indent t)
-(setq-default tab-stop-list (number-sequence 2 120 2))
+(setq-default tab-stop-list nil)
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
