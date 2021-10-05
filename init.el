@@ -91,7 +91,7 @@
 (setq inhibit-startup-screen t)
 
 ;; Don't update the X selection from the kill-ring.
-;; Like Vim, Evil keeps the X selection in the `"' register.
+;; Like Vim, Evil keeps the X selection in the `=' register.
 (setq select-enable-clipboard nil)
 
 ;; Ask `y or n' rather than `yes or no'
