@@ -418,6 +418,15 @@ only whitespace."
          ("M-s l" . consult-line)
          ("M-s L" . consult-line-multi)))
 
+(use-package marginalia
+  :config
+  (marginalia-mode))
+
+(use-package embark)
+
+(use-package embark-consult
+  :after (embark consult))
+
 
 ;;; Projectile
 
