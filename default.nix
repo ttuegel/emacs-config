@@ -26,8 +26,7 @@ let
     # Interface
     bind-key
     company
-    ivy counsel swiper
-    projectile counsel-projectile  # project management
+    projectile # project management
     ripgrep  # search
     visual-fill-column
     which-key  # display keybindings after incomplete command
@@ -37,6 +36,7 @@ let
     selectrum-prescient embark-consult
     company-prescient
     consult-flycheck consult-lsp
+    marginalia
 
     # Themes
     diminish
