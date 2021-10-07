@@ -298,7 +298,7 @@ only whitespace."
 (bind-key "b" #'buffer-map ctl-x-map)
 (bind-keys
  :map buffer-map
- ("b" . switch-to-buffer)
+ ("b" . consult-buffer)
  ("C-b" . buffer-menu)
  ("k" . kill-buffer)
  ("C-k" . kill-this-buffer)
@@ -405,6 +405,15 @@ only whitespace."
   (selectrum-prescient-mode +1)
   (prescient-persist-mode +1)
   )
+
+(use-package consult
+  :bind (("M-g g" . consult-goto-line)
+         ("C-s" . consult-isearch)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch)
+         ("M-s e" . consult-isearch)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)))
 
 
 ;;; Projectile
