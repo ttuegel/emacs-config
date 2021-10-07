@@ -33,6 +33,11 @@ let
     which-key  # display keybindings after incomplete command
     winum eyebrowse # window management
 
+    selectrum prescient consult embark
+    selectrum-prescient embark-consult
+    company-prescient
+    consult-flycheck consult-lsp
+
     # Themes
     diminish
     spaceline # modeline beautification

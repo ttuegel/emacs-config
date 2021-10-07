@@ -20,3 +20,4 @@ flycheck_*
 /result*
 .dap-breakpoints
 projects
+/var/

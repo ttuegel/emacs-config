@@ -391,36 +391,19 @@ only whitespace."
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'emacs-lisp-mode-hook #'display-line-numbers-mode)
 
-;;; Ivy
+;;; Selectrum
 
-(use-package ivy
-  :commands ivy-mode
+(use-package selectrum
   :init
-  (ivy-mode)
-  :config
-  (diminish 'ivy-mode)
-  (bind-keys
-      :map ivy-minibuffer-map
-      ("C-h" . next-line)
-      ("C-t" . previous-line)
-      ("C-d" . backward-char)
-      ("C-n" . forward-char)
-      ("C-f" . ivy-partial-or-done)
-      )
+  (selectrum-mode +1)
   )
 
-(use-package counsel
-  :commands counsel-mode
-  :init
-  (counsel-mode)
-  :config
-  (diminish 'counsel-mode)
-  )
+(use-package prescient)
 
-(use-package swiper
-  :commands swiper
+(use-package selectrum-prescient
   :init
-  (bind-key "C-s" #'swiper)
+  (selectrum-prescient-mode +1)
+  (prescient-persist-mode +1)
   )
 
 
@@ -432,13 +415,7 @@ only whitespace."
   :init
   (run-with-idle-timer 0.5 nil (lambda () (projectile-mode)))
   :config
-  (setq projectile-completion-system 'ivy)
   (bind-key "C-c p" #'projectile-command-map projectile-mode-map)
-  )
-
-(use-package counsel-projectile
-  :init
-  (add-hook 'projectile-mode #'counsel-projectile-mode)
   )
 
 ;;; Visual-Fill-Column
@@ -686,10 +663,6 @@ only whitespace."
 
 (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list
-  )
-
-(use-package lsp-ivy
-  :commands lsp-ivy-workspace-symbol
   )
 
 ;;; Haskell
