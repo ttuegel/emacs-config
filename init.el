@@ -676,11 +676,7 @@ only whitespace."
 
 (use-package lsp-java :hook (java-mode . lsp))
 
-(use-package lsp-haskell
-  :config
-  (setq lsp-haskell-server-path "ghcide")
-  (setq lsp-haskell-server-args '())
-  )
+(use-package lsp-haskell)
 
 (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list
