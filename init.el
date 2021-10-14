@@ -530,6 +530,10 @@ only whitespace."
   ;; Use personal fork for `call-process' instead of `shell-command'.
   :load-path "./git-auto-commit-mode")
 
+(use-package gitconfig-mode)
+
+(use-package gitignore-mode)
+
 
 ;;; TeX
 

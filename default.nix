@@ -56,9 +56,9 @@ let
     undo-tree
 
     # Git
-    git-auto-commit-mode
-    git-timemachine
     magit
+    git-timemachine
+    gitconfig-mode gitignore-mode
 
     # LaTeX
     auctex
