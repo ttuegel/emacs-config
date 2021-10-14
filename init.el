@@ -397,6 +397,7 @@ only whitespace."
 
 (use-package highlight-indentation
   :hook ((haskell-mode . highlight-indentation-mode))
+  :diminish highlight-indentation-mode
   )
 
 
