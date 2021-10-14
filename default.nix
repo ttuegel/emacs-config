@@ -99,6 +99,9 @@ let
 
     groovy-mode
     scala-mode
+    kotlin-mode
+    swift-mode
+    typescript-mode
   ]);
 
 in

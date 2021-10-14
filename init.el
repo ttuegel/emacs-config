@@ -920,6 +920,21 @@ This is useful, e.g., for use with function `visual-line-mode'."
 (use-package direnv)
 
 
+;;; Kotlin
+
+(use-package kotlin-mode)
+
+
+;;; Swift
+
+(use-package swift-mode)
+
+
+;;; Typescript
+
+(use-package typescript-mode)
+
+
 ;;; imenu
 
 (bind-key "C-c i" #'imenu)
