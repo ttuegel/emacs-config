@@ -26,6 +26,7 @@ let
     # Interface
     bind-key
     company
+    highlight-indentation
     projectile # project management
     ripgrep  # search
     visual-fill-column

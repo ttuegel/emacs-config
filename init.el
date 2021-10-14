@@ -385,11 +385,20 @@ only whitespace."
     )
   )
 
+
 ;;; rainbow-delimiters
 
 (require 'rainbow-delimiters)
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'emacs-lisp-mode-hook #'display-line-numbers-mode)
+
+
+;;; highlight-indentation
+
+(use-package highlight-indentation
+  :hook ((haskell-mode . highlight-indentation-mode))
+  )
+
 
 ;;; Selectrum
 
