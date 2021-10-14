@@ -395,6 +395,7 @@ only whitespace."
 
 (use-package selectrum
   :bind (:map selectrum-minibuffer-map
+              ("C-f" . selectrum-insert-current-candidate)
               ("C-h" . next-line-or-history-element)
               ("C-t" . previous-line-or-history-element))
   :init
