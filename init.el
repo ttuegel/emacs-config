@@ -666,8 +666,8 @@ only whitespace."
   ((lsp-mode . lsp-enable-which-key-integration)
    (haskell-mode . lsp)
    )
+  :diminish lsp-mode
   :config
-  (diminish 'lsp-mode)
   (setq lsp-auto-configure t)
   (setq lsp-diagnostic-package :flycheck)
   (setq lsp-prefer-capf t)
