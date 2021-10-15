@@ -678,6 +678,15 @@ only whitespace."
   ;; Disable hover info in eldoc because it is slow.
   ;; TODO: Get hover info asynchronously?
   (setq lsp-eldoc-enable-hover nil)
+
+  ;; Do not display breadcrumbs on the headerline.
+  (setq lsp-headerline-breadcrumb-enable nil)
+
+  ;; Do not display diagnostics on the modeline (duplicates Flycheck).
+  (setq lsp-modeline-diagnostics-enable nil)
+
+  ;; Do not display code actions on the modeline.
+  (setq lsp-modeline-code-actions-enable nil)
   )
 
 (use-package lsp-ui
