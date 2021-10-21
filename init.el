@@ -687,6 +687,12 @@ only whitespace."
 
   ;; Do not display code actions on the modeline.
   (setq lsp-modeline-code-actions-enable nil)
+
+  ;; Do not highlight references of the symbol at point.
+  (setq lsp-enable-symbol-highlighting nil)
+
+  ;; Do not use the modeline spinner.
+  (setq lsp-progress-via-spinner nil)
   )
 
 (use-package lsp-ui
