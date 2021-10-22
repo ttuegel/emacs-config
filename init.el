@@ -664,7 +664,6 @@ only whitespace."
   :commands lsp
   :hook
   ((lsp-mode . lsp-enable-which-key-integration)
-   (haskell-mode . lsp)
    )
   :diminish lsp-mode
   :config
@@ -728,8 +727,6 @@ Otherwise return nil."
 
 (use-package haskell-mode
   :config
-  (require 'lsp-haskell)
-
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
 
