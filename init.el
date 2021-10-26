@@ -964,7 +964,9 @@ This is useful, e.g., for use with function `visual-line-mode'."
 
 ;;; Typescript
 
-(use-package typescript-mode)
+(use-package typescript-mode
+  :mode ("\\.tsx\\'" . typescript-mode)
+  )
 
 
 ;;; imenu
