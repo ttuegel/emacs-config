@@ -710,8 +710,6 @@ only whitespace."
   :config
   ;; Generate diagnostics only when a file is saved.
   (setq lsp-haskell-diagnostics-on-change nil)
-  (setq lsp-haskell-server-args
-        (-concat lsp-haskell-server-args '("+RTS" "-Da" "-RTS")))
   )
 
 (use-package lsp-treemacs
