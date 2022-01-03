@@ -58,7 +58,6 @@ let
     # Git
     magit
     git-timemachine
-    gitconfig-mode gitignore-mode
 
     # LaTeX
     auctex
