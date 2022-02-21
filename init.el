@@ -710,7 +710,6 @@ only whitespace."
   :config
   ;; Generate diagnostics only when a file is saved.
   (setq lsp-haskell-diagnostics-on-change nil)
-  (setq lsp-haskell-server-path "halfsp")
   )
 
 (use-package lsp-treemacs
