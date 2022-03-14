@@ -693,6 +693,9 @@ only whitespace."
 
   ;; Do not use the modeline spinner.
   (setq lsp-progress-via-spinner nil)
+
+  ;; Disable code lens.
+  (setq lsp-lens-enable nil)
   )
 
 (use-package lsp-ui
