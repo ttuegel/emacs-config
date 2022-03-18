@@ -425,10 +425,10 @@ only whitespace."
 
 (use-package consult
   :bind (("M-g g" . consult-goto-line)
-         ("C-s" . consult-isearch)
+         ("C-s" . consult-isearch-history)
          :map isearch-mode-map
-         ("M-e" . consult-isearch)
-         ("M-s e" . consult-isearch)
+         ("M-e" . consult-isearch-history)
+         ("M-s e" . consult-isearch-history)
          ("M-s l" . consult-line)
          ("M-s L" . consult-line-multi)))
 
