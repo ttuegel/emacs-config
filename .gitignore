@@ -21,3 +21,4 @@ flycheck_*
 .dap-breakpoints
 projects
 /var/
+/undo-tree/

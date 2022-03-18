@@ -316,6 +316,9 @@ only whitespace."
 
 (require 'undo-tree)
 
+(setq undo-tree-history-directory-alist
+      (list (cons "." (concat user-emacs-directory "undo-tree"))))
+
 (let ((map undo-tree-map))
   (unbind-key "C-_" map)
   (unbind-key "M-_" map))
