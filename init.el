@@ -147,6 +147,11 @@ only whitespace."
     (forward-line 1)
     (back-to-indentation)))
 
+(use-package ws-butler
+  :diminish
+  :config
+  (ws-butler-global-mode))
+
 ;; Performance
 
 (setq gc-cons-threshold (* 100 1024 1024))
@@ -343,7 +348,6 @@ only whitespace."
 ;;; faces
 
 ;; Use system default monospace font in 12 pt height.
-
 (defun ttuegel/set-font (frame)
   "Configure font when FRAME is created."
   (select-frame frame)
@@ -357,35 +361,17 @@ only whitespace."
 (add-hook 'after-make-frame-functions #'ttuegel/set-font)
 
 ;; Don't use italics to indicate types.
-
 (custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
 
 ;; Colors
 
 (setq custom-safe-themes t)
 
-(use-package solarized-theme
-  :demand
+(use-package modus-themes
+  :init
+  (modus-themes-load-themes)
   :config
-  (setq solarized-use-variable-pitch nil)
-  (setq solarized-high-contrast-mode-line t)
-  (setq solarized-height-minus-1 1.0)
-  (setq solarized-height-plus-1 1.0)
-  (setq solarized-height-plus-2 1.0)
-  (setq solarized-height-plus-3 1.0)
-  (setq solarized-height-plus-4 1.0)
-  (load-theme 'solarized-light)
-  )
-
-;; Disable overline: it changes the mode-line's height
-;; Draw a dark box, even on inactive windows.
-(let
-    ((spec (list :box '(:line-width 1 :color "#687b83" :style unspecified)
-                 :overline nil)))
-  (custom-theme-set-faces 'user
-    `(mode-line          ((t . ,spec)) t)
-    `(mode-line-inactive ((t . ,spec)) t)
-    )
+  (modus-themes-load-operandi)
   )
 
 
@@ -394,14 +380,6 @@ only whitespace."
 (require 'rainbow-delimiters)
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'emacs-lisp-mode-hook #'display-line-numbers-mode)
-
-
-;;; highlight-indentation
-
-(use-package highlight-indentation
-  :hook ((haskell-mode . highlight-indentation-mode))
-  :diminish highlight-indentation-mode
-  )
 
 
 ;;; Selectrum

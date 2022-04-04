@@ -41,6 +41,7 @@ let
 
     # Themes
     diminish
+    modus-themes
     spaceline # modeline beautification
     solarized-theme
 
@@ -102,6 +103,9 @@ let
     kotlin-mode
     swift-mode
     typescript-mode
+
+    clean-aindent-mode
+    ws-butler
   ]);
 
 in
