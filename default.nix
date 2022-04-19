@@ -87,7 +87,7 @@ let
     rust-mode cargo flycheck-rust
 
     # Mail
-    notmuch messages-are-flowing
+    messages-are-flowing
 
     # Nix
     nix-mode nix-buffer
