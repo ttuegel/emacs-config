@@ -43,7 +43,6 @@ let
     diminish
     modus-themes
     spaceline # modeline beautification
-    solarized-theme
 
     # Delimiters
     rainbow-delimiters smartparens
