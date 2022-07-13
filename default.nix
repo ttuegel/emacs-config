@@ -105,6 +105,26 @@ let
 
     clean-aindent-mode
     ws-butler
+
+    # Rational Emacs
+
+    # rational-completion
+    cape
+    corfu
+    corfu-doc
+    orderless
+    vertico
+
+    # rational-ui
+    all-the-icons
+    doom-modeline
+    elisp-demos
+    helpful
+
+    # rational-evil
+    evil-collection
+    evil-nerd-commenter
+
   ]);
 
 in
