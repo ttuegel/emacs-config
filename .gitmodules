@@ -1,3 +1,0 @@
-[submodule "git-auto-commit-mode"]
-	path = git-auto-commit-mode
-	url = https://github.com/ttuegel/git-auto-commit-mode.git
