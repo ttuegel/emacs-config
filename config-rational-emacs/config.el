@@ -183,6 +183,10 @@
  ("k" . evil-window-delete)
  )
 
+(setq display-buffer-alist
+      '((".*" . ((display-buffer-reuse-window display-buffer-same-window) . (:reusable-frames nil))))
+      )
+
 ;;; Editing
 
 (let ((map evil-normal-state-map))
