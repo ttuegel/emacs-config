@@ -1,3 +1,0 @@
-[submodule "rational-emacs"]
-	path = rational-emacs
-	url = git@github.com:SystemCrafters/rational-emacs.git
