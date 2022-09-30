@@ -1,54 +1,39 @@
-;;; init.el -- ttuegel's configuration file
+;;; init.el -- ttuegel's configuration file -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
-;;; use-package
+(require 'use-package)
+(setq use-package-compute-statistics t)
 
-(eval-when-compile (require 'use-package))
-(setq use-package-always-defer t)
+(defun ttuegel/emacs-init-time-message ()
+  "Display the Emacs startup time in *Messages*."
+  (message "Emacs started in %s" (emacs-init-time)))
 
-(require 'bind-key)
-(require 'diminish)
+(add-hook 'emacs-startup-hook #'ttuegel/emacs-init-time-message)
+
+;;; diminish -- hide select minor modes on the modeline
+(use-package diminish)
 
 (diminish 'eldoc-mode)
 
+
 ;;; auto-compile -- automatically compile .el files
+(use-package auto-compile
+  :init
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode)
+  )
 
-(require 'auto-compile)
-(auto-compile-on-load-mode)
-(auto-compile-on-save-mode)
-
-;; Load the .el if it's newer than the .elc
-(setq load-prefer-newer t)
 
 ;;; which-key -- show available keys after incomplete commands
-
-(require 'which-key)
-(which-key-mode)
-(diminish 'which-key-mode)
+(use-package which-key
+  :diminish which-key-mode
+  :init
+  (which-key-mode)
+  )
 
 
 ;;; Definitions
-
-(defun ttuegel/call-process (outfile program &rest args)
-  "Run PROGRAM with ARGS and save output in OUTFILE."
-  (let ((out (if outfile `((:file ,outfile) nil) 0)))
-    (apply #'call-process program nil out nil args)))
-
-(defun ttuegel/cabal2nix ()
-  "Regenerate Nix expression from a Cabal package in the current directory."
-  (let ((cabal2nix (executable-find "cabal2nix"))
-        (cabal-file-names (file-expand-wildcards "*.cabal")))
-    (when (and cabal2nix cabal-file-names)
-      (let* ((project-name (file-name-base (car cabal-file-names)))
-             (nix-file-name (format "%s.nix" project-name)))
-        (when (file-exists-p nix-file-name)
-          (ttuegel/call-process nix-file-name cabal2nix "./."))))))
-
-(defun ttuegel/hpack ()
-  "Run hpack in the current directory."
-  (let ((hpack (executable-find "hpack")))
-    (when hpack (ttuegel/call-process nil hpack "--silent"))))
 
 (defun ttuegel/beginning-of-line ()
   "`beginning-of-line' if `back-to-indentation' does not move the cursor."
@@ -59,162 +44,153 @@
       (let ((after (point)))
         (when (eq before after) (beginning-of-line))))))
 
+(defun pulse-line (&rest _)
+  "Pulse the current line."
+  (pulse-momentary-highlight-one-line (point)))
+
 ;;; Emacs
-
-;; Don't EVER touch my init.el!
-(eval-after-load "cus-edit"
-  '(defun customize-save-variable
-       (variable value &optional comment) value))
-
-;; Use UTF-8 everywhere. It's 2021, how is this not default?
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-
-;; Turn off that damn bell!
-(setq visible-bell t)
-
-;; Don't piddle backup files everywhere like an un-housebroken puppy.
-(setq auto-save-default nil)
-(setq make-backup-files nil)
-
-;; Blinking should be reserved for eyelids and indicators that require immediate attention.
-(blink-cursor-mode -1)
-
-;; What is this, Microsoft Word?
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
-(add-to-list 'default-frame-alist '(horizontal-scroll-bars . nil))
-
-;; Thank you, but I know what program this is.
-(setq inhibit-startup-screen t)
-
-;; Don't update the X selection from the kill-ring.
-;; Like Vim, Evil keeps the X selection in the `=' register.
-(setq select-enable-clipboard nil)
-
-;; Ask `y or n' rather than `yes or no'
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; Stop `split-window-sensibly' from gerrymandering.
-(defun window-splittable-p (window &optional horizontal)
-  "Return non-nil if `split-window-sensibly' may split WINDOW.  Optional argument HORIZONTAL nil or omitted means check whether `split-window-sensibly' may split WINDOW vertically.  HORIZONTAL non-nil means check whether WINDOW may be split horizontally."
-  (let* ((width-px (window-size window t t))
-         (height-px (window-size window nil t))
-         (is-wider (>= width-px height-px))
-         (width-cells (window-size window t))
-         (is-wide-enough (>= width-cells 168)))
-    (if horizontal (and is-wider is-wide-enough) (not is-wider))))
-
-;; Make buffer names more unique
-(setq uniquify-buffer-name-style 'forward)
-
-;; Fill column
-(setq-default fill-column 80)
-
-;; Ignore common extensions.
-(add-to-list 'completion-ignored-extensions ".elc")
-(add-to-list 'completion-ignored-extensions ".hi")
-(add-to-list 'completion-ignored-extensions ".o")
-(add-to-list 'completion-ignored-extensions ".dyn_hi")
-(add-to-list 'completion-ignored-extensions ".dyn_o")
-
-;; Tab stops
-(setq-default tab-always-indent t)
-(setq-default tab-stop-list nil)
-(setq-default tab-width 2)
-(setq-default indent-tabs-mode nil)
-
-;; Hygiene
-
-(defun ttuegel/indent-whitespace-hygiene ()
-  "Remove whitespace from the current line if it is only whitespace."
-  (save-excursion
-    (beginning-of-line)
-    (while
-        (re-search-forward "^[[:space:]]+$" (line-end-position) t)
-      (replace-match "\n"))))
-
-(defadvice newline
-    (after indent-whitespace-hygiene-after-newline activate)
-  "Stop ill-behaved major-modes from leaving indentation on blank lines.
-After a newline, remove whitespace from the previous line if that line is
-only whitespace."
-  (progn
-    (forward-line -1)
-    (ttuegel/indent-whitespace-hygiene)
-    (forward-line 1)
-    (back-to-indentation)))
-
-(use-package ws-butler
-  :diminish
+(use-package emacs
+  :custom (kill-do-not-save-duplicates t)
+  ;; Customize `custom.el' instead of `init.el'
+  :custom (custom-file (expand-file-name "custom.el" user-emacs-directory))
+  ;; Turn off the damn bell! The screen will flash instead.
+  :custom (visible-bell t)
+  ;; Twenty-seven eight-by-ten color glossy photographs, with circles and arrows
+  ;; on the back of each one explaining what each one was, to be used as
+  ;; evidence against us.
+  :custom ((auto-save-default nil)
+           (make-backup-files nil))
+  ;; Don't update the X selection from the kill-ring.
+  ;; Like Vim, Evil keeps the X selection in the `=' register.
+  :custom (select-enable-clipboard nil)
+  ;; Make buffer names more unique
+  :custom (uniquify-buffer-name-style 'forward)
+  ;; Do not save duplicates in the kill ring
+  :custom (kill-do-not-save-duplicates t)
+  ;; Fill column
+  :custom (fill-column 80)
+  ;; Tab stops
+  :custom ((tab-always-indent t)
+           (tab-stop-list nil)
+           (tab-width 2)
+           (indent-tabs-mode nil))
+  ;; Make scripts executable on save
+  :hook (after-save . executable-make-buffer-file-executable-if-script-p)
+  :hook (emacs-lisp-mode . display-line-numbers-mode)
   :config
-  (ws-butler-global-mode))
+  ;; Blinking should be reserved for eyelids and indicators that require immediate attention.
+  (blink-cursor-mode -1)
 
-;; Performance
+  ;; Stop `split-window-sensibly' from gerrymandering.
+  (defun window-splittable-p (window &optional horizontal)
+    "Return non-nil if `split-window-sensibly' may split WINDOW.  Optional argument HORIZONTAL nil or omitted means check whether `split-window-sensibly' may split WINDOW vertically.  HORIZONTAL non-nil means check whether WINDOW may be split horizontally."
+    (let* ((width-px (window-size window t t))
+           (height-px (window-size window nil t))
+           (is-wider (>= width-px height-px))
+           (width-cells (window-size window t))
+           (is-wide-enough (>= width-cells 168)))
+      (if horizontal (and is-wider is-wide-enough) (not is-wider))))
 
-(setq gc-cons-threshold (* 100 1024 1024))
+  ;; Ignore common extensions.
+  (add-to-list 'completion-ignored-extensions ".elc")
+  (add-to-list 'completion-ignored-extensions ".hi")
+  (add-to-list 'completion-ignored-extensions ".o")
+  (add-to-list 'completion-ignored-extensions ".dyn_hi")
+  (add-to-list 'completion-ignored-extensions ".dyn_o")
 
-;; Emacs 27:
-(setq read-process-output-max (* 1024 1024))
+  ;; Emacs 27:
+  (setq read-process-output-max (* 1024 1024))
 
-;; Local variables
+  ;; Pulse the current line after scrolling.
+  (dolist (command '(scroll-up-command scroll-down-command recenter-top-bottom other-window))
+    (advice-add command :after #'pulse-line))
+  
+  (column-number-mode t)
+  )
 
-(put 'dante-repl-command-line 'safe-local-variable #'ttuegel/string-listp)
-(put 'haskell-indentation-where-post-offset 'safe-local-variable #'numberp)
-(put 'haskell-indentation-where-pre-offset 'safe-local-variable #'numberp)
-(put 'haskell-stylish-on-save 'safe-local-variable #'booleanp)
 
 ;;; electric-indent
-
+;; Enable `electric-indent-mode' only in select major modes.
 (electric-indent-mode -1)
 (add-hook 'emacs-lisp-mode-hook #'electric-indent-local-mode)
 
-;;; show-paren
 
+;;; elec-pair
+;; Insert matching pairs automatically.
+(electric-pair-mode t)
+
+
+;;; paren
+;; Highlight matching parentheses.
 (show-paren-mode t)
 
-;;; browse-url
 
-(use-package browse-url
+;;; doom-modeline
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode)
   :config
-  (setq browse-url-browser-function #'browse-url-firefox)
-  (setq browse-url-new-window-flag t)
+  (customize-set-variable 'doom-modeline-height 32)
+  (customize-set-variable 'doom-modeline-bar-width 6)
+  (customize-set-variable 'doom-modeline-minor-modes t)
+  (customize-set-variable 'doom-modeline-buffer-file-name-style 'truncate-except-project)
+
+  (doom-modeline-def-modeline 'ttuegel/main
+    '(bar workspace-name window-number modals matches follow buffer-info remote-host buffer-position word-count parrot selection-info)
+    '(objed-state misc-info persp-name debug repl lsp minor-modes input-method indent-info major-mode process checker)
+    )
+  (defun ttuegel/set-default-modeline ()
+    (doom-modeline-set-modeline 'ttuegel/main 'default)
+    )
+  (add-hook 'doom-modeline-mode-hook #'ttuegel/set-default-modeline)
+
   )
 
-;;; spaceline
 
-(require 'spaceline-config)
+;;; helpful
+(use-package helpful
+  :bind (:map helpful-mode-map ([remap revert-buffer] . helpful-update))
+  :bind (([remap describe-command] . helpful-command)
+         ([remap describe-function] . helpful-callable)
+         ([remap describe-key] . helpful-key)
+         ([remap describe-symbol] . helpful-symbol)
+         ([remap describe-variable] . helpful-variable)
+         ("C-h F" . helpful-function)
+         )
+  )
 
-;; Evil state colors
-(setq spaceline-highlight-face-func #'spaceline-highlight-face-evil-state)
+(bind-key "C-h K" #'describe-keymap)
 
-(spaceline-emacs-theme)
-(spaceline-toggle-buffer-size-off)
-(spaceline-toggle-buffer-encoding-abbrev-off)
-(spaceline-toggle-version-control-off)
 
 ;;; evil
+(use-package evil
+  :init
+  (defvar evil-toggle-key "C-,")
+  :config
+  ;; Allow the cursor to move one character beyond the end of the line,
+  ;; unlike Vim but as in Emacs. Prevents the cursor from creeping backwards
+  ;; when pasting under evil-execute-in-normal-state.
+  (setq evil-move-beyond-eol t)
 
-(defvar evil-toggle-key "C-,")
-(use-package evil :demand)
+  (setq evil-respect-visual-line-mode t)
 
-;; Allow the cursor to move one character beyond the end of the line,
-;; unlike Vim but as in Emacs. Prevents the cursor from creeping backwards
-;; when pasting under evil-execute-in-normal-state.
-(setq evil-move-beyond-eol t)
+  (setq-default evil-shift-width tab-width)
 
-(setq-default evil-shift-width tab-width)
+  (evil-set-initial-state 'comint-mode 'emacs)
+  (evil-set-initial-state 'text-mode 'normal)
+  (evil-set-initial-state 'git-commit-mode 'normal)
+  (with-eval-after-load 'helpful
+    (evil-set-initial-state 'helpful-mode 'emacs)
+    )
 
-(evil-set-initial-state 'comint-mode 'emacs)
-(evil-set-initial-state 'text-mode 'normal)
-(evil-set-initial-state 'git-commit-mode 'normal)
+  ;; Pulse the current line after scrolling.
+  (dolist (command '(evil-scroll-up evil-scroll-down evil-scroll-page-up evil-scroll-page-down))
+    (advice-add command :after #'pulse-line))
+  )
 
 (evil-mode t)
 
+;;; Bindings
 ;; C-x
-
 (bind-key "C-r" ctl-x-map)
 (unbind-key "C-r" evil-normal-state-map)
 (unbind-key "C-x")
@@ -224,13 +200,11 @@ only whitespace."
 (bind-key "C-v" #'quoted-insert)
 
 ;; Evil normal state
-
 (bind-key "C-b" #'evil-normal-state evil-insert-state-map)
 (bind-key "C-b" #'evil-normal-state evil-replace-state-map)
 (bind-key "C-b" #'evil-normal-state evil-visual-state-map)
 
 ;; Windows
-
 (bind-key "w" evil-window-map ctl-x-map)
 
 (bind-keys
@@ -248,7 +222,6 @@ only whitespace."
  ("k" . evil-window-delete))
 
 ;; Motion
-
 (let ((map evil-motion-state-map))
   (unbind-key "k" map) ; evil-previous-visual-line
   (unbind-key "j" map) ; evil-next-visual-line
@@ -286,7 +259,6 @@ only whitespace."
  ("C-M-t" . evil-scroll-page-up)
  ("C-M-h" . evil-scroll-page-down))
 
-
 (let ((map evil-normal-state-map))
   (unbind-key "d" map) ; evil-delete
   (unbind-key "D" map) ; evil-delete-line
@@ -296,7 +268,89 @@ only whitespace."
    ("k" . evil-delete)
    ("K" . evil-delete-line)))
 
-;; Buffers
+;; evil-mode clobbers the default xref-find-apropos binding
+(unbind-key "M-." evil-normal-state-map)
+
+;; evil-mode clobbers the default embark-act binding
+(unbind-key "C-." evil-normal-state-map)
+
+(use-package evil-surround)
+(global-evil-surround-mode 1)
+
+(use-package evil-indent-textobject)
+
+
+;;; Vertico
+(use-package vertico
+  :bind (:map vertico-map
+              ("C-f" . vertico-insert)
+              ("C-h" . vertico-next)
+              ("C-t" . vertico-previous)
+              ("M-t" . vertico-directory-up)
+              )
+  :custom (vertico-cycle t)
+  :config
+  (require 'vertico-directory)
+  )
+
+(vertico-mode 1)
+
+;; Completion with Vertico
+(bind-key "C-f" #'completion-at-point)
+
+
+;;; Marginalia
+(use-package marginalia
+  :custom (marginalia-annotators (marginalia-annotators-heavy marginalia-annotators-light nil))
+  :init
+  (marginalia-mode 1)
+  )
+
+
+;;; Consult
+(use-package consult
+  :bind ("C-s" . consult-line)
+  :bind (:map minibuffer-local-map ("C-r" . consult-history))
+  :init
+  (defun ttuegel/completion-with-vertico (&rest args)
+    "Use `consult-completion-in-region' if Vertico is enabled."
+    (if vertico-mode
+        (apply #'consult-completion-in-region args)
+      (apply #'completion--in-region args)
+      )
+    )
+  (setq completion-in-region-function #'ttuegel/completion-with-vertico)
+  )
+
+
+;;; Orderless
+
+(use-package orderless
+  :custom (completion-styles '(orderless partial-completion basic))
+  )
+
+
+;;; Embark
+
+(use-package embark
+  :bind ([remap describe-bindings] . embark-bindings)
+  :bind ("C-." . embark-act)
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command)
+  )
+
+(use-package embark-consult
+  :after (embark consult)
+  :hook (embark-collect-mode . consult-preview-at-point-mode)
+  )
+
+
+;;; imenu
+
+(bind-key "C-c i" #'imenu)
+
+
+;;; Buffers
 
 (defvar buffer-map)
 (define-prefix-command 'buffer-map)
@@ -312,213 +366,47 @@ only whitespace."
  ("R" . (lambda () (interactive) (revert-buffer nil t)))
  ("r" . rename-current-buffer-file))
 
-;;; xref
-
-;; evil-mode clobbers the default xref-find-apropos binding
-(unbind-key "M-." evil-normal-state-map)
-
-;;; undo-tree
-
-(require 'undo-tree)
-
-(setq undo-tree-history-directory-alist
-      (list (cons "." (concat user-emacs-directory "undo-tree"))))
-
-(let ((map undo-tree-map))
-  (unbind-key "C-_" map)
-  (unbind-key "M-_" map))
-
-(bind-keys
-    :map evil-normal-state-map
-    ("u" . undo-tree-undo)
-    ("U" . undo-tree-redo))
-
-(global-undo-tree-mode 1)
-(diminish 'undo-tree-mode)
-
-;;; evil-surround
-
-(require 'evil-surround)
-(global-evil-surround-mode 1)
-
-;;; evil-indent-textobject
-
-(require 'evil-indent-textobject)
-
-;;; faces
-
-;; Use system default monospace font in 12 pt height.
-(defun ttuegel/set-font (frame)
-  "Configure font when FRAME is created."
-  (select-frame frame)
-  (when (display-graphic-p)
-    (set-frame-font "Monospace-12")))
-
-;; Set font in all extant frames.
-(mapc #'ttuegel/set-font (frame-list))
-
-;; Set font in all future frames.
-(add-hook 'after-make-frame-functions #'ttuegel/set-font)
-
-;; Don't use italics to indicate types.
-(custom-theme-set-faces 'user '(font-lock-type-face ((t :slant normal))))
-
-;; Colors
-
-(setq custom-safe-themes t)
-
-(use-package modus-themes
-  :init
-  (modus-themes-load-themes)
-  :config
-  (modus-themes-load-operandi)
-  )
-
 
 ;;; rainbow-delimiters
 
-(require 'rainbow-delimiters)
-(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'emacs-lisp-mode-hook #'display-line-numbers-mode)
-
-
-;;; Selectrum
-
-(use-package selectrum
-  :bind (:map selectrum-minibuffer-map
-              ("C-f" . selectrum-insert-current-candidate)
-              ("C-h" . next-line-or-history-element)
-              ("C-t" . previous-line-or-history-element))
-  :init
-  (selectrum-mode +1)
+(use-package rainbow-delimiters
+  :hook (emacs-lisp-mode . rainbow-delimiters-mode)
   )
-
-(use-package prescient)
-
-(use-package selectrum-prescient
-  :init
-  (selectrum-prescient-mode +1)
-  (prescient-persist-mode +1)
-  )
-
-(use-package consult
-  :bind (("M-g g" . consult-goto-line)
-         ("C-s" . consult-isearch-history)
-         :map isearch-mode-map
-         ("M-e" . consult-isearch-history)
-         ("M-s e" . consult-isearch-history)
-         ("M-s l" . consult-line)
-         ("M-s L" . consult-line-multi)))
-
-(use-package marginalia
-  :config
-  (marginalia-mode))
-
-(use-package embark)
-
-(use-package embark-consult
-  :after (embark consult))
-
-
-;;; Projectile
-
-(use-package projectile
-  :diminish projectile-mode
-  :commands projectile-mode
-  :init
-  (run-with-idle-timer 0.5 nil (lambda () (projectile-mode)))
-  :config
-  (bind-key "C-c p" #'projectile-command-map projectile-mode-map)
-  )
-
-;;; Visual-Fill-Column
-
-(use-package visual-fill-column
-  :commands (turn-on-visual-fill-column-mode)
-  )
-
 
 ;;; Avy
 
 (use-package avy
-  :requires (evil)
-  :init
-  (bind-keys
-   :map evil-motion-state-map
-   ("f" . avy-goto-char)
-   ("F" . avy-goto-line)
-   :map search-map
-   ("f" . avy-goto-char)
-   ("F" . avy-goto-line))
+  :bind (:map evil-motion-state-map
+              ("f" . avy-goto-char)
+              ("F" . avy-goto-line))
+  :bind (:map search-map
+              ("f" . avy-goto-char)
+              ("F" . avy-goto-line))
   :config
-  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
-
-
-;;; Company
-
-(use-package company
-  :diminish company-mode
-  :commands company-mode
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'company-mode)
-  :config
-  (bind-keys :map company-mode-map ("C-f" . company-complete))
-  (setq company-minimum-prefix-length 1)
-  ;; Disable idle completion. The idle timer is rather slow.
-  (setq company-idle-delay nil)
-  (setf company-active-map (make-sparse-keymap))
-  (bind-keys
-   :map company-active-map
-   ("C-h" . company-select-next)
-   ("C-t" . company-select-previous)
-   ("C-f" . company-complete-selection)
-   ("M-f" . company-complete-common)
-   ("C-g" . company-abort))
+  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   )
 
 
 ;;; flycheck
 
 (use-package flycheck
-  :commands flycheck-mode global-flycheck-mode
-  :config
-  (setq flycheck-clang-language-standard "c++17"))
-
-(add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
-
-
-;;; yasnippet
-
-(use-package yasnippet
-  :config
-  (diminish 'yas-minor-mode))
+  :hook (emacs-lisp-mode . flycheck-mode))
 
 
 ;;; Git
 
 (use-package magit
-  :init
-  (bind-key "g" #'magit-status vc-prefix-map))
-
-(use-package autorevert
-  :diminish auto-revert-mode)
+  :bind (:map vc-prefix-map ("g" . magit-status))
+  :diminish auto-revert-mode
+  )
 
 (use-package git-timemachine
   :commands git-timemachine-toggle
-  :init
-  (bind-key "t" #'git-timemachine-toggle vc-prefix-map))
-
-(use-package git-auto-commit-mode
-  ;; Use personal fork for `call-process' instead of `shell-command'.
-  :load-path "./git-auto-commit-mode")
-
-(use-package gitconfig-mode)
-
-(use-package gitignore-mode)
+  :bind (:map vc-prefix-map ("t" . git-timemachine-toggle))
+  )
 
 
 ;;; TeX
-
 (use-package tex
   :commands TeX-PDF-mode
   :defines
@@ -579,46 +467,39 @@ only whitespace."
   )
 
 (use-package font-latex
+  :after tex
   :commands font-latex-setup
-  :init
-  (add-hook 'TeX-mode-hook #'font-latex-setup)
+  :hook (TeX-mode . font-latex-setup)
   :config
   ;; Disable Unicode fontification
   (setq font-latex-fontify-script nil)
   (setq font-latex-fontify-sectioning 'color)
-  (add-to-list 'font-latex-math-environments "dmath"))
+  (add-to-list 'font-latex-math-environments "dmath")
+  )
 
 (use-package reftex
+  :after tex
   :commands reftex-mode
-  :init
-  (add-hook 'TeX-mode-hook #'reftex-mode)
+  :hook (TeX-mode . reftex-mode)
   :config
   (setq reftex-plug-into-AUCTeX t)
-  (setq reftex-default-bibliography "~/bib/default.bib"))
-
-;; Completion
-
-(use-package company-math
-  :init
-  (with-eval-after-load "company"
-    (push 'company-math-symbols-latex company-backends)
-    (push 'company-latex-commands company-backends)))
+  (setq reftex-default-bibliography "~/bib/default.bib")
+  )
 
 
 ;;; Markdown
-
-(use-package markdown-mode)
+(use-package markdown-mode
+  :mode "\\.md\\'"
+  )
 
 
 ;;; Nix
-
 (use-package nix-mode
   :commands nix-mode
-  :init
-  (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
-  (add-to-list 'auto-mode-alist '("\\.nix.in\\'" . nix-mode))
-  :config
-  (add-hook 'nix-mode-hook #'rainbow-delimiters-mode))
+  :hook (nix-mode . rainbow-delimiters-mode)
+  :mode "\\.nix\\'"
+  :mode "\\.nix.in\\'"
+  )
 
 
 ;;; YAML
@@ -627,15 +508,13 @@ only whitespace."
   "Run `hpack' after saving `package.yaml'."
   (when (equal (file-name-nondirectory buffer-file-name) "package.yaml")
     (ttuegel/hpack)
-    (ttuegel/cabal2nix)))
+    (ttuegel/cabal2nix))
+  )
+
+(add-hook 'after-save-hook #'ttuegel/after-save-hpack)
 
 (use-package yaml-mode
-  :config
-  (add-hook
-   'yaml-mode-hook
-   (lambda ()
-     (add-hook 'after-save-hook #'ttuegel/after-save-hpack))
-   )
+  :defer
   )
 
 
@@ -643,121 +522,86 @@ only whitespace."
 
 (use-package lsp-mode
   :commands lsp
-  :hook
-  ((lsp-mode . lsp-enable-which-key-integration)
-   (haskell-mode . lsp)
-   )
+  :hook (lsp-mode . lsp-enable-which-key-integration)
+  :hook (haskell-mode . lsp)
   :diminish lsp-mode
-  :config
-  (setq lsp-auto-configure t)
-  (setq lsp-diagnostic-package :flycheck)
-  (setq lsp-prefer-capf t)
-
-  ;; Disable file watchers
-  (setq lsp-enable-file-watchers nil)
-
-  ;; Disable hover info in eldoc because it is slow.
-  ;; TODO: Get hover info asynchronously?
-  (setq lsp-eldoc-enable-hover nil)
-
-  ;; Do not display breadcrumbs on the headerline.
-  (setq lsp-headerline-breadcrumb-enable nil)
-
-  ;; Do not display diagnostics on the modeline (duplicates Flycheck).
-  (setq lsp-modeline-diagnostics-enable nil)
-
-  ;; Do not display code actions on the modeline.
-  (setq lsp-modeline-code-actions-enable nil)
-
-  ;; Do not highlight references of the symbol at point.
-  (setq lsp-enable-symbol-highlighting nil)
-
-  ;; Do not use the modeline spinner.
-  (setq lsp-progress-via-spinner nil)
-
-  ;; Disable code lens.
-  (setq lsp-lens-enable nil)
+  :custom (lsp-completion-provider :none "Using orderless.")
+  :init
+  (defun ttuegel/lsp-completion-mode-setup ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless)))
+  :hook (lsp-completion-mode . ttuegel/lsp-completion-mode-setup)
+  :custom (lsp-auto-configure t)
+  :custom (lsp-diagnostic-package :flycheck)
+  ;; :custom (lsp-enable-file-watchers nil "Disable file watchers (slow).")
+  :custom (lsp-eldoc-enable-hover nil "Disable hover info in eldoc (slow).")
+  :custom (lsp-headerline-breadcrumb-enable nil "Do not clutter the headerline with breadcrumbs.")
+  :custom (lsp-modeline-diagnostics-enable nil "Do not display diagnostics on the modeline (duplicates Flycheck).")
+  :custom (lsp-modeline-code-actions-enable nil "Do not clutter the modeline with code actions.")
+  :custom (lsp-enable-symbol-highlighting nil "Do not highlight references of the symbol at point (slow).")
+  :custom (lsp-progress-via-spinner nil "Do not clutter the modeline with the slow spinner.")
+  :custom (lsp-lens-enable nil "Do not clutter the buffer with code lens.")
   )
 
 (use-package lsp-ui
-  :commands lsp-ui-mode
-  :config
-  (setq lsp-ui-doc-enable nil)
-  (setq lsp-ui-peek-enable nil)
-  (setq lsp-ui-sideline-enable nil)
-  (setq lsp-ui-imenu-enable t)
+  :after lsp-mode
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom (lsp-ui-doc-enable nil)
+  :custom (lsp-ui-peek-enable nil)
+  :custom (lsp-ui-sideline-enable nil)
+  :custom (lsp-ui-imenu-enable t)
   )
 
 (use-package lsp-java :hook (java-mode . lsp))
 
 (use-package lsp-haskell
+  :defer ; Loaded automatically by lsp-mode.
   :config
   ;; Generate diagnostics only when a file is saved.
   (setq lsp-haskell-diagnostics-on-change nil)
   )
 
-(use-package lsp-treemacs
-  :commands lsp-treemacs-errors-list
-  )
 
 ;;; Haskell
-
-(defun turn-off-eldoc-mode ()
-  "Disable function `eldoc-mode' in the current buffer."
-  (eldoc-mode -1))
-
-(defun ttuegel/string-listp (object)
-  "Return t if OBJECT is a list of strings.
-Otherwise return nil."
-  (and (listp object)
-       (seq-reduce (lambda (accum item) (and accum (stringp item))) object t)
-       )
-  )
+(defun ttuegel/set-haskell-mode-whitespace-style ()
+  "Set up `whitespace-style' for `haskell-mode'."
+  (setq-local whitespace-style '(face lines trailing tabs)))
 
 (use-package haskell-mode
+  :hook (haskell-mode . rainbow-delimiters-mode)
+  :hook (haskell-mode . display-line-numbers-mode)
+  :hook (haskell-mode . ttuegel/set-haskell-mode-whitespace-style)
   :config
-  (require 'lsp-haskell)
-
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
-
-  (add-hook 'haskell-mode-hook #'company-mode)
-  (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'haskell-mode-hook #'display-line-numbers-mode)
-  (add-hook 'haskell-mode-hook
-            (lambda ()
-              (setq-local whitespace-style '(face lines trailing tabs))))
   )
 
 
 ;;; Dhall
-
 (use-package dhall-mode
-  :mode ("\\.dhall\\'" . dhall-mode)
-  :config
-  (setq dhall-format-at-save nil))
+  :mode "\\.dhall\\'"
+  :custom (dhall-format-at-save nil))
 
 
 ;;; XML
-
 (use-package nxml-mode
-  :mode ("\\.rng\\'" . xml-mode))
+  :mode "\\.rng\\'"
+  )
 
 
 ;;; Org
-
 (defvar org-prefix-map)
 (define-prefix-command 'org-prefix-map)
 (bind-key "o" #'org-prefix-map ctl-x-map)
 
 (use-package org
+  :mode ("\\.org\\'" . org-mode)
   :defines
   org-clock-clocktable-default-properties
   org-clock-persist
+  :hook (org-mode . turn-on-visual-line-mode)
+  :hook (org-mode . turn-on-visual-fill-column-mode)
   :config
-  (require 'org-agenda)
-  (require 'org-capture)
-
   (setq org-directory "~/org")
 
   (setq org-todo-keywords
@@ -784,20 +628,15 @@ Otherwise return nil."
   (setq org-clock-clocktable-default-properties
         '(:maxlevel 2 :scope file :block today))
 
-  (add-hook 'org-mode-hook #'turn-on-visual-line-mode)
-  (add-hook 'org-mode-hook #'turn-on-visual-fill-column-mode)
-
   ;; Save clock history across Emacs sessions
   (setq org-clock-persist 'history)
   (org-clock-persistence-insinuate)
   )
 
-
 (use-package org-agenda
   :defines
   org-agenda-ndays
-  :init
-  (bind-key "a" #'org-agenda org-prefix-map)
+  :bind (:map org-prefix-map ("a" . org-agenda))
   :config
   (setq org-agenda-window-setup 'current-window)
 
@@ -825,7 +664,6 @@ Otherwise return nil."
   (bind-key "M-t" #'org-agenda-drag-line-backward org-agenda-mode-map)
   )
 
-
 (use-package org-capture
   :commands org-capture
   :init
@@ -843,39 +681,27 @@ Otherwise return nil."
 
 
 ;;; rust
-
 (use-package rust-mode
-  :config
-  (add-to-list 'rust-mode-hook #'flycheck-mode))
+  :mode "\\.rs\\'"
+  :hook (rust-mode . flycheck-mode)
+  )
 
-(use-package cargo)
+(use-package cargo
+  :hook (rust-mode . cargo-minor-mode)
+  )
 
 (use-package flycheck-rust
+  :after flycheck
   :commands flycheck-rust-setup
-  :init
-  (with-eval-after-load "flycheck"
-    (add-to-list 'flycheck-mode-hook #'flycheck-rust-setup)))
+  :hook (flycheck-mode . flycheck-rust-setup)
+  )
 
 
 ;;; C
-
 (add-hook 'c-mode-common-hook #'flycheck-mode)
-(add-hook
- 'c-mode-common-hook
- (lambda ()
-   (setq-local whitespace-style '(lines face trailing))))
-
-
-;; Makefile
-
-(add-hook
- 'makefile-mode-hook
- (lambda ()
-   (setq-local whitespace-style '(lines face trailing))))
 
 
 ;;; unfill-region
-
 (defun unfill-region (beg end)
   "Join text paragraphs between BEG and END into a single logical line.
 This is useful, e.g., for use with function `visual-line-mode'."
@@ -883,19 +709,18 @@ This is useful, e.g., for use with function `visual-line-mode'."
   (let ((fill-column (point-max)))
     (fill-region beg end)))
 
-;;; pdftotext
 
+;;; pdftotext
 (use-package pdftotext
   :load-path "./lisp"
-  :demand)
+  :defines pdftotext-insert-text)
 
 
 ;;; Scheme
 
 (use-package scheme
+  :hook (scheme-mode . rainbow-delimiters-mode)
   :config
-  (add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'scheme-mode-hook #'company-mode)
   (put 'unless 'scheme-indent-function 1)
   (put 'match 'scheme-indent-function 1)
   (put 'with-directory 'scheme-indent-function 1)
@@ -903,70 +728,67 @@ This is useful, e.g., for use with function `visual-line-mode'."
 
 
 ;;; Idris
-
-(use-package idris-mode)
+(use-package idris-mode
+  :mode "\\.idr\\'"
+  )
 
 
 ;;; Fish
-
 (use-package fish-mode)
 
 
 ;;; EditorConfig
-
 (use-package editorconfig
-  :demand
   :diminish
-  :config
+  :init
   (editorconfig-mode 1))
 
 
 ;;; Groovy (Jenkinsfile)
-
 (use-package groovy-mode
-  :mode ("Jenkinsfile" . groovy-mode))
+  :mode "Jenkinsfile"
+  )
 
 
 ;;; Scala
-
-(use-package scala-mode)
+(use-package scala-mode
+  :mode "\\.scala\\'"
+  )
 
 
 ;;; Direnv
-
 (use-package direnv)
 
 
 ;;; Kotlin
-
-(use-package kotlin-mode)
-
-
-;;; Swift
-
-(use-package swift-mode)
-
-
-;;; Typescript
-
-(use-package typescript-mode
-  :mode ("\\.tsx\\'" . typescript-mode)
+(use-package kotlin-mode
+  :defer
   )
 
 
-;;; imenu
+;;; Swift
+(use-package swift-mode
+  :defer
+  )
 
-(bind-key "C-c i" #'imenu)
+
+;;; Typescript
+(use-package typescript-mode
+  :mode "\\.tsx\\'"
+  )
 
 
 ;;; spinner
-
 ;; Disable the spinner.
 (with-eval-after-load "spinner"
   (defun spinner-start (&optional type-or-object fps delay) nil)
   (defun spinner-stop (&optional spinner) nil)
   )
 
+
+;;; Garbage collection
+;; Make GC pauses faster by decreasing the threshold.
+(setq gc-cons-threshold (* 4 1024 1024))
 
 (provide 'init)
 ;;; init.el ends here
