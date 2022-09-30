@@ -74,9 +74,11 @@ let
     # Haskell
     haskell-mode
     dhall-mode
-    lsp-haskell
 
-    lsp-mode lsp-ui lsp-ivy lsp-java lsp-treemacs
+    lsp-mode
+    lsp-ui
+    lsp-haskell
+    lsp-java
     yasnippet
 
     # Org
