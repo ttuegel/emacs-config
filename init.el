@@ -542,6 +542,7 @@
   :custom (lsp-enable-symbol-highlighting nil "Do not highlight references of the symbol at point (slow).")
   :custom (lsp-progress-via-spinner nil "Do not clutter the modeline with the slow spinner.")
   :custom (lsp-lens-enable nil "Do not clutter the buffer with code lens.")
+  :custom (lsp-progress-function 'ignore)
   )
 
 (use-package lsp-ui
