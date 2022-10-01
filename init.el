@@ -365,7 +365,7 @@
  ("n" . switch-to-next-buffer)
  ("p" . switch-to-prev-buffer)
  ("R" . (lambda () (interactive) (revert-buffer nil t)))
- ("r" . rename-current-buffer-file))
+ )
 
 
 ;;; rainbow-delimiters
