@@ -2,8 +2,9 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(setq use-package-compute-statistics t)
+(eval-when-compile
+  (require 'use-package)
+  )
 
 (defun ttuegel/emacs-init-time-message ()
   "Display the Emacs startup time in *Messages*."
