@@ -105,7 +105,7 @@
   ;; Pulse the current line after scrolling.
   (dolist (command '(scroll-up-command scroll-down-command recenter-top-bottom other-window))
     (advice-add command :after #'pulse-line))
-  
+
   (column-number-mode t)
   )
 
@@ -129,12 +129,12 @@
 ;;; doom-modeline
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
+  :custom ((doom-modeline-height (ceiling (* (frame-char-height) all-the-icons-scale-factor)))
+           (doom-modeline-bar-width 8)
+           )
+  :custom (doom-modeline-minor-modes t)
+  :custom (doom-modeline-buffer-file-name-style 'truncate-except-project)
   :config
-  (customize-set-variable 'doom-modeline-height 32)
-  (customize-set-variable 'doom-modeline-bar-width 6)
-  (customize-set-variable 'doom-modeline-minor-modes t)
-  (customize-set-variable 'doom-modeline-buffer-file-name-style 'truncate-except-project)
-
   (doom-modeline-def-modeline 'ttuegel/main
     '(bar workspace-name window-number modals matches follow buffer-info remote-host buffer-position word-count parrot selection-info)
     '(objed-state misc-info persp-name debug repl lsp minor-modes input-method indent-info major-mode process checker)
