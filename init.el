@@ -505,15 +505,6 @@
 
 ;;; YAML
 
-(defun ttuegel/after-save-hpack ()
-  "Run `hpack' after saving `package.yaml'."
-  (when (equal (file-name-nondirectory buffer-file-name) "package.yaml")
-    (ttuegel/hpack)
-    (ttuegel/cabal2nix))
-  )
-
-(add-hook 'after-save-hook #'ttuegel/after-save-hpack)
-
 (use-package yaml-mode
   :defer
   )
