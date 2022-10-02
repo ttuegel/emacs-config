@@ -129,7 +129,10 @@
 ;;; doom-modeline
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
-  :custom ((doom-modeline-height (ceiling (* (frame-char-height) all-the-icons-scale-factor)))
+  :custom ((doom-modeline-height (max (ceiling (* (frame-char-height) all-the-icons-scale-factor))
+                                      30
+                                      )
+                                 )
            (doom-modeline-bar-width 8)
            )
   :custom (doom-modeline-minor-modes t)
