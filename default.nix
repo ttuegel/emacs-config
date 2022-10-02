@@ -25,24 +25,24 @@ let
 
     # Interface
     bind-key
-    company
     highlight-indentation
     projectile # project management
-    ripgrep  # search
+    ripgrep deadgrep  # search
     visual-fill-column
     which-key  # display keybindings after incomplete command
     winum eyebrowse # window management
+    all-the-icons doom-modeline
 
-    selectrum prescient consult embark
-    selectrum-prescient embark-consult
-    company-prescient
-    consult-flycheck consult-lsp
+    consult
+    embark
+    helpful
     marginalia
+    orderless
+    vertico
 
     # Themes
     diminish
     modus-themes
-    spaceline # modeline beautification
 
     # Delimiters
     rainbow-delimiters smartparens
@@ -53,7 +53,6 @@ let
     evil-surround
     evil-indent-textobject
     evil-cleverparens
-    undo-tree
 
     # Git
     magit
@@ -87,9 +86,6 @@ let
     # Rust
     rust-mode cargo flycheck-rust
 
-    # Mail
-    messages-are-flowing
-
     # Nix
     nix-mode nix-buffer
 
@@ -104,28 +100,6 @@ let
     kotlin-mode
     swift-mode
     typescript-mode
-
-    clean-aindent-mode
-    ws-butler
-
-    # Rational Emacs
-
-    # rational-completion
-    cape
-    corfu
-    corfu-doc
-    orderless
-    vertico
-
-    # rational-ui
-    all-the-icons
-    doom-modeline
-    elisp-demos
-    helpful
-
-    # rational-evil
-    evil-collection
-    evil-nerd-commenter
 
   ]);
 
