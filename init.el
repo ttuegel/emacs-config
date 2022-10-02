@@ -349,6 +349,12 @@
   )
 
 
+;;; deadgrep -- fast, friendly searching with ripgrep
+(use-package deadgrep
+  :defer
+  )
+
+
 ;;; imenu
 
 (bind-key "C-c i" #'imenu)
