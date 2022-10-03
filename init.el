@@ -165,124 +165,15 @@
 (bind-key "C-h K" #'describe-keymap)
 
 
-;;; evil
-(use-package evil
+;;; boon
+(use-package boon
   :init
-  (defvar evil-toggle-key "C-,")
+  (boon-mode)
   :config
-  ;; Allow the cursor to move one character beyond the end of the line,
-  ;; unlike Vim but as in Emacs. Prevents the cursor from creeping backwards
-  ;; when pasting under evil-execute-in-normal-state.
-  (setq evil-move-beyond-eol t)
+  (require 'boon-dvorak)
 
-  (setq evil-respect-visual-line-mode t)
-
-  (setq-default evil-shift-width tab-width)
-
-  (evil-set-initial-state 'comint-mode 'emacs)
-  (evil-set-initial-state 'text-mode 'normal)
-  (evil-set-initial-state 'git-commit-mode 'normal)
-  (with-eval-after-load 'helpful
-    (evil-set-initial-state 'helpful-mode 'emacs)
-    )
-
-  ;; Pulse the current line after scrolling.
-  (dolist (command '(evil-scroll-up evil-scroll-down evil-scroll-page-up evil-scroll-page-down))
-    (advice-add command :after #'pulse-line))
+  (bind-key "p" #'consult-isearch-history boon-command-map)
   )
-
-(evil-mode t)
-
-;;; Bindings
-;; C-x
-(bind-key "C-r" ctl-x-map)
-(unbind-key "C-r" evil-normal-state-map)
-(unbind-key "C-x")
-
-(bind-key "M-r" #'execute-extended-command)
-
-(bind-key "C-v" #'quoted-insert)
-
-;; Evil normal state
-(bind-key "C-b" #'evil-normal-state evil-insert-state-map)
-(bind-key "C-b" #'evil-normal-state evil-replace-state-map)
-(bind-key "C-b" #'evil-normal-state evil-visual-state-map)
-
-;; Windows
-(bind-key "w" evil-window-map ctl-x-map)
-
-(bind-keys
- :map evil-window-map
- ("d" . evil-window-left)
- ("D" . evil-window-move-far-left)
- ("h" . evil-window-down)
- ("H" . evil-window-move-very-bottom)
- ("t" . evil-window-up)
- ("T" . evil-window-move-very-top)
- ("n" . evil-window-right)
- ("N" . evil-window-move-far-right)
- ("-" . evil-window-new)
- ("|" . evil-window-vnew)
- ("k" . evil-window-delete))
-
-;; Motion
-(let ((map evil-motion-state-map))
-  (unbind-key "k" map) ; evil-previous-visual-line
-  (unbind-key "j" map) ; evil-next-visual-line
-  (unbind-key "h" map) ; evil-backward-char
-  (unbind-key "l" map) ; evil-forward-char
-  (unbind-key "C-d" map) ; evil-scroll-down
-  (unbind-key "$" map) ; evil-end-of-line
-  (unbind-key "C-f" map) ; evil-scroll-page-down
-  (unbind-key "C-b" map) ; evil-scroll-page-up
-
-  (bind-keys
-   :map map
-   ("t" . evil-previous-visual-line)
-   ("h" . evil-next-visual-line)
-   ("d" . evil-backward-char)
-   ("n" . evil-forward-char)
-   ("H" . evil-scroll-down)
-   ("T" . evil-scroll-up)
-   ("D" . beginning-of-visual-line)
-   ("N" . evil-end-of-line)
-   ("M-h" . evil-scroll-page-down)
-   ("M-t" . evil-scroll-page-up)))
-
-(bind-keys
- ("C-t" . 'previous-line)
- ("C-h" . 'next-line)
- ("C-d" . 'backward-char)
- ("C-n" . 'forward-char)
-
- ("C-T" . evil-scroll-up)
- ("C-H" . evil-scroll-down)
- ("C-D" . beginning-of-visual-line)
- ("C-N" . end-of-visual-line)
-
- ("C-M-t" . evil-scroll-page-up)
- ("C-M-h" . evil-scroll-page-down))
-
-(let ((map evil-normal-state-map))
-  (unbind-key "d" map) ; evil-delete
-  (unbind-key "D" map) ; evil-delete-line
-
-  (bind-keys
-   :map map
-   ("k" . evil-delete)
-   ("K" . evil-delete-line)))
-
-;; evil-mode clobbers the default xref-find-apropos binding
-(unbind-key "M-." evil-normal-state-map)
-
-;; evil-mode clobbers the default embark-act binding
-(unbind-key "C-." evil-normal-state-map)
-
-(use-package evil-surround)
-(global-evil-surround-mode 1)
-
-(use-package evil-indent-textobject)
-
 
 ;;; Vertico
 (use-package vertico
@@ -386,12 +277,6 @@
 ;;; Avy
 
 (use-package avy
-  :bind (:map evil-motion-state-map
-              ("f" . avy-goto-char)
-              ("F" . avy-goto-line))
-  :bind (:map search-map
-              ("f" . avy-goto-char)
-              ("F" . avy-goto-line))
   :config
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   )

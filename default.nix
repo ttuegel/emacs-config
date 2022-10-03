@@ -49,6 +49,7 @@ let
 
     # Evil
     avy
+    boon
     evil
     evil-surround
     evil-indent-textobject
