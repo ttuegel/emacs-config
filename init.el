@@ -36,16 +36,6 @@
 
 
 ;;; Definitions
-
-(defun ttuegel/beginning-of-line ()
-  "`beginning-of-line' if `back-to-indentation' does not move the cursor."
-  (interactive)
-  (let ((before (point)))
-    (unless (eq before (line-beginning-position))
-      (back-to-indentation)
-      (let ((after (point)))
-        (when (eq before after) (beginning-of-line))))))
-
 (defun pulse-line (&rest _)
   "Pulse the current line."
   (pulse-momentary-highlight-one-line (point)))
