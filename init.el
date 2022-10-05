@@ -172,7 +172,7 @@
 (use-package vertico
   :bind (:map vertico-map
               ("C-f" . vertico-insert)
-              ("C-h" . vertico-next)
+              ("C-n" . vertico-next)
               ("C-t" . vertico-previous)
               ("M-t" . vertico-directory-up)
               )
