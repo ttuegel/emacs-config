@@ -164,7 +164,9 @@
   (require 'boon-dvorak)
 
   (bind-key "p" #'consult-isearch-history boon-command-map)
+  (bind-key "C-<return>" #'boon-set-command-state boon-insert-map)
   )
+
 
 ;;; Vertico
 (use-package vertico
