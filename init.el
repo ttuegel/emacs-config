@@ -260,6 +260,21 @@
  ("R" . (lambda () (interactive) (revert-buffer nil t)))
  )
 
+(defvar window-map)
+(define-prefix-command 'window-map)
+(bind-key "w" #'window-map ctl-x-map)
+(bind-keys
+ :map window-map
+ ("c" . windmove-up)
+ ("r" . windmove-down)
+ ("t" . windmove-left)
+ ("n" . windmove-right)
+ ("_" . split-window-below)
+ ("|" . split-window-right)
+ ("e" . delete-window)
+ ("E" . delete-other-windows)
+ )
+
 
 ;;; rainbow-delimiters
 
