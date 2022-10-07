@@ -29,7 +29,8 @@
 ;;; which-key -- show available keys after incomplete commands
 (use-package which-key
   :diminish which-key-mode
-  :custom (which-key-idle-delay 0.1)
+  :custom (which-key-idle-delay 0.2)
+  :custom (which-key-popup-type 'minibuffer)
   :init
   (which-key-mode)
   )
