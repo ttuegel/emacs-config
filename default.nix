@@ -48,6 +48,7 @@ let
     helpful
     highlight-indentation
     idris-mode
+    imenu-anywhere
     kotlin-mode
     lsp-haskell
     lsp-java

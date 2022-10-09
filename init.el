@@ -242,9 +242,10 @@
   )
 
 
-;;; imenu
-
-(bind-key "C-c i" #'imenu)
+;;; imenu-anywhere
+(use-package imenu-anywhere
+  :bind (:map boon-goto-map ("i" . imenu-anywhere))
+  )
 
 
 ;;; Buffers
