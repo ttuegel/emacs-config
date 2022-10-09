@@ -247,7 +247,6 @@
 
 
 ;;; Buffers
-
 (defvar buffer-map)
 (define-prefix-command 'buffer-map)
 (bind-key "b" #'buffer-map ctl-x-map)
@@ -262,6 +261,8 @@
  ("R" . (lambda () (interactive) (revert-buffer nil t)))
  )
 
+
+;;; Windows
 (defvar window-map)
 (define-prefix-command 'window-map)
 (bind-key "w" #'window-map ctl-x-map)
