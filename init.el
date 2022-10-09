@@ -35,7 +35,6 @@
   (which-key-mode)
   )
 
-
 ;;; Definitions
 (defun pulse-line (&rest _)
   "Pulse the current line."
@@ -165,6 +164,7 @@
   :config
   (require 'boon-dvorak)
 
+  (bind-key [remap self-insert-command] 'undefined boon-command-map)
   (bind-key "p" #'consult-isearch-history boon-command-map)
   (bind-key "C-<return>" #'boon-set-command-state boon-insert-map)
   )
