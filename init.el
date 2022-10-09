@@ -260,7 +260,7 @@
  ("k" . kill-current-buffer)
  ("n" . switch-to-next-buffer)
  ("p" . switch-to-prev-buffer)
- ("R" . (lambda () (interactive) (revert-buffer nil t)))
+ ("R" . revert-buffer-quick)
  )
 
 
