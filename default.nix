@@ -21,87 +21,61 @@ let
   inherit (pkgs) emacsNativeComp emacsPackagesFor;
   emacsPackages = emacsPackagesFor emacsNativeComp;
   emacs = emacsPackages.emacsWithPackages (epkgs: with epkgs; [
-    use-package
-
-    # Interface
-    bind-key
-    highlight-indentation
-    projectile # project management
-    ripgrep deadgrep  # search
-    visual-fill-column
-    which-key  # display keybindings after incomplete command
-    winum eyebrowse # window management
-    all-the-icons doom-modeline
-
-    consult
-    embark
-    helpful
-    marginalia
-    orderless
-    vertico
-
-    # Themes
-    diminish
-    modus-themes
-
-    # Delimiters
-    rainbow-delimiters smartparens
-
-    # Evil
-    avy
-    boon
-    evil
-    evil-surround
-    evil-indent-textobject
-    evil-cleverparens
-
-    # Git
-    magit
-    git-timemachine
-
-    # LaTeX
+    all-the-icons
     auctex
+    auto-compile
+    avy
+    bind-key
+    boon
+    cargo
     cdlatex
     company-math
-
-    auto-compile
-    direnv
-    flycheck
-
-    markdown-mode
-    yaml-mode
-
-    # Haskell
-    haskell-mode
+    consult
+    deadgrep
     dhall-mode
-
-    lsp-mode
-    lsp-ui
+    diminish
+    direnv
+    doom-modeline
+    editorconfig
+    embark
+    eyebrowse
+    fish-mode
+    flycheck
+    flycheck-rust
+    git-timemachine
+    groovy-mode
+    haskell-mode
+    helpful
+    highlight-indentation
+    idris-mode
+    kotlin-mode
     lsp-haskell
     lsp-java
-    yasnippet
-
-    # Org
+    lsp-mode
+    lsp-ui
+    magit
+    marginalia
+    markdown-mode
+    modus-themes
+    nix-buffer
+    nix-mode
+    orderless
     org
-
-    # Rust
-    rust-mode cargo flycheck-rust
-
-    # Nix
-    nix-mode nix-buffer
-
-    # Idris
-    idris-mode
-
-    editorconfig
-    fish-mode
-
-    groovy-mode
+    projectile
+    rainbow-delimiters
+    ripgrep
+    rust-mode
     scala-mode
-    kotlin-mode
+    smartparens
     swift-mode
     typescript-mode
-
+    use-package
+    vertico
+    visual-fill-column
+    which-key
+    winum
+    yaml-mode
+    yasnippet
   ]);
 
 in
