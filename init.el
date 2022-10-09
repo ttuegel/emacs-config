@@ -108,10 +108,11 @@
 (add-hook 'emacs-lisp-mode-hook #'electric-indent-local-mode)
 
 
-;;; elec-pair
-;; Insert matching pairs automatically.
-(electric-pair-mode t)
-
+;;; smartparens
+(use-package smartparens
+  :diminish
+  :hook (prog-mode . smartparens-mode)
+  )
 
 ;;; paren
 ;; Highlight matching parentheses.
