@@ -416,6 +416,14 @@
   )
 
 
+;;; yasnippet
+(use-package yasnippet
+  :hook (lsp-mode . yas-minor-mode)
+  :config
+  (yas-reload-all)
+  )
+
+
 ;;; Language Server
 
 (use-package lsp-mode
