@@ -167,7 +167,7 @@
 
   (bind-key [remap self-insert-command] 'undefined boon-command-map)
   (bind-key "SPC" #'consult-isearch-history boon-forward-search-map)
-  (bind-key "C-<return>" #'boon-set-command-state boon-insert-map)
+  (bind-key "C-k" #'boon-set-command-state boon-insert-map)
   (unbind-key "j" boon-command-map)
   )
 
