@@ -48,9 +48,6 @@
     (setq use-short-answers t)
   (advice-add 'yes-or-no-p :override #'y-or-n-p))
 
-;; Load the color theme early to avoid flashing a white screen at startup.
-(load-theme 'modus-operandi)
-
 ;; Use system default monospace font in 12 pt height.
 (defun ttuegel/set-font (frame)
   "Configure font when FRAME is created."

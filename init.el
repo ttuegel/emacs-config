@@ -101,6 +101,7 @@
   (column-number-mode t)
   )
 
+(load-theme 'modus-operandi t)
 
 ;;; electric-indent
 ;; Enable `electric-indent-mode' only in select major modes.
