@@ -23,7 +23,6 @@
           boon
           cargo
           cdlatex
-          company-math
           consult
           deadgrep
           dhall-mode
