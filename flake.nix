@@ -13,7 +13,7 @@
           inherit system;
           overlays = [ emacs-overlay.overlay ];
         };
-        let inherit (emacsPackagesFor emacsNativeComp) emacsWithPackages; in
+        let inherit (emacsPackagesFor emacsUnstable) emacsWithPackages; in
         emacsWithPackages (epkgs: with epkgs; [
           all-the-icons
           auctex
