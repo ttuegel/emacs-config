@@ -30,6 +30,7 @@
           direnv
           doom-modeline
           editorconfig
+          eglot
           embark
           eyebrowse
           fish-mode
@@ -56,6 +57,7 @@
           orderless
           org
           projectile
+          puni
           rainbow-delimiters
           ripgrep
           rust-mode
