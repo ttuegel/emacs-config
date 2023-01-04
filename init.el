@@ -2,9 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(eval-when-compile
-  (require 'use-package)
-  )
+(eval-when-compile (require 'use-package))
 
 (defun ttuegel/emacs-init-time-message ()
   "Display the Emacs startup time in *Messages*."
