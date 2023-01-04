@@ -82,6 +82,11 @@
            (is-wide-enough (>= width-cells 168)))
       (if horizontal (and is-wider is-wide-enough) (not is-wider))))
 
+  (setq display-buffer-base-action
+        (cons #'display-buffer-use-some-window
+              '((inhibit-same-window . t)
+                (inhibit-switch-frame . t))))
+
   ;; Ignore common extensions.
   (add-to-list 'completion-ignored-extensions ".elc")
   (add-to-list 'completion-ignored-extensions ".hi")
