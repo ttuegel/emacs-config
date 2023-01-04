@@ -118,6 +118,11 @@
   ;; :hook (prog-mode . smartparens-mode)
   )
 
+;;; puni
+
+(use-package puni)
+
+
 ;;; paren
 ;; Highlight matching parentheses.
 (show-paren-mode t)
