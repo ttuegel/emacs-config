@@ -170,7 +170,7 @@
   (require 'boon-dvorak)
 
   (bind-key [remap self-insert-command] 'undefined boon-command-map)
-  (bind-key "SPC" #'consult-isearch-history boon-forward-search-map)
+  (bind-key "SPC" #'consult-line boon-forward-search-map)
   (bind-key "C-k" #'boon-set-command-state boon-insert-map)
   (unbind-key "j" boon-command-map)
   )
@@ -216,6 +216,8 @@
       )
     )
   (setq completion-in-region-function #'ttuegel/completion-with-vertico)
+
+  (bind-key [remap isearch-edit-string] #'consult-isearch-history isearch-mode-map)
   )
 
 
