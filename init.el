@@ -484,6 +484,10 @@
   (setq lsp-haskell-diagnostics-on-change nil)
   )
 
+;;; Eglot
+
+(use-package eglot)
+
 
 ;;; Haskell
 (defun ttuegel/set-haskell-mode-whitespace-style ()
