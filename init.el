@@ -439,16 +439,12 @@
   :hook (lsp-completion-mode . ttuegel/lsp-completion-mode-setup)
   :custom (lsp-auto-configure t)
   :custom (lsp-diagnostic-package :flycheck)
-  ;; :custom (lsp-enable-file-watchers nil "Disable file watchers (slow).")
   :custom (lsp-eldoc-enable-hover nil "Disable hover info in eldoc (slow).")
   :custom (lsp-headerline-breadcrumb-enable nil "Do not clutter the headerline with breadcrumbs.")
   :custom (lsp-modeline-diagnostics-enable nil "Do not display diagnostics on the modeline (duplicates Flycheck).")
   :custom (lsp-modeline-code-actions-enable nil "Do not clutter the modeline with code actions.")
-  :custom (lsp-enable-symbol-highlighting nil "Do not highlight references of the symbol at point (slow).")
   :custom (lsp-progress-via-spinner nil "Do not clutter the modeline with the slow spinner.")
   :custom (lsp-lens-enable nil "Do not clutter the buffer with code lens.")
-  :custom (lsp-progress-function 'ignore)
-  :custom (lsp-enable-file-watchers nil)
   )
 
 (use-package lsp-ui
@@ -464,9 +460,6 @@
 
 (use-package lsp-haskell
   :defer ; Loaded automatically by lsp-mode.
-  :config
-  ;; Generate diagnostics only when a file is saved.
-  (setq lsp-haskell-diagnostics-on-change nil)
   )
 
 ;;; Eglot
