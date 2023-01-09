@@ -72,16 +72,6 @@
   ;; Blinking should be reserved for eyelids and indicators that require immediate attention.
   (blink-cursor-mode -1)
 
-  ;; Stop `split-window-sensibly' from gerrymandering.
-  (defun window-splittable-p (window &optional horizontal)
-    "Return non-nil if `split-window-sensibly' may split WINDOW.  Optional argument HORIZONTAL nil or omitted means check whether `split-window-sensibly' may split WINDOW vertically.  HORIZONTAL non-nil means check whether WINDOW may be split horizontally."
-    (let* ((width-px (window-size window t t))
-           (height-px (window-size window nil t))
-           (is-wider (>= width-px height-px))
-           (width-cells (window-size window t))
-           (is-wide-enough (>= width-cells 168)))
-      (if horizontal (and is-wider is-wide-enough) (not is-wider))))
-
   ;; Ignore common extensions.
   (add-to-list 'completion-ignored-extensions ".elc")
   (add-to-list 'completion-ignored-extensions ".hi")
