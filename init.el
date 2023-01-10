@@ -164,6 +164,8 @@
   (bind-key "C-k" #'boon-set-command-state boon-insert-map)
   (unbind-key "j" boon-command-map)
 
+  (bind-key "g" #'consult-goto-line boon-goto-map)
+
   (bind-key "n" #'indent-rigidly-right indent-rigidly-map)
   (bind-key "t" #'indent-rigidly-left indent-rigidly-map)
   )
