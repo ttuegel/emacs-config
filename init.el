@@ -447,6 +447,7 @@
   :custom (lsp-modeline-code-actions-enable nil "Do not clutter the modeline with code actions.")
   :custom (lsp-progress-via-spinner nil "Do not clutter the modeline with the slow spinner.")
   :custom (lsp-lens-enable nil "Do not clutter the buffer with code lens.")
+  :custom (lsp-enable-file-watchers nil "Do not watch excess files (slow).")
   )
 
 (use-package lsp-ui
