@@ -432,6 +432,7 @@
 (use-package lsp-mode
   :commands lsp
   :hook (lsp-mode . lsp-enable-which-key-integration)
+  :hook (haskell-mode . lsp)
   :diminish lsp-mode
   :custom (lsp-completion-provider :none "Using orderless.")
   :init
