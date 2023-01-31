@@ -113,6 +113,10 @@
 (show-paren-mode t)
 
 
+;;; expand-region
+(use-package expand-region)
+
+
 ;;; doom-modeline
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
