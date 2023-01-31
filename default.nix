@@ -38,6 +38,7 @@ let
     doom-modeline
     editorconfig
     embark
+    expand-region
     eyebrowse
     fish-mode
     flycheck
@@ -63,6 +64,7 @@ let
     orderless
     org
     projectile
+    puni
     rainbow-delimiters
     ripgrep
     rust-mode
