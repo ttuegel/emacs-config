@@ -163,7 +163,7 @@
   :config
   (require 'boon-dvorak)
 
-  (bind-key [remap self-insert-command] 'undefined boon-command-map)
+  (bind-key [remap self-insert-command] 'ignore boon-command-map)
   (bind-key "SPC" #'consult-line boon-forward-search-map)
   (bind-key "C-k" #'boon-set-command-state boon-insert-map)
   (unbind-key "j" boon-command-map)
