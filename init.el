@@ -474,6 +474,7 @@
 
 (use-package lsp-haskell
   :defer ; Loaded automatically by lsp-mode.
+  :custom (lsp-haskell-check-project nil)
   )
 
 ;;; Eglot
