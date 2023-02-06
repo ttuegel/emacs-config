@@ -38,6 +38,7 @@ let
     doom-modeline
     editorconfig
     embark
+    embark-consult
     expand-region
     eyebrowse
     fish-mode
