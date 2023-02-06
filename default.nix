@@ -31,6 +31,7 @@ let
     cdlatex
     company-math
     consult
+    consult-lsp
     deadgrep
     dhall-mode
     diminish

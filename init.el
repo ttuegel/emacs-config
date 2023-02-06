@@ -219,6 +219,11 @@
   (bind-key [remap isearch-edit-string] #'consult-isearch-history isearch-mode-map)
   )
 
+(use-package consult-lsp
+  :after (lsp)
+  :bind (:map lsp-mode-map ([remap xref-find-apropos] . consult-lsp-symbols))
+  )
+
 
 ;;; Orderless
 
