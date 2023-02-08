@@ -91,17 +91,19 @@
 
 (load-theme 'modus-operandi t)
 
+
+;;; enhanced-relative-indentation
+
+(use-package eri
+  :config
+  (add-to-list 'indent-line-ignored-functions #'eri-indent)
+  )
+
+
 ;;; electric-indent
 ;; Enable `electric-indent-mode' only in select major modes.
 (electric-indent-mode -1)
 (add-hook 'emacs-lisp-mode-hook #'electric-indent-local-mode)
-
-
-;;; smartparens
-(use-package smartparens
-  :diminish
-  ;; :hook (prog-mode . smartparens-mode)
-  )
 
 ;;; puni
 
@@ -483,17 +485,18 @@
 
 
 ;;; Haskell
-(defun ttuegel/set-haskell-mode-whitespace-style ()
-  "Set up `whitespace-style' for `haskell-mode'."
-  (setq-local whitespace-style '(face lines trailing tabs)))
 
 (use-package haskell-mode
   :hook (haskell-mode . rainbow-delimiters-mode)
   :hook (haskell-mode . display-line-numbers-mode)
-  :hook (haskell-mode . ttuegel/set-haskell-mode-whitespace-style)
+  :hook (haskell-mode . (lambda nil (haskell-indentation-mode -1)))
   :config
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
+  (setq-local indent-line-function #'eri-indent)
+  (bind-key "TAB" #'eri-indent haskell-mode-map)
+  (bind-key "<backtab>" #'eri-indent-reverse haskell-mode-map)
+  (bind-key "RET" #'electric-newline-and-maybe-indent haskell-mode-map)
   )
 
 

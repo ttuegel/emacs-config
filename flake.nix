@@ -24,6 +24,7 @@
           cargo
           cdlatex
           consult
+          consult-lsp
           deadgrep
           dhall-mode
           diminish
@@ -32,6 +33,9 @@
           editorconfig
           eglot
           embark
+          embark-consult
+          eri
+          expand-region
           eyebrowse
           fish-mode
           flycheck
@@ -42,7 +46,6 @@
           helpful
           highlight-indentation
           idris-mode
-          imenu-anywhere
           kotlin-mode
           lsp-haskell
           lsp-java
@@ -62,7 +65,6 @@
           ripgrep
           rust-mode
           scala-mode
-          smartparens
           swift-mode
           typescript-mode
           use-package
