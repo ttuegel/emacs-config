@@ -2,6 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 
+;;; package.el
+;; Disable package.el in favor of straight.el
+(setq package-enable-at-startup nil)
+
 ;;; Garbage collection
 ;; Increase the GC threshold (bytes) for faster startup.
 ;; The default is 800 kilobytes.

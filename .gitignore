@@ -23,3 +23,6 @@ projects
 /var/
 /undo-tree/
 /eln-cache/
+/straight/build-cache.el
+/straight/build/
+/straight/repos/

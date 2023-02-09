@@ -2,7 +2,24 @@
 ;;; Commentary:
 ;;; Code:
 
-(eval-when-compile (require 'use-package))
+;;; straight.el -- bootstrap
+
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(setq straight-use-package-by-default t)
+
+(straight-use-package 'use-package)
 
 (defun ttuegel/emacs-init-time-message ()
   "Display the Emacs startup time in *Messages*."
@@ -119,15 +136,16 @@
 (use-package expand-region)
 
 
+;;; all-the-icons
+(use-package all-the-icons
+  :if (display-graphic-p))
+
+
 ;;; doom-modeline
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
-  :custom ((doom-modeline-height (max (ceiling (* (frame-char-height) all-the-icons-scale-factor))
-                                      30
-                                      )
-                                 )
-           (doom-modeline-bar-width 8)
-           )
+  :custom ((doom-modeline-height 48)
+           (doom-modeline-bar-width 8))
   :custom (doom-modeline-minor-modes t)
   :custom (doom-modeline-buffer-file-name-style 'truncate-except-project)
   :config
@@ -139,7 +157,6 @@
     (doom-modeline-set-modeline 'ttuegel/main 'default)
     )
   (add-hook 'doom-modeline-mode-hook #'ttuegel/set-default-modeline)
-
   )
 
 
@@ -160,6 +177,7 @@
 
 ;;; boon
 (use-package boon
+  :diminish boon-local-mode
   :init
   (boon-mode)
   :config
@@ -178,6 +196,21 @@
 
 
 ;;; Vertico
+
+(straight-use-package
+ '(vertico
+   :files (:defaults "extensions/*")
+   :includes (vertico-buffer
+              vertico-directory
+              vertico-flat
+              vertico-indexed
+              vertico-mouse
+              vertico-quick
+              vertico-repeat
+              vertico-reverse)
+   )
+ )
+
 (use-package vertico
   :bind (:map vertico-map
               ("C-f" . vertico-insert)
@@ -186,11 +219,21 @@
               ("M-t" . vertico-directory-up)
               )
   :custom (vertico-cycle t)
+  :init (vertico-mode 1)
   :config
   (require 'vertico-directory)
   )
 
-(vertico-mode 1)
+(use-package vertico-directory
+  :after vertico
+  ;; More convenient directory navigation commands
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  ;; Tidy shadowed file names
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
+  )
 
 ;; Completion with Vertico
 (bind-key "C-f" #'completion-at-point)
@@ -312,7 +355,9 @@
 ;;; flycheck
 
 (use-package flycheck
-  :hook (emacs-lisp-mode . flycheck-mode))
+  :hook (emacs-lisp-mode . flycheck-mode)
+  :diminish
+  )
 
 
 ;;; Git
@@ -330,12 +375,15 @@
 
 ;;; TeX
 (use-package tex
+  :straight auctex
   :commands TeX-PDF-mode
+  :commands font-latex-setup
   :defines
   TeX-save-query
   LaTeX-item-indent
   LaTeX-indent-level
   LaTeX-label-alist
+  :hook (TeX-mode . font-latex-setup)
   :config
   ;; Recognize style files multi-file documents
   (setq TeX-auto-save t)
@@ -386,13 +434,7 @@
      (output-dvi "xdvi")
      (output-pdf "Okular")
      (output-html "xdg-open")))
-  )
 
-(use-package font-latex
-  :after tex
-  :commands font-latex-setup
-  :hook (TeX-mode . font-latex-setup)
-  :config
   ;; Disable Unicode fontification
   (setq font-latex-fontify-script nil)
   (setq font-latex-fontify-sectioning 'color)
@@ -444,7 +486,7 @@
 (use-package lsp-mode
   :commands lsp
   :hook (lsp-mode . lsp-enable-which-key-integration)
-  :hook (haskell-mode . lsp)
+  ;; :hook (haskell-mode . lsp)
   :diminish lsp-mode
   :custom (lsp-completion-provider :none "Using orderless.")
   :init
@@ -481,7 +523,14 @@
 
 ;;; Eglot
 
-(use-package eglot)
+(use-package eglot
+  :config
+  (add-to-list 'eglot-server-programs '(haskell-mode . ("halfsp")))
+  )
+
+(use-package flycheck-eglot
+  :init (global-flycheck-eglot-mode 1)
+  )
 
 
 ;;; Haskell
@@ -508,6 +557,7 @@
 
 ;;; XML
 (use-package nxml-mode
+  :straight nil ; ships with Emacs
   :mode "\\.rng\\'"
   )
 
@@ -557,6 +607,8 @@
   )
 
 (use-package org-agenda
+  :after org
+  :straight nil ; ships with org
   :defines
   org-agenda-ndays
   :bind (:map org-prefix-map ("a" . org-agenda))
@@ -588,6 +640,8 @@
   )
 
 (use-package org-capture
+  :after org
+  :straight nil ; ships with org
   :commands org-capture
   :init
   (bind-key "c" #'org-capture org-prefix-map)
@@ -635,6 +689,7 @@ This is useful, e.g., for use with function `visual-line-mode'."
 
 ;;; pdftotext
 (use-package pdftotext
+  :straight nil
   :load-path "./lisp"
   :defines pdftotext-insert-text)
 
@@ -712,6 +767,10 @@ This is useful, e.g., for use with function `visual-line-mode'."
 ;;; Garbage collection
 ;; Make GC pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 4 1024 1024))
+
+
+;;; Customize
+(load (expand-file-name "custom.el" user-emacs-directory))
 
 (provide 'init)
 ;;; init.el ends here
