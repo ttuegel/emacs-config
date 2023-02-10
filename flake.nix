@@ -7,6 +7,9 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system: {
       packages.default = self.packages.${system}.emacs;
-      packages.emacs = with import nixpkgs { inherit system; }; emacs.override { nativeComp = false; };
+      packages.emacs = with import nixpkgs { inherit system; };
+        emacs.overrideAttrs (drv:
+          drv // { dontStrip = true; }
+        );
     });
 }
