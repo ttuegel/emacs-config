@@ -548,6 +548,9 @@
   (bind-key "RET" #'electric-newline-and-maybe-indent haskell-mode-map)
   )
 
+(use-package yesod-mode
+  :straight (yesod-mode :type git :host github :repo "lfborjas/yesod-mode"))
+
 
 ;;; Dhall
 (use-package dhall-mode
