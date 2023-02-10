@@ -145,7 +145,9 @@
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
   :custom ((doom-modeline-height 48)
-           (doom-modeline-bar-width 8))
+           (doom-modeline-bar-width 8)
+           (doom-modeline-icon nil)
+           )
   :custom (doom-modeline-minor-modes t)
   :custom (doom-modeline-buffer-file-name-style 'truncate-except-project)
   :config
