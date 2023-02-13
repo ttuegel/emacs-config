@@ -144,8 +144,7 @@
 ;;; doom-modeline
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
-  :custom ((doom-modeline-height 48)
-           (doom-modeline-bar-width 8)
+  :custom ((doom-modeline-bar-width 8)
            (doom-modeline-icon nil)
            )
   :custom (doom-modeline-minor-modes t)
