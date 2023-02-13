@@ -8,7 +8,7 @@
  ("bui.el" . "f3a137628e112a91910fd33c0cff0948fa58d470")
  ("cargo.el" . "225fdb846c702a193e58a98c1585bb3586a9aa86")
  ("cfrs" . "f3a21f237b2a54e6b9f8a420a9da42b4f0a63121")
- ("compat" . "2bedcb5ea91914e75d4905bc53e537b33f8f51e9")
+ ("compat" . "240799cf4f03ba0d9e8e277de1e920f8b077d725")
  ("consult" . "ef5a4dd28a0f5897ff26d93087d82651c86daccb")
  ("consult-lsp" . "f8db3252c0daa41225ba4ed1c0d178b281cd3e90")
  ("dap-mode" . "c72ac1b1a5811cfda3c6740bcf24c67222b6c840")
@@ -85,5 +85,6 @@
  ("xref" . "afeb8b5aedafacbe3f474f73b6c388ccd2bdf67c")
  ("yaml-mode" . "3fcb36d6039bef57e2a0f6e24c51f623c0bf5fb7")
  ("yaml.el" . "73fde9d8fbbaf2596449285df9eb412ae9dd74d9")
- ("yasnippet" . "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6"))
+ ("yasnippet" . "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6")
+ ("yesod-mode" . "d81f82f89cbe6996b1871177b67d2ec890b28f87"))
 :gamma
