@@ -775,6 +775,17 @@ This is useful, e.g., for use with function `visual-line-mode'."
   )
 
 
+;;; xterm-color
+
+(use-package xterm-color
+  :init
+  (add-to-list 'compilation-environment "TERM=xterm")
+  (defun ttuegel/advice-compilation-filter (f proc string)
+    (funcall f proc (xterm-color-filter string)))
+  (advice-add 'compilation-filter :around #'ttuegel/advice-compilation-filter)
+  )
+
+
 ;;; Garbage collection
 ;; Make GC pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 4 1024 1024))

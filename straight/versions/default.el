@@ -83,6 +83,7 @@
  ("vertico" . "ac002c6e457c66ba30691d57def011a6dad6949f")
  ("with-editor" . "391e76a256aeec6b9e4cbd733088f30c677d965b")
  ("xref" . "afeb8b5aedafacbe3f474f73b6c388ccd2bdf67c")
+ ("xterm-color" . "1a4012854c69a5cdaeb5a73d2ad705011892fca3")
  ("yaml-mode" . "3fcb36d6039bef57e2a0f6e24c51f623c0bf5fb7")
  ("yaml.el" . "73fde9d8fbbaf2596449285df9eb412ae9dd74d9")
  ("yasnippet" . "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6")
