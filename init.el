@@ -2,6 +2,13 @@
 ;;; Commentary:
 ;;; Code:
 
+;;; native-compile
+;;
+;; Prevent certain packages from being native-compiled.
+(when (featurep 'native-compile)
+  (add-to-list 'native-comp-deferred-compilation-deny-list "compat")
+  )
+
 ;;; straight.el -- bootstrap
 
 (defvar bootstrap-version)
