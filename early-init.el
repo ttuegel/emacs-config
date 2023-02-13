@@ -18,7 +18,7 @@
 ;;; Native compilation
 (when (featurep 'native-compile)
   ;; Silence disruptive compiler warnings
-  (setq native-comp-async-report-warnings-errors nil)
+  (setq native-comp-async-report-warnings-errors 'silent)
 
   ;; Compile asynchronously
   (setq native-comp-deferred-compilation t)
