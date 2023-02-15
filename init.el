@@ -203,6 +203,7 @@
 
   (bind-key "p" #'boon-splice boon-command-map)
   (bind-key "P" #'yank-pop boon-command-map)
+  (unbind-key "C-k")
 
   (bind-key "k" #'boon-take-region boon-command-map)
   (bind-key "K" #'boon-treasure-region boon-command-map)
