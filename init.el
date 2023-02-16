@@ -199,14 +199,18 @@
   (unbind-key "j" boon-command-map)
 
   (bind-key "u" #'undo boon-command-map)
-  (bind-key "U" #'redo boon-command-map)
+  (bind-key "U" #'undo-redo boon-command-map)
+  (unbind-key "-" boon-command-map)
+  (unbind-key "C-M-_")
 
   (bind-key "p" #'boon-splice boon-command-map)
   (bind-key "P" #'yank-pop boon-command-map)
-  (unbind-key "C-k")
 
   (bind-key "k" #'boon-take-region boon-command-map)
   (bind-key "K" #'boon-treasure-region boon-command-map)
+  (unbind-key "C-k")
+  (unbind-key "e" boon-command-map)
+  (unbind-key "E" boon-command-map)
 
   (bind-key "o" ttuegel/boon-open-map boon-command-map)
   (bind-key "t" #'boon-set-insert-like-state ttuegel/boon-open-map)
