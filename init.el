@@ -204,8 +204,6 @@
 
   (bind-key "RET" 'ignore boon-command-map)
 
-  (bind-key "SPC" #'consult-line boon-forward-search-map)
-
   (bind-key "j" 'ignore boon-command-map)
 
   (bind-key "u" #'undo boon-command-map)
