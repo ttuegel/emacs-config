@@ -177,16 +177,28 @@
 
 
 ;;; boon
-(defvar ttuegel/boon-open-map (make-sparse-keymap)
-  "Keymap for various open commands.")
-
 (straight-use-package
  '(boon :type git :host github :repo "ttuegel/boon"))
 
 (use-package boon
   :diminish boon-local-mode
-  :init
-  (boon-mode)
+  :preface
+  (defvar boon-enter-map)
+  (define-prefix-command 'boon-enter-map)
+
+  (defun boon-insert-end-of-line ()
+    "Go to the end of the current line and enter insert state."
+    (interactive)
+    (end-of-line)
+    (boon-set-insert-like-state))
+
+  (defun boon-insert-beginning-of-line ()
+    "Go to the end of the current line and enter insert state."
+    (interactive)
+    (beginning-of-line)
+    (boon-set-insert-like-state))
+
+  :init (boon-mode)
   :config
   (require 'boon-dvorak)
 
@@ -194,13 +206,11 @@
 
   (bind-key "SPC" #'consult-line boon-forward-search-map)
 
-  (bind-key "C-o" #'boon-set-command-state boon-insert-map)
-
-  (unbind-key "j" boon-command-map)
+  (bind-key "j" 'ignore boon-command-map)
 
   (bind-key "u" #'undo boon-command-map)
   (bind-key "U" #'undo-redo boon-command-map)
-  (unbind-key "-" boon-command-map)
+  (bind-key "-" 'ignore boon-command-map)
   (unbind-key "C-M-_")
 
   (bind-key "p" #'boon-splice boon-command-map)
@@ -209,14 +219,20 @@
   (bind-key "k" #'boon-take-region boon-command-map)
   (bind-key "K" #'boon-treasure-region boon-command-map)
   (unbind-key "C-k")
-  (unbind-key "e" boon-command-map)
-  (unbind-key "E" boon-command-map)
+  (bind-key "e" 'ignore boon-command-map)
+  (bind-key "E" 'ignore boon-command-map)
 
-  (bind-key "o" ttuegel/boon-open-map boon-command-map)
-  (bind-key "t" #'boon-set-insert-like-state ttuegel/boon-open-map)
-  (bind-key "g" #'boon-open-line-and-insert ttuegel/boon-open-map)
-  (bind-key "l" #'boon-open-next-line-and-insert ttuegel/boon-open-map)
-  (bind-key "o" #'boon-substitute-region ttuegel/boon-open-map)
+  (bind-key "C-e" #'boon-set-command-state boon-insert-map)
+  (bind-key "e" #'boon-enter-map boon-command-map)
+  (bind-key "t" #'boon-set-insert-like-state boon-enter-map)
+  (bind-key "c" #'boon-open-line-and-insert boon-enter-map)
+  (bind-key "r" #'boon-open-next-line-and-insert boon-enter-map)
+  (bind-key "e" #'boon-substitute-region boon-enter-map)
+  (bind-key "E" #'boon-set-insert-like-state boon-command-map)
+  (bind-key "g" #'boon-insert-beginning-of-line boon-enter-map)
+  (bind-key "l" #'boon-insert-end-of-line boon-enter-map)
+  (bind-key "o" 'ignore boon-command-map)
+  (bind-key "O" 'ignore boon-command-map)
 
   (bind-key "g" #'consult-goto-line boon-goto-map)
 
@@ -363,8 +379,8 @@
  ("n" . windmove-right)
  ("_" . split-window-below)
  ("|" . split-window-right)
- ("e" . delete-window)
- ("E" . delete-other-windows)
+ ("k" . delete-window)
+ ("K" . delete-other-windows)
  )
 
 
