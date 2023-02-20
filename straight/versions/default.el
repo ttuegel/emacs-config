@@ -4,7 +4,7 @@
  ("auctex" . "3929d5408b1e0d68cadeef7536a26ce29b1d36ea")
  ("auto-compile" . "4cbd304698a897baf438400c9a2b31d3dfb3a7f9")
  ("avy" . "955c8dedd68c74f3cf692c1249513f048518c4c9")
- ("boon" . "775185e56703ac722aeb33991e62744b23b7f13a")
+ ("boon" . "bc035e30697c6f1b527c76d3d3924ac1fbcd7469")
  ("bui.el" . "f3a137628e112a91910fd33c0cff0948fa58d470")
  ("cargo.el" . "225fdb846c702a193e58a98c1585bb3586a9aa86")
  ("cfrs" . "f3a21f237b2a54e6b9f8a420a9da42b4f0a63121")
