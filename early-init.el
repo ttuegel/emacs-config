@@ -2,6 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 
+;;; package.el
+;; Disable package.el in favor of straight.el
+(setq package-enable-at-startup nil)
+
 ;;; Garbage collection
 ;; Increase the GC threshold (bytes) for faster startup.
 ;; The default is 800 kilobytes.
@@ -14,7 +18,7 @@
 ;;; Native compilation
 (when (featurep 'native-compile)
   ;; Silence disruptive compiler warnings
-  (setq native-comp-async-report-warnings-errors nil)
+  (setq native-comp-async-report-warnings-errors 'silent)
 
   ;; Compile asynchronously
   (setq native-comp-deferred-compilation t)

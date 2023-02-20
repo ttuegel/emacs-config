@@ -1,0 +1,2 @@
+#!/bin/sh
+emacs --batch -l ./init.el -f straight-thaw-versions

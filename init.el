@@ -2,7 +2,24 @@
 ;;; Commentary:
 ;;; Code:
 
-(eval-when-compile (require 'use-package))
+;;; straight.el -- bootstrap
+
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(setq straight-use-package-by-default t)
+
+(straight-use-package 'use-package)
 
 (defun ttuegel/emacs-init-time-message ()
   "Display the Emacs startup time in *Messages*."
@@ -119,14 +136,16 @@
 (use-package expand-region)
 
 
+;;; all-the-icons
+(use-package all-the-icons
+  :if (display-graphic-p))
+
+
 ;;; doom-modeline
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
-  :custom ((doom-modeline-height (max (ceiling (* (frame-char-height) all-the-icons-scale-factor))
-                                      30
-                                      )
-                                 )
-           (doom-modeline-bar-width 8)
+  :custom ((doom-modeline-bar-width 8)
+           (doom-modeline-icon nil)
            )
   :custom (doom-modeline-minor-modes t)
   :custom (doom-modeline-buffer-file-name-style 'truncate-except-project)
@@ -139,7 +158,6 @@
     (doom-modeline-set-modeline 'ttuegel/main 'default)
     )
   (add-hook 'doom-modeline-mode-hook #'ttuegel/set-default-modeline)
-
   )
 
 
@@ -159,16 +177,60 @@
 
 
 ;;; boon
+(straight-use-package
+ '(boon :type git :host github :repo "ttuegel/boon"))
+
 (use-package boon
-  :init
-  (boon-mode)
+  :diminish boon-local-mode
+  :preface
+  (defvar boon-enter-map)
+  (define-prefix-command 'boon-enter-map)
+
+  (defun boon-insert-end-of-line ()
+    "Go to the end of the current line and enter insert state."
+    (interactive)
+    (end-of-line)
+    (boon-set-insert-like-state))
+
+  (defun boon-insert-beginning-of-line ()
+    "Go to the end of the current line and enter insert state."
+    (interactive)
+    (beginning-of-line)
+    (boon-set-insert-like-state))
+
+  :init (boon-mode)
   :config
   (require 'boon-dvorak)
 
-  (bind-key [remap self-insert-command] 'ignore boon-command-map)
-  (bind-key "SPC" #'consult-line boon-forward-search-map)
-  (bind-key "C-k" #'boon-set-command-state boon-insert-map)
-  (unbind-key "j" boon-command-map)
+  (bind-key "RET" 'ignore boon-command-map)
+
+  (bind-key "j" 'ignore boon-command-map)
+
+  (bind-key "u" #'undo boon-command-map)
+  (bind-key "U" #'undo-redo boon-command-map)
+  (bind-key "-" 'ignore boon-command-map)
+  (unbind-key "C-M-_")
+
+  (bind-key "p" #'boon-splice boon-command-map)
+  (bind-key "P" #'yank-pop boon-command-map)
+
+  (bind-key "k" #'boon-take-region boon-command-map)
+  (bind-key "K" #'boon-treasure-region boon-command-map)
+  (unbind-key "C-k")
+  (bind-key "e" 'ignore boon-command-map)
+  (bind-key "E" 'ignore boon-command-map)
+
+  (bind-key "C-e" #'boon-set-command-state boon-insert-map)
+  (bind-key "e" #'boon-enter-map boon-command-map)
+  (bind-key "t" #'boon-set-insert-like-state boon-enter-map)
+  (bind-key "c" #'boon-open-line-and-insert boon-enter-map)
+  (bind-key "r" #'boon-open-next-line-and-insert boon-enter-map)
+  (bind-key "e" #'boon-substitute-region boon-enter-map)
+  (bind-key "E" #'boon-set-insert-like-state boon-command-map)
+  (bind-key "g" #'boon-insert-beginning-of-line boon-enter-map)
+  (bind-key "l" #'boon-insert-end-of-line boon-enter-map)
+  (bind-key "o" 'ignore boon-command-map)
+  (bind-key "O" 'ignore boon-command-map)
 
   (bind-key "g" #'consult-goto-line boon-goto-map)
 
@@ -178,6 +240,21 @@
 
 
 ;;; Vertico
+
+(straight-use-package
+ '(vertico
+   :files (:defaults "extensions/*")
+   :includes (vertico-buffer
+              vertico-directory
+              vertico-flat
+              vertico-indexed
+              vertico-mouse
+              vertico-quick
+              vertico-repeat
+              vertico-reverse)
+   )
+ )
+
 (use-package vertico
   :bind (:map vertico-map
               ("C-f" . vertico-insert)
@@ -186,11 +263,21 @@
               ("M-t" . vertico-directory-up)
               )
   :custom (vertico-cycle t)
+  :init (vertico-mode 1)
   :config
   (require 'vertico-directory)
   )
 
-(vertico-mode 1)
+(use-package vertico-directory
+  :after vertico
+  ;; More convenient directory navigation commands
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  ;; Tidy shadowed file names
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
+  )
 
 ;; Completion with Vertico
 (bind-key "C-f" #'completion-at-point)
@@ -288,10 +375,15 @@
  ("r" . windmove-down)
  ("t" . windmove-left)
  ("n" . windmove-right)
+ ("C" . windmove-swap-states-up)
+ ("R" . windmove-swap-states-down)
+ ("T" . windmove-swap-states-left)
+ ("N" . windmove-swap-states-right)
  ("_" . split-window-below)
  ("|" . split-window-right)
- ("e" . delete-window)
- ("E" . delete-other-windows)
+ ("k" . delete-window)
+ ("K" . delete-other-windows)
+ ("o" . other-window)
  )
 
 
@@ -312,7 +404,9 @@
 ;;; flycheck
 
 (use-package flycheck
-  :hook (emacs-lisp-mode . flycheck-mode))
+  :hook (emacs-lisp-mode . flycheck-mode)
+  :diminish
+  )
 
 
 ;;; Git
@@ -330,12 +424,15 @@
 
 ;;; TeX
 (use-package tex
+  :straight auctex
   :commands TeX-PDF-mode
+  :commands font-latex-setup
   :defines
   TeX-save-query
   LaTeX-item-indent
   LaTeX-indent-level
   LaTeX-label-alist
+  :hook (TeX-mode . font-latex-setup)
   :config
   ;; Recognize style files multi-file documents
   (setq TeX-auto-save t)
@@ -386,13 +483,7 @@
      (output-dvi "xdvi")
      (output-pdf "Okular")
      (output-html "xdg-open")))
-  )
 
-(use-package font-latex
-  :after tex
-  :commands font-latex-setup
-  :hook (TeX-mode . font-latex-setup)
-  :config
   ;; Disable Unicode fontification
   (setq font-latex-fontify-script nil)
   (setq font-latex-fontify-sectioning 'color)
@@ -444,7 +535,7 @@
 (use-package lsp-mode
   :commands lsp
   :hook (lsp-mode . lsp-enable-which-key-integration)
-  :hook (haskell-mode . lsp)
+  ;; :hook (haskell-mode . lsp)
   :diminish lsp-mode
   :custom (lsp-completion-provider :none "Using orderless.")
   :init
@@ -481,7 +572,14 @@
 
 ;;; Eglot
 
-(use-package eglot)
+(use-package eglot
+  :config
+  (add-to-list 'eglot-server-programs '(haskell-mode . ("halfsp")))
+  )
+
+(use-package flycheck-eglot
+  :init (global-flycheck-eglot-mode 1)
+  )
 
 
 ;;; Haskell
@@ -499,6 +597,9 @@
   (bind-key "RET" #'electric-newline-and-maybe-indent haskell-mode-map)
   )
 
+(use-package yesod-mode
+  :straight (yesod-mode :type git :host github :repo "lfborjas/yesod-mode"))
+
 
 ;;; Dhall
 (use-package dhall-mode
@@ -508,6 +609,7 @@
 
 ;;; XML
 (use-package nxml-mode
+  :straight nil ; ships with Emacs
   :mode "\\.rng\\'"
   )
 
@@ -557,6 +659,8 @@
   )
 
 (use-package org-agenda
+  :after org
+  :straight nil ; ships with org
   :defines
   org-agenda-ndays
   :bind (:map org-prefix-map ("a" . org-agenda))
@@ -588,6 +692,8 @@
   )
 
 (use-package org-capture
+  :after org
+  :straight nil ; ships with org
   :commands org-capture
   :init
   (bind-key "c" #'org-capture org-prefix-map)
@@ -635,6 +741,7 @@ This is useful, e.g., for use with function `visual-line-mode'."
 
 ;;; pdftotext
 (use-package pdftotext
+  :straight nil
   :load-path "./lisp"
   :defines pdftotext-insert-text)
 
@@ -709,9 +816,24 @@ This is useful, e.g., for use with function `visual-line-mode'."
   )
 
 
+;;; xterm-color
+
+(use-package xterm-color
+  :init
+  (add-to-list 'compilation-environment "TERM=xterm")
+  (defun ttuegel/advice-compilation-filter (f proc string)
+    (funcall f proc (xterm-color-filter string)))
+  (advice-add 'compilation-filter :around #'ttuegel/advice-compilation-filter)
+  )
+
+
 ;;; Garbage collection
 ;; Make GC pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 4 1024 1024))
+
+
+;;; Customize
+(load (expand-file-name "custom.el" user-emacs-directory))
 
 (provide 'init)
 ;;; init.el ends here
