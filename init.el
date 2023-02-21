@@ -189,13 +189,13 @@
   (defun boon-insert-end-of-line ()
     "Go to the end of the current line and enter insert state."
     (interactive)
-    (end-of-line)
+    (boon-end-of-line)
     (boon-set-insert-like-state))
 
   (defun boon-insert-beginning-of-line ()
     "Go to the end of the current line and enter insert state."
     (interactive)
-    (beginning-of-line)
+    (boon-beginning-of-line)
     (boon-set-insert-like-state))
 
   :init (boon-mode)
