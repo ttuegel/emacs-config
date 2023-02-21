@@ -202,6 +202,7 @@
   :config
   (require 'boon-dvorak)
 
+  (bind-key [remap self-insert-command] 'ignore boon-command-map)
   (bind-key "RET" 'ignore boon-command-map)
 
   (bind-key "j" 'ignore boon-command-map)
