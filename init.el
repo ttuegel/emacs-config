@@ -30,8 +30,10 @@
 ;;; diminish -- hide select minor modes on the modeline
 (use-package diminish)
 
-(diminish 'eldoc-mode)
-
+(use-package eldoc
+  :diminish
+  :custom (eldoc-documentation-stategy 'eldoc-documentation-compose-eagerly)
+  )
 
 ;;; auto-compile -- automatically compile .el files
 (use-package auto-compile
