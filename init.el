@@ -407,8 +407,33 @@
 ;;; flycheck
 
 (use-package flycheck
+  :preface
+  ;; https://www.masteringemacs.org/article/seamlessly-merge-multiple-documentation-sources-eldoc
+  (defun mp-flycheck-eldoc (callback &rest _ignored)
+    "Print flycheck messages at point by calling CALLBACK."
+    (when-let ((flycheck-errors (and flycheck-mode (flycheck-overlay-errors-at (point)))))
+      (mapc
+       (lambda (err)
+         (funcall callback
+           (format "%s: %s"
+                   (let ((level (flycheck-error-level err)))
+                     (pcase level
+                       ('info (propertize "I" 'face 'flycheck-error-list-info))
+                       ('error (propertize "E" 'face 'flycheck-error-list-error))
+                       ('warning (propertize "W" 'face 'flycheck-error-list-warning))
+                       (_ level)))
+                   (flycheck-error-message err))
+           :thing (or (flycheck-error-id err)
+                      (flycheck-error-group err))
+           :face 'font-lock-doc-face))
+       flycheck-errors)))
+
   :hook (emacs-lisp-mode . flycheck-mode)
   :diminish
+  :custom (flycheck-display-errors-function nil "Using eldoc")
+  :custom (flycheck-help-echo-function nil "Using eldoc")
+  :config
+  (add-hook 'eldoc-documentation-functions #'mp-flycheck-eldoc nil t)
   )
 
 
