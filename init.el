@@ -391,7 +391,7 @@
  ("|" . split-window-right)
  ("k" . delete-window)
  ("K" . delete-other-windows)
- ("o" . other-window)
+ ("w" . other-window)
  )
 
 
