@@ -207,6 +207,9 @@
   (bind-key [remap self-insert-command] 'ignore boon-command-map)
   (bind-key "RET" 'ignore boon-command-map)
 
+  (bind-key "q" #'boon-x-map boon-special-map)
+  (unbind-key "x" boon-special-map)
+
   (bind-key "j" 'ignore boon-command-map)
 
   (bind-key "u" #'undo boon-command-map)
