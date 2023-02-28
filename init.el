@@ -200,6 +200,12 @@
     (boon-beginning-of-line)
     (boon-set-insert-like-state))
 
+  (defun boon-special-quit-window ()
+    "Call `quit-window', but only in `boon-special-state'."
+    (interactive)
+    (when boon-special-state
+      (quit-window)))
+
   :init (boon-mode)
   :config
   (require 'boon-dvorak)
@@ -209,6 +215,7 @@
 
   (bind-key "q" #'boon-x-map boon-special-map)
   (unbind-key "x" boon-special-map)
+  (bind-key "q" #'boon-special-quit-window ctl-x-map)
 
   (bind-key "j" 'ignore boon-command-map)
 
