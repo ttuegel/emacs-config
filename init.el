@@ -185,19 +185,11 @@
 (use-package boon
   :diminish boon-local-mode
   :preface
-  (defvar boon-enter-map)
-  (define-prefix-command 'boon-enter-map)
-
-  (defun boon-insert-end-of-line ()
-    "Go to the end of the current line and enter insert state."
+  (defun boon-enter-dwim ()
+    "Enter `boon-insert-state'. Kill the region if it is active."
     (interactive)
-    (boon-end-of-line)
-    (boon-set-insert-like-state))
-
-  (defun boon-insert-beginning-of-line ()
-    "Go to the end of the current line and enter insert state."
-    (interactive)
-    (boon-beginning-of-line)
+    (when (use-region-p)
+      (kill-region (region-beginning) (region-end)))
     (boon-set-insert-like-state))
 
   (defun boon-special-quit-window ()
@@ -234,18 +226,9 @@
   (bind-key "E" 'ignore boon-command-map)
 
   (bind-key "C-e" #'boon-set-command-state boon-insert-map)
-  (bind-key "e" #'boon-enter-map boon-command-map)
-  (bind-key "E" #'boon-set-insert-like-state boon-command-map)
+  (bind-key "e" #'boon-enter-dwim boon-command-map)
   (bind-key "o" 'ignore boon-command-map)
   (bind-key "O" 'ignore boon-command-map)
-
-  (bind-key "t" #'boon-set-insert-like-state boon-enter-map)
-  (bind-key "c" #'boon-open-line-and-insert boon-enter-map)
-  (bind-key "r" #'boon-open-next-line-and-insert boon-enter-map)
-  (bind-key "e" #'boon-set-insert-like-state boon-enter-map)
-  (bind-key "SPC" #'boon-substitute-region boon-enter-map)
-  (bind-key "g" #'boon-insert-beginning-of-line boon-enter-map)
-  (bind-key "l" #'boon-insert-end-of-line boon-enter-map)
 
   (bind-key "g" #'consult-goto-line boon-goto-map)
 
