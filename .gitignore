@@ -26,3 +26,4 @@ projects
 /straight/build-cache.el
 /straight/build/
 /straight/repos/
+/.mc-lists.el
