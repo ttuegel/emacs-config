@@ -861,6 +861,12 @@ This is useful, e.g., for use with function `visual-line-mode'."
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 
 
+;;; envrc
+
+(use-package envrc
+  :init (envrc-global-mode))
+
+
 ;;; Garbage collection
 ;; Make GC pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 4 1024 1024))

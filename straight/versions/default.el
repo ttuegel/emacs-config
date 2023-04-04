@@ -31,6 +31,7 @@
  ("emacs-which-key" . "bd34ede7bf77ad3988330b37207f3978e7342c79")
  ("emacsmirror-mirror" . "cd4fa91f4bedbee337586bac5ae6ac7d05a4e640")
  ("embark" . "846b3fd311d06dd0f9aa20f133907ae10855c9ae")
+ ("envrc" . "1954e8c0b5c8440ea9852eeb7c046a677fa544f6")
  ("epl" . "78ab7a85c08222cd15582a298a364774e3282ce6")
  ("expand-region.el" . "b70feaa644310dc2d599dc277cd20a1f2b6446ac")
  ("external-completion" . "d717c138623aeecc8e0a0312e0576e98604c43f2")
