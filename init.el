@@ -864,7 +864,8 @@ This is useful, e.g., for use with function `visual-line-mode'."
 ;;; envrc
 
 (use-package envrc
-  :init (envrc-global-mode))
+  :init (envrc-global-mode)
+  :diminish)
 
 
 ;;; Garbage collection
