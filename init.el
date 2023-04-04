@@ -648,7 +648,6 @@
   org-clock-clocktable-default-properties
   org-clock-persist
   :hook (org-mode . turn-on-visual-line-mode)
-  :hook (org-mode . turn-on-visual-fill-column-mode)
   :config
   (setq org-directory "~/org")
 
@@ -848,6 +847,18 @@ This is useful, e.g., for use with function `visual-line-mode'."
     (funcall f proc (xterm-color-filter string)))
   (advice-add 'compilation-filter :around #'ttuegel/advice-compilation-filter)
   )
+
+
+;;; visual-fill-column
+
+(use-package visual-fill-column
+  :hook (visual-line-mode . visual-fill-column-mode))
+
+
+;;; adaptive-wrap
+
+(use-package adaptive-wrap
+  :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 
 
 ;;; Garbage collection

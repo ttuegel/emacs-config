@@ -1,4 +1,5 @@
 (("ace-window" . "77115afc1b0b9f633084cf7479c767988106c196")
+ ("adaptive-wrap" . "0d5b4a07de76d87dd64333a566a8a0a845f2b9f0")
  ("agda" . "4f78cac7071f662601c08707e6000ce7e2b5b9f4")
  ("all-the-icons.el" . "d922aff57ac8308d3ed067f9151cc76d342855f2")
  ("auctex" . "2559248316b24fa5e8e7656f3894e4f71d18fc01")
@@ -81,6 +82,7 @@
  ("typescript.el" . "4fcb4594819caf472ae42ea068a1c7795cf07f46")
  ("use-package" . "77945e002f11440eae72d8730d3de218163d551e")
  ("vertico" . "13b57f31c51229015c71c8ae6a1e542b9cf8e746")
+ ("visual-fill-column" . "695a59789209c42fa08a5bce92963ee32f4455be")
  ("with-editor" . "59867aebe16454be4d8c0c858f3b00b8a34f3f61")
  ("xref" . "de81f2facde3790b0075d5174dd06d6c03532c88")
  ("xterm-color" . "2ad407c651e90fff2ea85d17bf074cee2c022912")
