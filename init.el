@@ -126,7 +126,12 @@
 
 ;;; puni
 
-(use-package puni)
+(use-package puni
+  :bind (("C-c (" . puni-wrap-round)
+         ("C-c [" . puni-wrap-square)
+         ("C-c {" . puni-wrap-curly)
+         ("C-c <" . puni-wrap-angle))
+  )
 
 
 ;;; paren
