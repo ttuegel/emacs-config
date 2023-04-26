@@ -84,6 +84,8 @@
            (tab-width 2)
            (indent-tabs-mode nil))
   :custom (max-mini-window-height 0.125)
+  ;; Follow the output in compilation-mode.
+  :custom (compilation-scroll-output t)
   ;; Make scripts executable on save
   :hook (after-save . executable-make-buffer-file-executable-if-script-p)
   :hook (emacs-lisp-mode . display-line-numbers-mode)
