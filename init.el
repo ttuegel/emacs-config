@@ -115,7 +115,9 @@
 
 ;;; enhanced-relative-indentation
 
-(use-package eri
+(use-package eri-mode
+  :straight nil
+  :load-path "~/ttuegel/eri-mode"
   :config
   (add-to-list 'indent-line-ignored-functions #'eri-indent)
   )
@@ -617,14 +619,16 @@
 (use-package haskell-mode
   :hook (haskell-mode . rainbow-delimiters-mode)
   :hook (haskell-mode . display-line-numbers-mode)
-  :hook (haskell-mode . (lambda nil (haskell-indentation-mode -1)))
+  :hook (haskell-mode . (lambda nil
+                          ;; This is sensitive to order: We have to turn off
+                          ;; `haskell-indentation-mode' before we turn on
+                          ;; `eri-mode' so that the former doesn't reverse
+                          ;; changes made by the latter.
+                          (haskell-indentation-mode -1)
+                          (eri-mode)))
   :config
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
-  (setq-local indent-line-function #'eri-indent)
-  (bind-key "TAB" #'eri-indent haskell-mode-map)
-  (bind-key "<backtab>" #'eri-indent-reverse haskell-mode-map)
-  (bind-key "RET" #'electric-newline-and-maybe-indent haskell-mode-map)
   )
 
 (use-package yesod-mode
