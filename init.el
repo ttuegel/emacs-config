@@ -606,7 +606,7 @@
 
 (use-package eglot
   :config
-  (add-to-list 'eglot-server-programs '(haskell-mode . ("halfsp")))
+  (add-to-list 'eglot-server-programs '(haskell-mode . ("static-ls")))
   )
 
 (use-package flycheck-eglot
