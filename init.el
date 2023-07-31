@@ -70,7 +70,6 @@
   :custom ((auto-save-default nil)
            (make-backup-files nil))
   ;; Don't update the X selection from the kill-ring.
-  ;; Like Vim, Evil keeps the X selection in the `=' register.
   :custom (select-enable-clipboard nil)
   ;; Make buffer names more unique
   :custom (uniquify-buffer-name-style 'forward)
@@ -121,6 +120,91 @@
   :config
   (add-to-list 'indent-line-ignored-functions #'eri-indent)
   )
+
+
+;;; System clipboard interaction
+
+(defun ttuegel/clipboard-get-contents ()
+  "Return the contents of the system clipboard as a string."
+  (condition-case nil
+      (cond
+       ((and (fboundp 'window-system) (window-system)
+        (or
+          (and (fboundp 'ns-get-pasteboard)
+            (ns-get-pasteboard))
+          (and (fboundp 'w32-get-clipboard-data)
+               (w32-get-clipboard-data))
+          (and (and (featurep 'mac)
+                 (fboundp 'gui-get-selection))
+            (gui-get-selection 'CLIPBOARD 'NSStringPboardType))
+          (and (and (featurep 'mac)
+                 (fboundp 'x-get-selection))
+            (x-get-selection 'CLIPBOARD 'NSStringPboardType))
+          ;; todo, this should try more than one request type, as in gui--selection-value-internal
+          (and (fboundp 'gui-get-selection)
+            (gui-get-selection 'CLIPBOARD (car x-select-request-type)))
+          ;; todo, this should try more than one request type, as in gui--selection-value-internal
+          (and (fboundp 'x-get-selection)
+            (x-get-selection 'CLIPBOARD (car x-select-request-type))))))
+       (t
+        (error "Clipboard support not available")))
+    (error
+     (condition-case nil
+         (cond
+          ((eq system-type 'darwin)
+           (with-output-to-string
+             (with-current-buffer standard-output
+               (call-process "/usr/bin/pbpaste" nil t nil "-Prefer" "txt"))))
+          ((eq system-type 'cygwin)
+           (with-output-to-string
+             (with-current-buffer standard-output
+               (call-process "getclip" nil t nil))))
+          ((memq system-type '(gnu gnu/linux gnu/kfreebsd))
+           (with-output-to-string
+             (with-current-buffer standard-output
+               (call-process "xsel" nil t nil "--clipboard" "--output"))))
+          (t
+           (error "Clipboard support not available")))
+       (error
+        (error "Clipboard support not available"))))))
+
+(defun ttuegel/clipboard-set-contents (str-val)
+  "Set the contents of the system clipboard to STR-VAL."
+  (cl-callf or str-val "")
+  (cl-assert (stringp str-val) nil "STR-VAL must be a string or nil")
+  (condition-case nil
+      (cond
+        ((and (fboundp 'window-system) (window-system)
+         (or
+           (and (fboundp 'ns-set-pasteboard)
+             (ns-set-pasteboard str-val))
+           (and (fboundp 'w32-set-clipboard-data)
+             (w32-set-clipboard-data str-val))
+           (and (fboundp 'gui-set-selection)
+             (gui-set-selection 'CLIPBOARD str-val))
+           (and (fboundp 'x-set-selection)
+             (x-set-selection 'CLIPBOARD str-val)))))
+        (t
+         (error "Clipboard support not available")))
+    (error
+     (condition-case nil
+         (cond
+           ((eq system-type 'darwin)
+            (with-temp-buffer
+              (insert str-val)
+              (call-process-region (point-min) (point-max) "/usr/bin/pbcopy")))
+           ((eq system-type 'cygwin)
+            (with-temp-buffer
+              (insert str-val)
+              (call-process-region (point-min) (point-max) "putclip")))
+           ((memq system-type '(gnu gnu/linux gnu/kfreebsd))
+            (with-temp-buffer
+              (insert str-val)
+              (call-process-region (point-min) (point-max) "xsel" nil nil nil "--clipboard" "--input")))
+           (t
+            (error "Clipboard support not available")))
+       (error
+        (error "Clipboard support not available"))))))
 
 
 ;;; electric-indent
