@@ -41,6 +41,7 @@
  ("flymake" . "6950c8099e3ee7cafc701b1f86797b2a1b466067")
  ("git-timemachine" . "ac933e5cd29583c131401f3bd991d98129c316df")
  ("gnu-elpa-mirror" . "be1351c478935b8348c19d3197cd5d84330c708d")
+ ("goto-chg" . "278cd3e6d5107693aa2bb33189ca503f22f227d0")
  ("groovy-emacs-modes" . "7b8520b2e2d3ab1d62b35c426e17ac25ed0120bb")
  ("haskell-mode" . "7ef6080c69133b5f2141da356c553b04660a52bd")
  ("helpful" . "6f8991a72c83d904725a9d6c00de2cabbef32de9")

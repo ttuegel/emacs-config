@@ -963,6 +963,11 @@ This is useful, e.g., for use with function `visual-line-mode'."
   :diminish)
 
 
+(use-package goto-chg
+  :bind (:map boon-backward-search-map ("," . goto-last-change))
+  :bind (:map boon-forward-search-map ("." . goto-last-change-reverse)))
+
+
 ;;; Garbage collection
 ;; Make GC pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 4 1024 1024))
