@@ -944,12 +944,6 @@ This is useful, e.g., for use with function `visual-line-mode'."
   )
 
 
-;;; visual-fill-column
-
-(use-package visual-fill-column
-  :hook (visual-line-mode . visual-fill-column-mode))
-
-
 ;;; adaptive-wrap
 
 (use-package adaptive-wrap
