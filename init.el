@@ -701,6 +701,20 @@
 ;;; Haskell
 
 (use-package haskell-mode
+  ;; Use `haskell-compilation-mode' in `ghcid.txt' buffers.
+  :init (autoload #'haskell-compilation-mode "haskell-compile" nil t)
+  :mode ("ghcid\\.txt" . haskell-compilation-mode)
+  ;; Automatically reload `ghcid.txt' when `ghcid' runs.
+  :init (defun ttuegel/ghcid-auto-revert-mode ()
+          "Conditionally enable `auto-revert-mode'."
+          (when (string-equal "ghcid.txt"
+                              (file-name-nondirectory (buffer-file-name)))
+            (auto-revert-mode)
+            (add-hook 'after-revert-hook #'haskell-compilation-mode nil t)
+            )
+          )
+  :hook (haskell-compilation-mode . ttuegel/ghcid-auto-revent-mode)
+
   :hook (haskell-mode . rainbow-delimiters-mode)
   :hook (haskell-mode . display-line-numbers-mode)
   :hook (haskell-mode . (lambda nil
@@ -710,6 +724,7 @@
                           ;; changes made by the latter.
                           (haskell-indentation-mode -1)
                           (eri-mode)))
+  :hook (haskell-mode . (lambda nil (setq-local create-lockfiles nil)))
   :config
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
