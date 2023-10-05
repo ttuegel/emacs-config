@@ -977,6 +977,20 @@ This is useful, e.g., for use with function `visual-line-mode'."
   :bind (:map boon-forward-search-map ("." . goto-last-change-reverse)))
 
 
+(use-package f
+  :init
+  (defun touch ()
+    "Change the timestamp of the file visited by the current buffer."
+    (interactive)
+    (let ((file-name (buffer-file-name)))
+      (when file-name
+        (f-touch file-name)
+        )
+      )
+    )
+  )
+
+
 ;;; Garbage collection
 ;; Make GC pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 4 1024 1024))
