@@ -226,10 +226,9 @@
 (show-paren-mode t)
 
 
-;;; expand-region
-(use-package expand-region)
-
-
+(use-package expand-region
+  :bind ("C-/" . er/expand-region)
+  )
 
 
 ;;; doom-modeline
