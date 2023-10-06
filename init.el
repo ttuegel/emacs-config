@@ -713,12 +713,12 @@ This is used by `modalka-global-mode'."
 ;;; Eglot
 
 (use-package eglot
-  :config
-  (add-to-list 'eglot-server-programs '(haskell-mode . ("static-ls")))
-  )
-
-(use-package flycheck-eglot
-  :init (global-flycheck-eglot-mode 1)
+  :preface
+  (defun mp-eglot-eldoc ()
+    (setq eldoc-documentation-strategy
+            'eldoc-documentation-compose-eagerly))
+  :hook (eglot-managed-mode . mp-eglot-eldoc)
+  :config (add-to-list 'eglot-server-programs '(haskell-mode . ("static-ls")))
   )
 
 
