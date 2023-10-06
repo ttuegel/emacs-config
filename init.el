@@ -48,8 +48,7 @@
   :diminish which-key-mode
   :custom (which-key-idle-delay 0.2)
   :custom (which-key-popup-type 'minibuffer)
-  :init
-  (which-key-mode)
+  :init (which-key-mode)
   )
 
 ;;; Definitions
