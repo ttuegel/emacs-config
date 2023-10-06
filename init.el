@@ -33,6 +33,7 @@
 (use-package eldoc
   :diminish
   :custom (eldoc-documentation-stategy 'eldoc-documentation-compose-eagerly)
+  :custom (eldoc-display-functions '(eldoc-display-in-buffer))
   )
 
 ;;; auto-compile -- automatically compile .el files
