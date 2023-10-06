@@ -230,9 +230,6 @@
 (use-package expand-region)
 
 
-;;; all-the-icons
-(use-package all-the-icons
-  :if (display-graphic-p))
 
 
 ;;; doom-modeline
