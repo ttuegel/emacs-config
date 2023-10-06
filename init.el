@@ -537,12 +537,15 @@ This is used by `modalka-global-mode'."
            :face 'font-lock-doc-face))
        flycheck-errors)))
 
+  (defun mp-flycheck-prefer-eldoc ()
+    (add-hook 'eldoc-documentation-functions #'mp-flycheck-eldoc nil t)
+    (setq eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
+    (setq flycheck-display-errors-function nil)
+    (setq flycheck-help-echo-function nil))
+
+  :hook (flycheck-mode . mp-flycheck-prefer-eldoc)
   :hook (emacs-lisp-mode . flycheck-mode)
   :diminish
-  :custom (flycheck-display-errors-function nil "Using eldoc")
-  :custom (flycheck-help-echo-function nil "Using eldoc")
-  :config
-  (add-hook 'eldoc-documentation-functions #'mp-flycheck-eldoc nil t)
   )
 
 
