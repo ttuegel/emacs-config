@@ -723,19 +723,6 @@ This is used by `modalka-global-mode'."
 
 (use-package haskell-mode
   ;; Use `haskell-compilation-mode' in `ghcid.txt' buffers.
-  :init (autoload #'haskell-compilation-mode "haskell-compile" nil t)
-  :mode ("ghcid\\.txt" . haskell-compilation-mode)
-  ;; Automatically reload `ghcid.txt' when `ghcid' runs.
-  :init (defun ttuegel/ghcid-auto-revert-mode ()
-          "Conditionally enable `auto-revert-mode'."
-          (when (string-equal "ghcid.txt"
-                              (file-name-nondirectory (buffer-file-name)))
-            (auto-revert-mode)
-            (add-hook 'after-revert-hook #'haskell-compilation-mode nil t)
-            )
-          )
-  :hook (haskell-compilation-mode . ttuegel/ghcid-auto-revent-mode)
-
   :hook (haskell-mode . rainbow-delimiters-mode)
   :hook (haskell-mode . display-line-numbers-mode)
   :hook (haskell-mode . (lambda nil
@@ -750,6 +737,21 @@ This is used by `modalka-global-mode'."
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
   )
+
+(autoload #'haskell-compilation-mode "haskell-compile" nil t)
+
+(define-derived-mode haskell-ghcid-mode haskell-compilation-mode "haskell-ghcid"
+  "Major mode for navigating messages in a \"ghcid.txt\" file."
+  (auto-revert-mode)
+  (add-hook 'after-revert-hook #'haskell-ghcid-mode nil t)
+  (goto-char (point-min))
+  (when (looking-at-p "[^[:space:]]")
+    (let ((inhibit-read-only t)) (insert "\n"))
+    (set-buffer-modified-p nil)
+    )
+  )
+
+(add-to-list 'auto-mode-alist '("ghcid\\.txt\\'" . haskell-ghcid-mode))
 
 (use-package yesod-mode
   :straight (yesod-mode :type git :host github :repo "lfborjas/yesod-mode"))
