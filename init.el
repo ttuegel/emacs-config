@@ -266,62 +266,94 @@
 (bind-key "C-h K" #'describe-keymap)
 
 
-;;; boon
-(straight-use-package
- '(boon :type git :host github :repo "ttuegel/boon"))
-
-(use-package boon
-  :diminish boon-local-mode
-  :preface
-  (defun boon-enter-dwim ()
-    "Enter `boon-insert-state'. Kill the region if it is active."
+(use-package modalka
+  :bind (("C-<return>" . modalka-mode))
+  :init (modalka-global-mode)
+  :init (setq-default cursor-type '(bar . 3))
+  :init
+  (defun open-insert-mode nil
+    "Call `open-line' before exiting `modalka-mode'."
     (interactive)
-    (when (use-region-p)
-      (kill-region (region-beginning) (region-end)))
-    (boon-set-insert-like-state))
-
-  (defun boon-special-quit-window ()
-    "Call `quit-window', but only in `boon-special-state'."
+    (when (region-active-p) (kill-region nil nil (car (region-bounds))))
+    (open-line 1)
+    (modalka-mode -1)
+    )
+  (defun enter-insert-mode nil
+    "Exit `modalka-mode'. If the region is active, kill it."
     (interactive)
-    (when boon-special-state
-      (quit-window)))
-
-  :init (boon-mode)
+    (when (region-active-p) (kill-region nil nil (car (region-bounds))))
+    (modalka-mode -1)
+    )
   :config
-  (require 'boon-dvorak)
+  (require 's)
+  (defun ttuegel/modalka-exclude-mode (mode)
+    "Exclude MODE from `modalka-global-mode'."
+    (add-to-list 'modalka-excluded-modes mode)
+    (add-hook (intern (s-concat (symbol-name mode) "-hook")) (lambda nil (setq-local cursor-type 'box)))
+    )
+  (ttuegel/modalka-exclude-mode 'special-mode)
+  (ttuegel/modalka-exclude-mode 'dired-mode)
+  (ttuegel/modalka-exclude-mode 'compilation-mode)
+  :bind (:map modalka-mode-map
+              ("c" . previous-line)
+              ("C" . backward-paragraph)
+              ("r" . next-line)
+              ("R" . forward-paragraph)
+              ("h" . puni-backward-sexp-or-up-list)
+              ("t" . backward-char)
+              ("n" . forward-char)
+              ("s" . puni-forward-sexp-or-up-list)
+              ("g" . beginning-of-visual-line)
+              ("l" . end-of-visual-line)
+              ("<return>" . enter-insert-mode)
+              ("C-<return>" . open-insert-mode)
+              ("k" . kill-region)
+              ("K" . copy-region-as-kill)
+              ("p" . yank)
+              ("P" . yank-from-kill-ring)
+              ("SPC" . set-mark-command)
+              ("u" . undo)
+              ("U" . undo-redo)
+              )
+  :config
+  (bind-key [remap self-insert-command] 'ignore modalka-mode-map)
+  (bind-key "<backspace>" 'ignore modalka-mode-map)
+  (bind-key "q" ctl-x-map modalka-mode-map)
+  (bind-key "i" goto-map modalka-mode-map)
+  :config (setq modalka-cursor-type 'box)
+  )
 
-  (bind-key [remap self-insert-command] 'ignore boon-command-map)
-  (bind-key "RET" 'ignore boon-command-map)
+(bind-key "C-q" ctl-x-map)
+(bind-key "x" #'execute-extended-command ctl-x-map)
+(bind-key "q" #'quit-window ctl-x-map)
 
-  (bind-key "q" #'boon-x-map boon-special-map)
-  (unbind-key "x" boon-special-map)
-  (bind-key "q" #'boon-special-quit-window ctl-x-map)
+(with-eval-after-load "simple"
+  (bind-key "q" ctl-x-map special-mode-map)
+  )
 
-  (bind-key "j" 'ignore boon-command-map)
+(with-eval-after-load "dired"
+  (bind-key "q" ctl-x-map dired-mode-map)
+  )
 
-  (bind-key "u" #'undo boon-command-map)
-  (bind-key "U" #'undo-redo boon-command-map)
-  (bind-key "-" 'ignore boon-command-map)
-  (unbind-key "C-M-_")
+(with-eval-after-load "compile"
+  (bind-key "q" ctl-x-map compilation-mode-map)
+  )
 
-  (bind-key "p" #'boon-splice boon-command-map)
-  (bind-key "P" #'yank-pop boon-command-map)
+(with-eval-after-load "magit-mode"
+  (unbind-key "q" magit-mode-map)
+  )
 
-  (bind-key "k" #'boon-take-region boon-command-map)
-  (bind-key "K" #'boon-treasure-region boon-command-map)
-  (unbind-key "C-k")
-  (bind-key "e" 'ignore boon-command-map)
-  (bind-key "E" 'ignore boon-command-map)
+(with-eval-after-load "modalka"
+  (defun modalka--maybe-activate ()
+  "Activate `modalka-mode' in the current buffer if it is allowed.
 
-  (bind-key "C-e" #'boon-set-command-state boon-insert-map)
-  (bind-key "e" #'boon-enter-dwim boon-command-map)
-  (bind-key "o" 'ignore boon-command-map)
-  (bind-key "O" 'ignore boon-command-map)
+The function does not active the mode in the minibuffer if the
+major mode is in `modalka-excluded-modes'.
 
-  (bind-key "g" #'consult-goto-line boon-goto-map)
-
-  (bind-key "n" #'indent-rigidly-right indent-rigidly-map)
-  (bind-key "t" #'indent-rigidly-left indent-rigidly-map)
+This is used by `modalka-global-mode'."
+  (unless (or (minibufferp)
+              (apply #'derived-mode-p modalka-excluded-modes))
+    (modalka-mode 1)))
   )
 
 
