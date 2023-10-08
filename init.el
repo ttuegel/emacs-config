@@ -979,10 +979,13 @@ This is useful, e.g., for use with function `visual-line-mode'."
 
 (use-package xterm-color
   :init
-  (add-to-list 'compilation-environment "TERM=xterm")
   (defun ttuegel/advice-compilation-filter (f proc string)
-    (funcall f proc (xterm-color-filter string)))
-  (advice-add 'compilation-filter :around #'ttuegel/advice-compilation-filter)
+    (funcall f proc (xterm-color-filter string))
+    )
+  (with-eval-after-load "compile"
+    (add-to-list 'compilation-environment "TERM=xterm")
+    (advice-add 'compilation-filter :around #'ttuegel/advice-compilation-filter)
+    )
   )
 
 
