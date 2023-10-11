@@ -393,7 +393,6 @@
   (setq completion-in-region-function #'ttuegel/completion-with-vertico)
 
   (bind-key [remap isearch-edit-string] #'consult-isearch-history isearch-mode-map)
-  (bind-key "i" #'consult-imenu goto-map)
   )
 
 (use-package consult-lsp
@@ -428,6 +427,13 @@
 (use-package deadgrep
   :defer
   )
+
+
+(bind-keys
+  :map boon-goto-map
+  ("i" . consult-imenu)
+  ("I" . consult-imenu-multi)
+)
 
 
 ;;; Buffers
