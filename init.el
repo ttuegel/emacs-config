@@ -357,14 +357,6 @@ This is used by `modalka-global-mode'."
     (modalka-mode 1)))
   )
 
-(setq indent-rigidly-map (make-sparse-keymap))
-(bind-keys :map indent-rigidly-map
-           ("t" . indent-rigidly-left)
-           ("n" . indent-rigidly-right)
-           ("TAB" . indent-rigidly-right)
-           ("h" . indent-rigidly-left-to-tab-stop)
-           ("s" . indent-rigidly-right-to-tab-stop)
-           )
 
 ;;; Vertico
 
