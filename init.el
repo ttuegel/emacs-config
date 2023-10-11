@@ -266,12 +266,18 @@
 
 (bind-key "C-h K" #'describe-keymap)
 
-
 (use-package modalka
   :bind (("C-<return>" . modalka-mode))
   :init (modalka-global-mode)
   :init (setq-default cursor-type '(bar . 3))
   :init
+  (defun quiet-modalka-mode (&rest args)
+    "Toggle `modalka-mode' quietly, i.e. print no messages.
+
+Refer to the documentation of `modalka-mode' for the interpretation of ARGS."
+    (interactive)
+    (apply #'modalka-mode args)
+    )
   (defun open-insert-mode nil
     "Call `open-line' before exiting `modalka-mode'."
     (interactive)
@@ -285,16 +291,6 @@
     (when (region-active-p) (kill-region nil nil (car (region-bounds))))
     (modalka-mode -1)
     )
-  :config
-  (require 's)
-  (defun ttuegel/modalka-exclude-mode (mode)
-    "Exclude MODE from `modalka-global-mode'."
-    (add-to-list 'modalka-excluded-modes mode)
-    (add-hook (intern (s-concat (symbol-name mode) "-hook")) (lambda nil (setq-local cursor-type 'box)))
-    )
-  (ttuegel/modalka-exclude-mode 'special-mode)
-  (ttuegel/modalka-exclude-mode 'dired-mode)
-  (ttuegel/modalka-exclude-mode 'compilation-mode)
   :bind (:map modalka-mode-map
               ("c" . previous-line)
               ("C" . backward-paragraph)
@@ -324,24 +320,51 @@
   :config (setq modalka-cursor-type 'box)
   )
 
+(defvar-local modalka-special-mode--restore nil)
+
+(define-minor-mode modalka-special-mode
+  "Minor mode to replace `modalka-mode' in special buffers."
+  :lighter "⇧"
+  :keymap (define-keymap
+            "q" ctl-x-map
+            "q q" #'quit-window
+            )
+  (if modalka-special-mode
+      (setq-local modalka-special-mode--restore
+                  (buffer-local-set-state cursor-type 'box)
+                  )
+    (buffer-local-restore-state modalka-special-mode--restore)
+    (setq modalka-special-mode--restore nil)
+    )
+  )
+
 (bind-key "C-q" ctl-x-map)
 (bind-key "x" #'execute-extended-command ctl-x-map)
-(bind-key "q" #'quit-window ctl-x-map)
+
+(require 's)
+(defun ttuegel/modalka-exclude-mode (mode)
+  "Exclude MODE from `modalka-global-mode'."
+  (add-to-list 'modalka-excluded-modes mode)
+  (add-hook (intern (s-concat (symbol-name mode) "-hook")) #'modalka-special-mode)
+  )
+(ttuegel/modalka-exclude-mode 'special-mode)
+(ttuegel/modalka-exclude-mode 'dired-mode)
+(ttuegel/modalka-exclude-mode 'compilation-mode)
 
 (with-eval-after-load "simple"
-  (bind-key "q" ctl-x-map special-mode-map)
+  (add-hook 'special-mode-hook #'modalka-special-mode)
   )
 
 (with-eval-after-load "dired"
-  (bind-key "q" ctl-x-map dired-mode-map)
+  (add-hook 'dired-mode-hook #'modalka-special-mode)
   )
 
 (with-eval-after-load "compile"
-  (bind-key "q" ctl-x-map compilation-mode-map)
+  (add-hook 'compilation-mode-hook #'modalka-special-mode)
   )
 
 (with-eval-after-load "magit-mode"
-  (unbind-key "q" magit-mode-map)
+  (add-hook 'magit-mode-hook #'modalka-special-mode)
   )
 
 (with-eval-after-load "modalka"
