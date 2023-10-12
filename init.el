@@ -3,7 +3,6 @@
 ;;; Code:
 
 ;;; straight.el -- bootstrap
-
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -15,19 +14,17 @@
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
+  (load bootstrap-file nil 'nomessage)
+  )
 (setq straight-use-package-by-default t)
-
 (straight-use-package 'use-package)
 
 (defun ttuegel/emacs-init-time-message ()
   "Display the Emacs startup time in *Messages*."
-  (message "Emacs started in %s" (emacs-init-time)))
-
+  (message "Emacs started in %s" (emacs-init-time))
+  )
 (add-hook 'emacs-startup-hook #'ttuegel/emacs-init-time-message)
 
-;;; diminish -- hide select minor modes on the modeline
 (use-package diminish)
 
 (use-package eldoc
@@ -36,15 +33,12 @@
   :custom (eldoc-display-functions '(eldoc-display-in-buffer))
   )
 
-;;; auto-compile -- automatically compile .el files
 (use-package auto-compile
   :init
   (auto-compile-on-load-mode)
   (auto-compile-on-save-mode)
   )
 
-
-;;; which-key -- show available keys after incomplete commands
 (use-package which-key
   :diminish which-key-mode
   :custom (which-key-idle-delay 0.2)
@@ -52,12 +46,15 @@
   :init (which-key-mode)
   )
 
-;;; Definitions
+;; Pulse the current line after scrolling.
 (defun pulse-line (&rest _)
   "Pulse the current line."
-  (pulse-momentary-highlight-one-line (point)))
+  (pulse-momentary-highlight-one-line (point))
+  )
+(dolist (command '(scroll-up-command scroll-down-command recenter-top-bottom other-window))
+  (advice-add command :after #'pulse-line)
+  )
 
-;;; Emacs
 (use-package emacs
   :custom (kill-do-not-save-duplicates t)
   ;; Customize `custom.el' instead of `init.el'
@@ -104,17 +101,10 @@
   ;; Emacs 27:
   (setq read-process-output-max (* 1024 1024))
 
-  ;; Pulse the current line after scrolling.
-  (dolist (command '(scroll-up-command scroll-down-command recenter-top-bottom other-window))
-    (advice-add command :after #'pulse-line))
-
   (column-number-mode t)
   )
 
 (load-theme 'modus-operandi t)
-
-
-;;; enhanced-relative-indentation
 
 (use-package eri-mode
   :straight nil
@@ -122,9 +112,6 @@
   :config
   (add-to-list 'indent-line-ignored-functions #'eri-indent)
   )
-
-
-;;; System clipboard interaction
 
 (defun ttuegel/clipboard-get-contents ()
   "Return the contents of the system clipboard as a string."
@@ -168,8 +155,8 @@
           (t
            (error "Clipboard support not available")))
        (error
-        (error "Clipboard support not available"))))))
-
+        (error "Clipboard support not available")))))
+  )
 (defun ttuegel/clipboard-set-contents (str-val)
   "Set the contents of the system clipboard to STR-VAL."
   (cl-callf or str-val "")
@@ -206,15 +193,12 @@
            (t
             (error "Clipboard support not available")))
        (error
-        (error "Clipboard support not available"))))))
+        (error "Clipboard support not available")))))
+  )
 
-
-;;; electric-indent
 ;; Enable `electric-indent-mode' only in select major modes.
 (electric-indent-mode -1)
 (add-hook 'emacs-lisp-mode-hook #'electric-indent-local-mode)
-
-;;; puni
 
 (use-package puni
   :bind (("C-c (" . puni-wrap-round)
@@ -223,18 +207,13 @@
          ("C-c <" . puni-wrap-angle))
   )
 
-
-;;; paren
 ;; Highlight matching parentheses.
 (show-paren-mode t)
-
 
 (use-package expand-region
   :bind ("C-/" . er/expand-region)
   )
 
-
-;;; doom-modeline
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
   :custom ((doom-modeline-bar-width 8)
@@ -253,8 +232,6 @@
   (add-hook 'doom-modeline-mode-hook #'ttuegel/set-default-modeline)
   )
 
-
-;;; helpful
 (use-package helpful
   :bind (:map helpful-mode-map ([remap revert-buffer] . helpful-update))
   :bind (([remap describe-command] . helpful-command)
@@ -265,11 +242,8 @@
          ("C-h F" . helpful-function)
          )
   )
-
 (bind-key "C-h K" #'describe-keymap)
 
-
-;;; boon
 (use-package boon
   :diminish boon-local-mode
   :preface
@@ -278,15 +252,21 @@
     (interactive)
     (when (use-region-p)
       (kill-region (region-beginning) (region-end)))
-    (boon-set-insert-like-state))
-
+    (boon-set-insert-like-state)
+    )
   (defun boon-special-quit-window ()
     "Call `quit-window', but only in `boon-special-state'."
     (interactive)
     (when boon-special-state
-      (quit-window)))
-
+      (quit-window))
+    )
   :init (boon-mode)
+  :bind (:map boon-goto-map
+              ("i" . consult-imenu)
+              ("I" . consult-imenu-multi)
+              )
+  :bind (:map boon-backward-search-map ("," . goto-last-change))
+  :bind (:map boon-forward-search-map ("." . goto-last-change-reverse))
   :config
   (require 'boon-dvorak)
 
@@ -320,9 +300,6 @@
 
   (bind-key "g" #'consult-goto-line boon-goto-map)
   )
-
-
-;;; Vertico
 
 (straight-use-package
  '(vertico
@@ -362,19 +339,14 @@
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
   )
 
-;; Completion with Vertico
 (bind-key "C-f" #'completion-at-point)
 
-
-;;; Marginalia
 (use-package marginalia
   :custom (marginalia-annotators (marginalia-annotators-heavy marginalia-annotators-light nil))
   :init
   (marginalia-mode 1)
   )
 
-
-;;; Consult
 (use-package consult
   :bind ("C-s" . consult-line)
   :bind (:map minibuffer-local-map ("C-r" . consult-history))
@@ -387,7 +359,6 @@
       )
     )
   (setq completion-in-region-function #'ttuegel/completion-with-vertico)
-
   (bind-key [remap isearch-edit-string] #'consult-isearch-history isearch-mode-map)
   )
 
@@ -396,15 +367,9 @@
   :bind (:map lsp-mode-map ([remap xref-find-apropos] . consult-lsp-symbols))
   )
 
-
-;;; Orderless
-
 (use-package orderless
   :custom (completion-styles '(orderless partial-completion basic))
   )
-
-
-;;; Embark
 
 (use-package embark
   :bind ([remap describe-bindings] . embark-bindings)
@@ -418,21 +383,10 @@
   :hook (embark-collect-mode . consult-preview-at-point-mode)
   )
 
-
-;;; deadgrep -- fast, friendly searching with ripgrep
 (use-package deadgrep
   :defer
   )
 
-
-(bind-keys
-  :map boon-goto-map
-  ("i" . consult-imenu)
-  ("I" . consult-imenu-multi)
-)
-
-
-;;; Buffers
 (defvar buffer-map)
 (define-prefix-command 'buffer-map)
 (bind-key "b" #'buffer-map ctl-x-map)
@@ -447,8 +401,6 @@
  ("R" . revert-buffer-quick)
  )
 
-
-;;; Windows
 (defvar window-map)
 (define-prefix-command 'window-map)
 (bind-key "w" #'window-map ctl-x-map)
@@ -469,24 +421,17 @@
  ("w" . other-window)
  )
 
-
-;;; rainbow-delimiters
-
 (use-package rainbow-delimiters
   :hook (emacs-lisp-mode . rainbow-delimiters-mode)
   )
-
-;;; Avy
 
 (use-package avy
   :config
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   )
 
-
-;;; flycheck
-
 (use-package flycheck
+  :diminish
   :preface
   ;; https://www.masteringemacs.org/article/seamlessly-merge-multiple-documentation-sources-eldoc
   (defun mp-flycheck-eldoc (callback &rest _ignored)
@@ -506,59 +451,47 @@
            :thing (or (flycheck-error-id err)
                       (flycheck-error-group err))
            :face 'font-lock-doc-face))
-       flycheck-errors)))
-
+       flycheck-errors))
+    )
   (defun mp-flycheck-prefer-eldoc ()
     (add-hook 'eldoc-documentation-functions #'mp-flycheck-eldoc nil t)
     (setq eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
     (setq flycheck-display-errors-function nil)
     (setq flycheck-help-echo-function nil))
-
   :hook (flycheck-mode . mp-flycheck-prefer-eldoc)
   :hook (emacs-lisp-mode . flycheck-mode)
-  :diminish
   )
 
-
-;;; Git
-
 (use-package magit
-  :bind (:map ctl-x-map ("g" . magit-status))
   :diminish auto-revert-mode
+  :bind (:map ctl-x-map ("g" . magit-status))
   )
 
 (use-package git-timemachine
   :commands git-timemachine-toggle
   )
 
-
-;;; TeX
 (use-package tex
   :straight auctex
   :commands TeX-PDF-mode
   :commands font-latex-setup
-  :defines
-  TeX-save-query
-  LaTeX-item-indent
-  LaTeX-indent-level
-  LaTeX-label-alist
+  :defines TeX-save-query
+  :defines LaTeX-item-indent
+  :defines LaTeX-indent-level
+  :defines LaTeX-label-alist
   :hook (TeX-mode . font-latex-setup)
   :config
   ;; Recognize style files multi-file documents
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
-
   ;; Save without asking
   (setq TeX-save-query nil)
-
   ;; Allow viewer to move cursor
   (setq TeX-source-correlate-mode t)
-
   ;; Disable automatic indentation
   (setq LaTeX-item-indent 0)
   (setq LaTeX-indent-level 0)
-
   ;; No automatic equation labels
   (add-hook 'LaTeX-mode-hook
             (lambda ()
@@ -567,33 +500,27 @@
               (add-to-list 'LaTeX-label-alist '("dmath" . nil))
               (add-to-list 'LaTeX-label-alist '("dgroup" . nil))
               (add-to-list 'LaTeX-label-alist '("dseries" . nil))))
-
   ;; Build PDFs by default
   (add-hook 'LaTeX-mode-hook (lambda () (TeX-PDF-mode t)))
-
   ;; Automatic spell checking
   (add-hook 'LaTeX-mode-hook (lambda () (flyspell-mode 1)))
-
   ;; Use a proper URL with Okular
   (add-to-list
    'TeX-view-program-list
    '("Okular" ("okular --unique file:%o"
                (mode-io-correlate "#src:%n%a")) "okular"))
-
-  ;; Use absolute filename for "%o" expansion
-  (add-to-list
-   'TeX-expand-list
-   '("%o" (lambda nil
-            (expand-file-name
-             (funcall file (TeX-output-extension) t)))))
-
   (setq
    TeX-view-program-selection
    '(((output-dvi has-no-display-manager) "dvi2tty")
      (output-dvi "xdvi")
      (output-pdf "Okular")
      (output-html "xdg-open")))
-
+  ;; Use absolute filename for "%o" expansion
+  (add-to-list
+   'TeX-expand-list
+   '("%o" (lambda nil
+            (expand-file-name
+             (funcall file (TeX-output-extension) t)))))
   ;; Disable Unicode fontification
   (setq font-latex-fontify-script nil)
   (setq font-latex-fontify-sectioning 'color)
@@ -609,14 +536,11 @@
   (setq reftex-default-bibliography "~/bib/default.bib")
   )
 
-
 ;;; Markdown
 (use-package markdown-mode
   :mode "\\.md\\'"
   )
 
-
-;;; Nix
 (use-package nix-mode
   :commands nix-mode
   :hook (nix-mode . rainbow-delimiters-mode)
@@ -624,28 +548,18 @@
   :mode "\\.nix.in\\'"
   )
 
-
-;;; YAML
-
 (use-package yaml-mode
   :defer
   )
 
-
-;;; yasnippet
 (use-package yasnippet
   :hook (lsp-mode . yas-minor-mode)
-  :config
-  (yas-reload-all)
+  :config (yas-reload-all)
   )
-
-
-;;; Language Server
 
 (use-package lsp-mode
   :commands lsp
   :hook (lsp-mode . lsp-enable-which-key-integration)
-  ;; :hook (haskell-mode . lsp)
   :diminish lsp-mode
   :custom (lsp-completion-provider :none "Using orderless.")
   :init
@@ -680,8 +594,6 @@
   :custom (lsp-haskell-check-project nil)
   )
 
-;;; Eglot
-
 (use-package eglot
   :preface
   (defun mp-eglot-eldoc ()
@@ -691,11 +603,7 @@
   :config (add-to-list 'eglot-server-programs '(haskell-mode . ("static-ls")))
   )
 
-
-;;; Haskell
-
 (use-package haskell-mode
-  ;; Use `haskell-compilation-mode' in `ghcid.txt' buffers.
   :hook (haskell-mode . rainbow-delimiters-mode)
   :hook (haskell-mode . display-line-numbers-mode)
   :hook (haskell-mode . (lambda nil
@@ -711,8 +619,8 @@
   (setq haskell-process-log t)
   )
 
+;; Use `haskell-compilation-mode' in `ghcid.txt' buffers.
 (autoload #'haskell-compilation-mode "haskell-compile" nil t)
-
 (define-derived-mode haskell-ghcid-mode haskell-compilation-mode "haskell-ghcid"
   "Major mode for navigating messages in a \"ghcid.txt\" file."
   (auto-revert-mode)
@@ -723,64 +631,55 @@
     (set-buffer-modified-p nil)
     )
   )
-
 (add-to-list 'auto-mode-alist '("ghcid\\.txt\\'" . haskell-ghcid-mode))
 
 (use-package yesod-mode
-  :straight (yesod-mode :type git :host github :repo "lfborjas/yesod-mode"))
+  :straight (yesod-mode :type git :host github :repo "lfborjas/yesod-mode")
+  )
 
-
-;;; Dhall
 (use-package dhall-mode
   :mode "\\.dhall\\'"
-  :custom (dhall-format-at-save nil))
+  :custom (dhall-format-at-save nil)
+  )
 
-
-;;; XML
 (use-package nxml-mode
   :straight nil ; ships with Emacs
   :mode "\\.rng\\'"
   )
 
-
-;;; Org
 (defvar org-prefix-map)
 (define-prefix-command 'org-prefix-map)
-(bind-key "o" #'org-prefix-map ctl-x-map)
+(bind-key "o" #'org-prefix-map mode-specific-map)
 
 (use-package org
   :mode ("\\.org\\'" . org-mode)
-  :defines
-  org-clock-clocktable-default-properties
-  org-clock-persist
+  :defines org-clock-clocktable-default-properties
+  :defines org-clock-persist
   :hook (org-mode . turn-on-visual-line-mode)
   :config
   (setq org-directory "~/org")
-
   (setq org-todo-keywords
         (quote ((type "TODO(t)" "STARTED(s@)" "WAITING(w@/!)" "MAYBE(m)"
-                      "|" "DONE(d!)" "CANCELLED(c@)"))))
-
+                      "|" "DONE(d!)" "CANCELLED(c@)")))
+        )
   ;; Children block parent TODO items
   (setq org-enforce-todo-dependencies t)
-
   ;; Log entries into LOGBOOK drawer
   (setq org-log-into-drawer t)
-
+  ;; Notes
   (setq org-default-notes-file "~/org/notes.org"
         org-reverse-note-order t)
-
   (setq org-catch-invisible-edits 'show)
   (setq org-blank-before-new-entry '((heading . t) (plain-list-item t)))
   (setq org-file-apps
         '((auto-mode . emacs)
           (system . "xdg-open %s")
           ("\\.x?html?\\'" . system)
-          ("\\.pdf\\'" . system)))
-
+          ("\\.pdf\\'" . system))
+        )
   (setq org-clock-clocktable-default-properties
-        '(:maxlevel 2 :scope file :block today))
-
+        '(:maxlevel 2 :scope file :block today)
+        )
   ;; Save clock history across Emacs sessions
   (setq org-clock-persist 'history)
   (org-clock-persistence-insinuate)
@@ -789,12 +688,10 @@
 (use-package org-agenda
   :after org
   :straight nil ; ships with org
-  :defines
-  org-agenda-ndays
+  :defines org-agenda-ndays
   :bind (:map org-prefix-map ("a" . org-agenda))
   :config
   (setq org-agenda-window-setup 'current-window)
-
   (setq org-agenda-files (list org-directory)
         org-agenda-ndays 7
         org-deadline-warning-days 0
@@ -802,19 +699,16 @@
         org-agenda-skip-deadline-if-done t
         org-agenda-skip-scheduled-if-done t
         org-agenda-start-on-weekday nil)
-
   (setq org-agenda-custom-commands
         (quote
-         (("u" "Unscheduled tasks" tags "-SCHEDULED={.+}/!+TODO"))))
-
+         (("u" "Unscheduled tasks" tags "-SCHEDULED={.+}/!+TODO")))
+        )
   (unbind-key "H" org-agenda-mode-map)
   (unbind-key "h" org-agenda-mode-map)
-
   (bind-key "C-d" #'org-agenda-backward-block org-agenda-mode-map)
   (bind-key "C-n" #'org-agenda-forward-block org-agenda-mode-map)
   (bind-key "C-h" #'org-agenda-next-line org-agenda-mode-map)
   (bind-key "C-t" #'org-agenda-previous-line org-agenda-mode-map)
-
   (bind-key "M-h" #'org-agenda-drag-line-forward org-agenda-mode-map)
   (bind-key "M-t" #'org-agenda-drag-line-backward org-agenda-mode-map)
   )
@@ -834,10 +728,9 @@
                 ("n" "note" entry (file "~/org/notes.org")
                  "* %?\n\n%U")
                 ("b" "bibliography" entry (file "~/org/bib.org")
-                 "* UNREAD %:title%?")))))
+                 "* UNREAD %:title%?"))))
+  )
 
-
-;;; rust
 (use-package rust-mode
   :mode "\\.rs\\'"
   :hook (rust-mode . flycheck-mode)
@@ -853,28 +746,21 @@
   :hook (flycheck-mode . flycheck-rust-setup)
   )
 
-
-;;; C
 (add-hook 'c-mode-common-hook #'flycheck-mode)
 
-
-;;; unfill-region
 (defun unfill-region (beg end)
   "Join text paragraphs between BEG and END into a single logical line.
 This is useful, e.g., for use with function `visual-line-mode'."
   (interactive "*r")
   (let ((fill-column (point-max)))
-    (fill-region beg end)))
+    (fill-region beg end))
+  )
 
-
-;;; pdftotext
 (use-package pdftotext
   :straight nil
   :load-path "./lisp"
-  :defines pdftotext-insert-text)
-
-
-;;; Scheme
+  :defines pdftotext-insert-text
+  )
 
 (use-package scheme
   :hook (scheme-mode . rainbow-delimiters-mode)
@@ -884,67 +770,42 @@ This is useful, e.g., for use with function `visual-line-mode'."
   (put 'with-directory 'scheme-indent-function 1)
   (put 'when 'scheme-indent-function 1))
 
-
-;;; Idris
 (use-package idris-mode
   :mode "\\.idr\\'"
   )
 
-
-;;; Fish
 (use-package fish-mode)
 
-
-;;; EditorConfig
 (use-package editorconfig
   :diminish
-  :init
-  (editorconfig-mode 1))
+  :init (editorconfig-mode 1)
+  )
 
-
-;;; Groovy (Jenkinsfile)
 (use-package groovy-mode
   :mode "Jenkinsfile"
   )
 
-
-;;; Scala
 (use-package scala-mode
   :mode "\\.scala\\'"
   )
 
-
-;;; Direnv
-(use-package direnv)
-
-
-;;; Kotlin
 (use-package kotlin-mode
   :defer
   )
 
-
-;;; Swift
 (use-package swift-mode
   :defer
   )
 
-
-;;; Typescript
 (use-package typescript-mode
   :mode "\\.tsx\\'"
   )
 
-
-;;; spinner
 ;; Disable the spinner.
 (with-eval-after-load "spinner"
   (defun spinner-start (&optional type-or-object fps delay) nil)
   (defun spinner-stop (&optional spinner) nil)
   )
-
-
-;;; xterm-color
 
 (use-package xterm-color
   :init
@@ -958,23 +819,16 @@ This is useful, e.g., for use with function `visual-line-mode'."
   )
 
 
-;;; adaptive-wrap
-
 (use-package adaptive-wrap
-  :hook (visual-line-mode . adaptive-wrap-prefix-mode))
-
-
-;;; envrc
+  :hook (visual-line-mode . adaptive-wrap-prefix-mode)
+  )
 
 (use-package envrc
   :init (envrc-global-mode)
   :diminish)
 
 
-(use-package goto-chg
-  :bind (:map boon-backward-search-map ("," . goto-last-change))
-  :bind (:map boon-forward-search-map ("." . goto-last-change-reverse)))
-
+(use-package goto-chg)
 
 (use-package f
   :init
@@ -993,7 +847,6 @@ This is useful, e.g., for use with function `visual-line-mode'."
 ;;; Garbage collection
 ;; Make GC pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 4 1024 1024))
-
 
 ;;; Customize
 (load (expand-file-name "custom.el" user-emacs-directory))
