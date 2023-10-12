@@ -523,13 +523,12 @@
 ;;; Git
 
 (use-package magit
-  :bind (:map vc-prefix-map ("g" . magit-status))
+  :bind (:map ctl-x-map ("g" . magit-status))
   :diminish auto-revert-mode
   )
 
 (use-package git-timemachine
   :commands git-timemachine-toggle
-  :bind (:map vc-prefix-map ("t" . git-timemachine-toggle))
   )
 
 
