@@ -103,6 +103,7 @@
   ;; Emacs 27:
   (setq read-process-output-max (* 1024 1024))
 
+  ;; Show column numbers in the mode line.
   (column-number-mode t)
   )
 
