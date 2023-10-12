@@ -270,9 +270,6 @@
 
 
 ;;; boon
-(straight-use-package
- '(boon :type git :host github :repo "ttuegel/boon"))
-
 (use-package boon
   :diminish boon-local-mode
   :preface
@@ -322,9 +319,6 @@
   (bind-key "O" 'ignore boon-command-map)
 
   (bind-key "g" #'consult-goto-line boon-goto-map)
-
-  (bind-key "n" #'indent-rigidly-right indent-rigidly-map)
-  (bind-key "t" #'indent-rigidly-left indent-rigidly-map)
   )
 
 
