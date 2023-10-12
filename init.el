@@ -84,6 +84,7 @@
   :custom (compilation-scroll-output t)
   ;; Stop `display-buffer' from resizing windows:
   :custom (even-window-sizes nil)
+  :custom (sentence-end-double-space nil "One space between sentences")
   ;; Make scripts executable on save
   :hook (after-save . executable-make-buffer-file-executable-if-script-p)
   :hook (emacs-lisp-mode . display-line-numbers-mode)
