@@ -236,7 +236,6 @@
   )
 
 (use-package helpful
-  :bind (:map helpful-mode-map ([remap revert-buffer] . helpful-update))
   :bind (([remap describe-command] . helpful-command)
          ([remap describe-function] . helpful-callable)
          ([remap describe-key] . helpful-key)
@@ -244,6 +243,8 @@
          ([remap describe-variable] . helpful-variable)
          ("C-h F" . helpful-function)
          )
+  :config
+  (bind-keys :map helpful-mode-map ([remap revert-buffer] . helpful-update))
   )
 (bind-key "C-h K" #'describe-keymap)
 
