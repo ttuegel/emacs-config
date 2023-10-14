@@ -334,7 +334,7 @@
   :init (vertico-mode 1)
   :config
   (require 'vertico-directory)
-  (bind-keps :map vertico-map
+  (bind-keys :map vertico-map
              ("C-f" . vertico-insert)
              ("C-n" . vertico-next)
              ("C-t" . vertico-previous)
