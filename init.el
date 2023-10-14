@@ -267,41 +267,49 @@
   :init (boon-mode)
   :config
   (require 'boon-dvorak)
-
+  ;; Suppress input in `boon-command-state'.
   (bind-key [remap self-insert-command] 'ignore boon-command-map)
   (bind-key "RET" 'ignore boon-command-map)
-
+  ;; Replace `q' in `boon-special-state'.
   (bind-key "q" #'boon-x-map boon-special-map)
-  (unbind-key "x" boon-special-map)
   (bind-key "q" #'boon-special-quit-window ctl-x-map)
-
+  (unbind-key "x" boon-special-map)
+  ;;
   (bind-key "j" 'ignore boon-command-map)
-
-  (bind-key "u" #'undo boon-command-map)
-  (bind-key "U" #'undo-redo boon-command-map)
-  (bind-key "-" 'ignore boon-command-map)
+  ;; Undo
+  (bind-keys :map boon-command-map
+             ("u" . undo)
+             ("U" . undo-redo)
+             ("-" . ignore) ; originally `undo'
+             )
   (unbind-key "C-M-_")
-
-  (bind-key "p" #'boon-splice boon-command-map)
-  (bind-key "P" #'yank-pop boon-command-map)
-
-  (bind-key "k" #'boon-take-region boon-command-map)
-  (bind-key "K" #'boon-treasure-region boon-command-map)
+  ;; yank
+  (bind-keys :map boon-command-map
+             ("p" . boon-splice)
+             ("P" . yank-pop)
+             )
+  ;; kill
+  (bind-keys :map boon-command-map
+             ("k" . boon-take-region)
+             ("K" . boon-treasure-region)
+             ("e" . ignore) ; originally `boon-take-region'
+             ("E" . ignore) ; originally `boon-treasure-region'
+             )
   (unbind-key "C-k")
-  (bind-key "e" 'ignore boon-command-map)
-  (bind-key "E" 'ignore boon-command-map)
-
+  ;; `boon-insert-state'
+  (bind-keys :map boon-command-map
+             ("e" . boon-enter-dwim)
+             ("o" . ignore)
+             ("O" . ignore)
+             )
   (bind-key "C-e" #'boon-set-command-state boon-insert-map)
-  (bind-key "e" #'boon-enter-dwim boon-command-map)
-  (bind-key "o" 'ignore boon-command-map)
-  (bind-key "O" 'ignore boon-command-map)
-
+  ;; consult
   (bind-keys :map boon-goto-map
              ("g" . consult-goto-line)
              ("i" . consult-imenu)
              ("I" . consult-imenu-multi)
              )
-
+  ;; goto-chg
   (bind-key "," #'goto-last-change boon-backward-search-map)
   (bind-key "." #'goto-last-change-reverse boon-forward-search-map)
   )
