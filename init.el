@@ -264,12 +264,6 @@
       (quit-window))
     )
   :init (boon-mode)
-  :bind (:map boon-goto-map
-              ("i" . consult-imenu)
-              ("I" . consult-imenu-multi)
-              )
-  :bind (:map boon-backward-search-map ("," . goto-last-change))
-  :bind (:map boon-forward-search-map ("." . goto-last-change-reverse))
   :config
   (require 'boon-dvorak)
 
@@ -301,7 +295,14 @@
   (bind-key "o" 'ignore boon-command-map)
   (bind-key "O" 'ignore boon-command-map)
 
-  (bind-key "g" #'consult-goto-line boon-goto-map)
+  (bind-keys :map boon-goto-map
+             ("g" . consult-goto-line)
+             ("i" . consult-imenu)
+             ("I" . consult-imenu-multi)
+             )
+
+  (bind-key "," #'goto-last-change boon-backward-search-map)
+  (bind-key "." #'goto-last-change-reverse boon-forward-search-map)
   )
 
 (straight-use-package
