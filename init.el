@@ -365,14 +365,6 @@
   :bind ("C-s" . consult-line)
   :bind (:map minibuffer-local-map ("C-r" . consult-history))
   :init
-  (defun ttuegel/completion-with-vertico (&rest args)
-    "Use `consult-completion-in-region' if Vertico is enabled."
-    (if vertico-mode
-        (apply #'consult-completion-in-region args)
-      (apply #'completion--in-region args)
-      )
-    )
-  (setq completion-in-region-function #'ttuegel/completion-with-vertico)
   (bind-key [remap isearch-edit-string] #'consult-isearch-history isearch-mode-map)
   )
 
@@ -383,6 +375,25 @@
 
 (use-package orderless
   :custom (completion-styles '(orderless partial-completion basic))
+  :config
+  (defun orderless-fast-dispatch (word index total)
+    (and (= index 0) (= total 1) (length< word 4)
+         `(orderless-regexp . ,(concat "^" (regexp-quote word)))
+         )
+    )
+  (orderless-define-completion-style orderless-fast
+    (orderless-style-dispatchers '(orderless-fast-dispatch))
+    (orderless-matching-styles '(orderless-literal orderless-regexp))
+    )
+  )
+
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  :init
+  (global-corfu-mode)
+  :config
+  (setq completion-styles '(orderless-fast basic))
   )
 
 (use-package embark

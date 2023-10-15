@@ -10,6 +10,7 @@
  ("compat" . "18696ce5b136c21069cd4a4723c9be6614cfc788")
  ("consult" . "e5406f282f76076d10440037ecd3460fb280706c")
  ("consult-lsp" . "f8db3252c0daa41225ba4ed1c0d178b281cd3e90")
+ ("corfu" . "b2b9a2312f58117514724e729fda43efc4433ecd")
  ("dap-mode" . "a31f2496605d076d50d49393116f77fbb29f2631")
  ("dash.el" . "6db80c711ce947f6c6fa11e5c2257fff2c79d139")
  ("deadgrep" . "415b69394960677a8a013d32a3cf67cb9956eef6")
