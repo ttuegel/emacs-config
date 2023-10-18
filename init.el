@@ -866,6 +866,14 @@ This is useful, e.g., for use with function `visual-line-mode'."
     )
   )
 
+(use-package window-purpose)
+
+(use-package winum
+  :init
+  ;; Prevent `winum-mode' from overriding my key choices.
+  (setq winum-keymap (make-sparse-keymap))
+  )
+
 ;;; Garbage collection
 ;; Make GC pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 4 1024 1024))
