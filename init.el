@@ -872,6 +872,7 @@ This is useful, e.g., for use with function `visual-line-mode'."
   :init
   ;; Prevent `winum-mode' from overriding my key choices.
   (setq winum-keymap (make-sparse-keymap))
+  (winum-mode 1)
   :bind (:map window-map
               ("1" . winum-select-window-1)
               ("2" . winum-select-window-2)
