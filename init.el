@@ -843,7 +843,6 @@ This is useful, e.g., for use with function `visual-line-mode'."
     )
   )
 
-
 (use-package adaptive-wrap
   :hook (visual-line-mode . adaptive-wrap-prefix-mode)
   )
@@ -851,7 +850,6 @@ This is useful, e.g., for use with function `visual-line-mode'."
 (use-package envrc
   :init (envrc-global-mode)
   :diminish)
-
 
 (use-package goto-chg)
 
@@ -867,7 +865,6 @@ This is useful, e.g., for use with function `visual-line-mode'."
       )
     )
   )
-
 
 ;;; Garbage collection
 ;; Make GC pauses faster by decreasing the threshold.
