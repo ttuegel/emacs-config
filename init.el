@@ -86,7 +86,6 @@
   :custom (even-window-sizes nil)
   :custom (sentence-end-double-space nil "One space between sentences")
   :custom (frame-inhibit-implied-resize t "Accept frame size set by window manager")
-  :custom (show-trailing-whitespace t)
   ;; Make scripts executable on save
   :hook (after-save . executable-make-buffer-file-executable-if-script-p)
   :hook (emacs-lisp-mode . display-line-numbers-mode)
