@@ -374,16 +374,6 @@
 
 (use-package orderless
   :custom (completion-styles '(orderless partial-completion basic))
-  :config
-  (defun orderless-fast-dispatch (word index total)
-    (and (= index 0) (= total 1) (length< word 4)
-         `(orderless-regexp . ,(concat "^" (regexp-quote word)))
-         )
-    )
-  (orderless-define-completion-style orderless-fast
-    (orderless-style-dispatchers '(orderless-fast-dispatch))
-    (orderless-matching-styles '(orderless-literal orderless-regexp))
-    )
   )
 
 (use-package corfu
@@ -391,8 +381,6 @@
   (corfu-auto t)
   :init
   (global-corfu-mode)
-  :config
-  (setq completion-styles '(orderless-fast basic))
   )
 
 (use-package embark
