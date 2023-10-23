@@ -616,6 +616,11 @@
   :config (add-to-list 'eglot-server-programs '(haskell-mode . ("static-ls")))
   )
 
+(defun tt/turn-off-eldoc-mode nil
+  "Turn off `eldoc-mode' in the current buffer."
+  (eldoc-mode -1)
+  )
+
 (use-package haskell-mode
   :hook (haskell-mode . rainbow-delimiters-mode)
   :hook (haskell-mode . display-line-numbers-mode)
@@ -626,6 +631,7 @@
                           ;; changes made by the latter.
                           (haskell-indentation-mode -1)
                           (eri-mode)))
+  :hook (haskell-mode . tt/turn-off-eldoc-mode) ; `eldoc-mode' is slow in large `haskell-mode' buffers.
   :config
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
