@@ -86,6 +86,7 @@
   :custom (even-window-sizes nil)
   :custom (sentence-end-double-space nil "One space between sentences")
   :custom (frame-inhibit-implied-resize t "Accept frame size set by window manager")
+  :custom (create-lockfiles nil)
   ;; Make scripts executable on save
   :hook (after-save . executable-make-buffer-file-executable-if-script-p)
   :hook (emacs-lisp-mode . display-line-numbers-mode)
@@ -625,7 +626,6 @@
                           ;; changes made by the latter.
                           (haskell-indentation-mode -1)
                           (eri-mode)))
-  :hook (haskell-mode . (lambda nil (setq-local create-lockfiles nil)))
   :config
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
