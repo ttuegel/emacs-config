@@ -622,16 +622,20 @@
   )
 
 (use-package haskell-mode
+  :init
+  (defun tt/haskell-eri-mode nil
+    "Replace `haskell-indentation-mode' with `eri-mode'."
+    ;; This is sensitive to order: We have to turn off
+    ;; `haskell-indentation-mode' before we turn on
+    ;; `eri-mode' so that the former doesn't reverse
+    ;; changes made by the latter.
+    (haskell-indentation-mode -1)
+    (eri-mode)
+    )
   :hook (haskell-mode . rainbow-delimiters-mode)
   :hook (haskell-mode . display-line-numbers-mode)
-  :hook (haskell-mode . (lambda nil
-                          ;; This is sensitive to order: We have to turn off
-                          ;; `haskell-indentation-mode' before we turn on
-                          ;; `eri-mode' so that the former doesn't reverse
-                          ;; changes made by the latter.
-                          (haskell-indentation-mode -1)
-                          (eri-mode)))
   :hook (haskell-mode . tt/turn-off-eldoc-mode) ; `eldoc-mode' is slow in large `haskell-mode' buffers.
+  :hook (haskell-mode . tt/haskell-eri-mode)
   :config
   (setq haskell-literate-default 'tex)
   (setq haskell-process-log t)
