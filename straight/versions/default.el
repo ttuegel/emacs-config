@@ -43,6 +43,7 @@
  ("gnu-elpa-mirror" . "ebf10357d7e2e8d5d1ebca1ac7bfa225e05b1b4b")
  ("goto-chg" . "278cd3e6d5107693aa2bb33189ca503f22f227d0")
  ("groovy-emacs-modes" . "7b8520b2e2d3ab1d62b35c426e17ac25ed0120bb")
+ ("haskell-ghcid-mode" . "6b45605f177908496a9bb95fbfa3cba29997d457")
  ("haskell-mode" . "167421abf1db7dd4d297392b58b89bd72e2a9a63")
  ("helpful" . "be6f7bb6d7371619f076e55bc7449002f0725478")
  ("ht.el" . "1c49aad1c820c86f7ee35bf9fff8429502f60fef")
