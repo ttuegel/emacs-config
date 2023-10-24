@@ -643,16 +643,28 @@
 
 ;; Use `haskell-compilation-mode' in `ghcid.txt' buffers.
 (autoload #'haskell-compilation-mode "haskell-compile" nil t)
-(define-derived-mode haskell-ghcid-mode haskell-compilation-mode "haskell-ghcid"
-  "Major mode for navigating messages in a \"ghcid.txt\" file."
-  (auto-revert-mode)
-  (add-hook 'after-revert-hook #'haskell-ghcid-mode nil t)
+
+(defun haskell-ghcid-mode--after-revert nil
+  "Default `after-revert-hook' for `haskell-ghcid-mode'."
   (goto-char (point-min))
+  ;; `compilation-next-error' fails if the first error is at `point-min', so
+  ;; insert an empty line at the beginning of the buffer.
   (when (looking-at-p "[^[:space:]]")
     (let ((inhibit-read-only t)) (insert "\n"))
     (set-buffer-modified-p nil)
     )
+  ;; Reset `next-error-last-buffer' to restore focus to `haskell-ghcid-mode'
+  ;; when the buffer is refreshed.
+  (setq next-error-last-buffer (current-buffer))
   )
+
+(define-derived-mode haskell-ghcid-mode haskell-compilation-mode "haskell-ghcid"
+  "Major mode for navigating messages in a \"ghcid.txt\" file."
+  (auto-revert-mode)
+  (add-hook 'after-revert-hook #'haskell-ghcid-mode--after-revert nil t)
+  (haskell-ghcid-mode--after-revert)
+  )
+
 (add-to-list 'auto-mode-alist '("ghcid\\.txt\\'" . haskell-ghcid-mode))
 
 (use-package yesod-mode
