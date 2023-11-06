@@ -671,7 +671,7 @@
   :config
   (setq org-directory "~/org")
   (setq org-todo-keywords
-        (quote ((type "TODO(t)" "STARTED(s@)" "WAITING(w@/!)" "MAYBE(m)"
+        (quote ((type "STARTED(s@)" "WAITING(w@/!)" "TODO(t)"
                       "|" "DONE(d!)" "CANCELLED(c@)")))
         )
   ;; Children block parent TODO items
