@@ -250,6 +250,7 @@
 (bind-key "C-h K" #'describe-keymap)
 
 (use-package boon
+  :straight (:local-repo "~/ttuegel/boon")
   :diminish boon-local-mode
   :preface
   (defun boon-enter-dwim ()
